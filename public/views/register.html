@@ -1,0 +1,51 @@
+<!-- public/views/register.html -->
+<!-- HEADER -->
+<nav class="navbar ">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">Log In</a>
+    </div>
+    <!-- LINK TO OUR PAGES. ANGULAR HANDLES THE ROUTING HERE -->
+    <ul class="nav navbar-nav">
+        <li><a href="/register">Register</a></li>
+    </ul>
+</nav>
+<div class="form-top">
+    <div class="form-top-left">
+        <h3>Registrate en nuestra web</h3>
+        <p>Introduzca los siguientes datos:</p>
+    </div>
+    <div class="form-top-right">
+    <i class="fa fa-lock"></i>
+</div>
+</div>
+<div class="form-bottom">
+    <form role="form"  class="login-form">
+        <div class="form-group">
+            <label  for="form-username">Username</label>
+            <input type="text" name="form-username" ng-model="user.username" placeholder="Username..." class="form-username form-control" id="form-username">
+        </div>
+        <div class="form-group">
+            <label for="form-password">Password</label>
+            <input type="password" name="form-password" ng-model="user.password" placeholder="Password..." class="form-password form-control" id="form-password">
+        </div>
+        <div class="form-group">
+            <label  for="form-email">Email</label>
+            <input type="text" name="form-email" ng-model="user.email" placeholder="Email..." class="form-email form-control" id="form-email">
+        </div>
+        <div class="form-group">
+            <label for="form-name">Nombre</label>
+            <input type="text" name="form-name" ng-model="user.name" placeholder="Nombre..." class="form-name form-control" id="form-name">
+        </div>
+        <div class="form-group">
+            <label  for="form-surname">Apellido</label>
+            <input type="text" name="form-surname" ng-model="user.surname" placeholder="Apellido..." class="form-surname form-control" id="form-surname">
+        </div>
+        <div class="form-group">
+            <!--Fecha nacimiento -->
+            <label for="form-date" >Fecha de nacimiento</label>
+            <input type="date" class="form-dateBorn form-control" id="form-date" name="form-date" ng-model="user.dateBorn" placeholder="dd-MM-yyyy" min="01-01-1900" max="20-02-2018"/>
+        </div>
+        <button ng-click="registerUser()" class="btn">Registrarse</button>
+    </form>
+</div>
+

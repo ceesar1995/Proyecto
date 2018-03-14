@@ -1,0 +1,23 @@
+<!-- public/views/search.html -->
+<div class="top-content">
+    <div class="inner-bg" >
+        <div class="container">
+            <div class="row " >
+                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <button class="btn-primary btn" ng-click="searchTeams()">Resultados equipos</button>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <button class="btn-primary btn" ng-click="searchPlayers()">Resultados jugadores</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <team-search-card ng-repeat="team in teams" name="{{team.name}}" provinces="{{team.provinces}}"></team-search-card>
+                    <player-search-card ng-repeat="player in players" name="{{player.name}}" provinces="{{player.provinces}}" team-names="{{player.teamNames}}" ></player-search-card>
+                    <p>{{errorMessage}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
