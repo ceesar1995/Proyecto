@@ -1,0 +1,32 @@
+<!-- public/views/forum.html -->
+<div class="top-content">
+    <div class="inner-bg" >
+        <div class="container">
+            <div class="row " >
+                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                    <div class="row card">
+                        <div class="form-group col-xs-12 col-sm-8">
+                            <label for="inputsm">Mensaje</label>
+                            <input placeholder="Asunto..." class="form-control input-sm" id="inputsm" ng-model="message.subject" type="text">
+                        </div>
+                        <div class="col-xs-12  form-group">
+                            <div class="row">
+                                <div class="col-sm-8 col-xs-12">
+                                    <input placeholder="Mensaje..." class="form-control input-lg" id="inputlg" ng-model="message.text" type="text">
+                                </div>
+                                <div class="col-sm-4 col-xs-12">
+                                    <button class="btn-primary btn" ng-click="sendMessage()">Enviar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="box" class="col-xs-12 form-box">
+                            <forum-card ng-repeat="message in messages" player="{{message.player}}" date="{{message.date}}" text="{{message.text}}" subject="{{message.subject}}"></forum-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
