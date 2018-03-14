@@ -5,6 +5,9 @@
     "start": "nodemon server.js"
   },
   "dependencies": {
+    "angular-animate": "^1.6.9",
+    "angular-touch": "^1.6.9",
+    "angular-ui-bootstrap": "^2.5.6",
     "body-parser": "latest",
     "cors": "latest",
     "dotenv": "^5.0.0",

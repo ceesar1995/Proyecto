@@ -4,25 +4,60 @@
         <div class="container">
             <div class="row " >
                 <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                    <div class="row card">
-                        <div class="form-group col-xs-12 col-sm-8">
-                            <label for="inputsm">Mensaje</label>
-                            <input placeholder="Asunto..." class="form-control input-sm" id="inputsm" ng-model="message.subject" type="text">
-                        </div>
-                        <div class="col-xs-12  form-group">
-                            <div class="row">
-                                <div class="col-sm-8 col-xs-12">
-                                    <input placeholder="Mensaje..." class="form-control input-lg" id="inputlg" ng-model="message.text" type="text">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <form>
+                                <div class="form-group">
+                                    <label for="placeInput">Lugar del partido:</label>
+                                    <input type="text" class="form-control" id="placeInput" placeholder="Lugar del partido" ng-model="match.place">
                                 </div>
-                                <div class="col-sm-4 col-xs-12">
-                                    <button class="btn-primary btn" ng-click="sendMessage()">Enviar</button>
+                                <div class="form-group">
+                                    <label for="rulesInput">Reglas</label>
+                                    <textarea class="form-control" id="rulesInput" rows="3" ng-model="match.rules" ></textarea>
+                                    <small id="rulesHelp" class="form-text text-muted">Reglas o información que se necesitan aclarar para el partido.</small>
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <label for="dateInput">Fecha</label>
+                                    <p class="input-group">
+                                        <input id="dateInput" type="text" class="form-control" uib-datepicker-popup="{{format}}" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-model="match.date" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 form-group">
+                                        <label for="timeStartInput">Hora de inicio:</label>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <input type="number" min="0" max="24" class="form-control" id="timeStartInput" aria-describedby="timeInput" placeholder="Horas" ng-model="match.hourBegin" >
+                                            </div>
+                                            <div class="col-xs-6" >
+                                                <input type="number" min="0" max="60" class="form-control" aria-describedby="timeInput" placeholder="Minutos" ng-model="match.minuteBegin">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12  form-group ">
+                                        <label for="timeEndInput">Hora de fin:</label>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <input type="number" min="0" max="24" class="form-control" id="timeEndInput" aria-describedby="timeInput" placeholder="Horas" ng-model="match.hourEnd">
+                                            </div>
+                                            <div class="col-xs-6" >
+                                                <input type="number" min="0" max="60" class="form-control" aria-describedby="timeInput" placeholder="Minutos" ng-model="match.minuteEnd">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button  ng-click="imprimir()" class="btn btn-primary">Submit</button>
+                                <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Invita a un equipo</button>
+                            </form>
                         </div>
                     </div>
                     <div class="row">
                         <div id="box" class="col-xs-12 form-box">
-                            <forum-card ng-repeat="message in messages" player="{{message.player}}" date="{{message.date}}" text="{{message.text}}" subject="{{message.subject}}"></forum-card>
                         </div>
                     </div>
                 </div>

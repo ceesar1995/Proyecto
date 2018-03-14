@@ -1,72 +1,11 @@
-
-
-.navbar-default {
-    background-color: #26d9d9;
-    border: none;
-    box-shadow: 0 1px 1px rgba(0,0,0,.175);
-.btn-default {
-    color: #26d9d9;
-&:hover {
-     background-color: #bdf3f3;
- }
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
 }
-.dropdown-menu {
-    border: none;
-    box-shadow: 0 1px 1px rgba(0,0,0,.175);
-li>a {
-&:hover {
-     background-color: #bdf3f3;
- }
-}
-}
-.navbar-brand {
-    color: #fff;
-&:hover {
-     color: #000;
- }
-&:focus {
-     color: #bdf3f3;
- }
-}
-.navbar-nav>li>a {
-    color: #fff;
-}
-.navbar-nav>.active>a {
-    color: #26d9d9;
-    background-color: #fff;
-}
-.navbar-nav>.active>a:focus {
-    color: #26d9d9;
-    background-color: #fff;
-}
-.navbar-nav>.active>a:hover {
-    color: #26d9d9;
-    background-color: #bdf3f3;
-}
-.navbar-nav>.open>a {
-    color: #26d9d9;
-    background-color: #fff;
-}
-.navbar-nav>.open>a:focus {
-    color: #26d9d9;
-    background-color: #fff;
-}
-.navbar-nav>.open>a:hover {
-    color: #26d9d9;
-    background-color: #bdf3f3;
-}
-.navbar-toggle {
-    border-color: #fff;
-.icon-bar {
-    background-color: #fff;
-}&:hover {
-     background-color: #bdf3f3;
- }
-}
-}
-
-@media (min-width: 768px) {
-    .navbar {
-        border-radius: 0;
-    }
+.partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
 }

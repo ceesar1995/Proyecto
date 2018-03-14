@@ -48,7 +48,11 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
         .when('/search', {
         templateUrl: 'views/search.html',
         controller: 'SearchController'
-         });
+         })
+        .when('/createMatch', {
+        templateUrl: 'views/createMatch.html',
+        controller: 'CreateMatchController as $ctrl'
+    });
 
 
 
