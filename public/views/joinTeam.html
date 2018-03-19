@@ -26,7 +26,7 @@
                         <li><a ng-click="searchTeam()">Buscar</a></li>
                     </ul>
                 </nav>
-                <team-search-card ng-repeat="team in teams" name="{{team.name}}"  provinces="{{team.provinces}}" click="selectTeam(team)"></team-search-card>
+                <team-join-card ng-repeat="team in teams" name="{{team.name}}"  provinces="{{team.provinces}}" click="selectTeam(team)"></team-join-card>
             </form>
         </div>
     </div>

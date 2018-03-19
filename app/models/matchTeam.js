@@ -5,11 +5,11 @@ var Schema       = mongoose.Schema;
 
 var MatchTeamSchema   = new Schema({
     idMatch: {type:Schema.Types.ObjectId, ref:'Match',required:true},
-    idTeam: {type:Schema.Types.ObjectId, ref:'Team',required:true},
+    idTeamHome : {type:Schema.Types.ObjectId, ref:'Team',required:true},
+    idTeamGuest : {type:Schema.Types.ObjectId, ref:'Team'},
     dateCreated: {type:Date,required:true},
-    home: Boolean,
-    creator: Boolean,
-    confirmed: Boolean,
+    confirmed: {type:Boolean,default:false},
+    rejected: {type:Boolean,default:false},
     deleted: {type:Boolean,default:false}
 });
 

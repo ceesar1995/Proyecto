@@ -25,3 +25,15 @@ myDirective.directive("team", function(){
         template: "<div class='list-group' ng-click='click({id:id})'> <a  class='list-group-item'>   <h4 class='list-group-item-heading'>{{name}}</h4>  </a>  </div>"
     }
 });
+myDirective.directive("teamJoinCard", function(){
+    return {
+        scope: {
+            name: '@',
+            provinces: '@',
+            _id:'@',
+            click:'&'
+        },
+        restrict: "E",
+        templateUrl: 'js/directives/templates/teamJoinCard.html'
+    }
+});

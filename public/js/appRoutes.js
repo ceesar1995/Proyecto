@@ -52,7 +52,12 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
         .when('/createMatch', {
         templateUrl: 'views/createMatch.html',
         controller: 'CreateMatchController as $ctrl'
-    });
+         })
+        .when('/pendingMatches', {
+            templateUrl: 'views/pendingMatches.html',
+            controller: 'PendingMatchesController'
+        });
+
 
 
 

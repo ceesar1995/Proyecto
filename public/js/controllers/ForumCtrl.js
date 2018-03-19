@@ -19,7 +19,16 @@ app.controller('ForumController', function($scope,$compile,$http,$localStorage,A
         idTeam: null,
         idMessage: null
     };
+
     $http.defaults.headers.common.Authorization =  $localStorage.currentUser.token;
+
+    ApiService.getPrivilegesPlayerId( $localStorage.currentPlayer.player_id, $localStorage.currentTeam.team_id).then(function (respond) {
+        if(respond.statusText=="OK"){
+            $scope.privileges = respond.data;
+        }
+    });
+
+
     ApiService.getMessagesForum($localStorage.currentTeam.team_id).then(
         function (response) {
             console.log(response.data);
@@ -29,6 +38,8 @@ app.controller('ForumController', function($scope,$compile,$http,$localStorage,A
                 $scope.messages[i].player = $scope.players[i][0].name;
             }
             console.log($scope.messages);
+            console.log($scope.privileges);
+
         }
     );
 
@@ -163,22 +174,21 @@ app.controller('SearchController', function($scope,$localStorage,ApiService,Sele
 
 });
 
-app.controller('CreateMatchController', function ($scope,$uibModal, $log, $document) {
+app.controller('CreateMatchController', function ($scope,$uibModal, $log,$localStorage,ApiService) {
+
 
     $scope.match = {
-        date : new Date(),
+        dateBegin : new Date(),
+        dateEnd : null,
         place : "",
         rules : "",
-        hourBegin : null,
-        minuteBegin : null,
-        hourEnd : null,
-        minuteEnd : null
     };
 
 
 
+    //Functions and parameters datePopupPicker
     $scope.clear = function() {
-        $scope.match.date = null;
+        $scope.match.dateBegin = null;
     };
 
     $scope.inlineOptions = {
@@ -198,7 +208,7 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log, $docum
     };
 
     $scope.setDate = function(year, month, day) {
-        $scope.match.date = new Date(year, month, day);
+        $scope.match.dateBegin = new Date(year, month, day);
     };
 
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
@@ -211,18 +221,19 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log, $docum
 
     $scope.imprimir = function () {
         console.log($scope.match);
-        console.log($ctrl.selected);
+        console.log($ctrl.selectedTeam.name);
+        console.log($scope.timeBegin);
+        console.log($scope.timeEnd);
     }
 
+
+    //Functions and parameters modal
     var $ctrl = this;
-    $ctrl.items = ['item1', 'item2', 'item3'];
 
 
     $ctrl.animationsEnabled = true;
 
-    $ctrl.open = function (size, parentSelector) {
-        var parentElem = parentSelector ?
-            angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+    $ctrl.open = function (size) {
         var modalInstance = $uibModal.open({
             animation: $ctrl.animationsEnabled,
             ariaLabelledBy: 'modal-title',
@@ -231,82 +242,109 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log, $docum
             controller: 'ModalInstanceCtrl',
             controllerAs: '$ctrl',
             size: size,
-            appendTo: parentElem,
             resolve: {
-                items: function () {
-                    return $ctrl.items;
+                teams: function () {
+                    return $ctrl.teams;
                 }
             }
         });
 
-        modalInstance.result.then(function (selectedItem) {
-            $ctrl.selected = selectedItem;
+        modalInstance.result.then(function (selectedTeam) {
+            $ctrl.selectedTeam = selectedTeam;
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
     };
 
-    $ctrl.openComponentModal = function () {
-        var modalInstance = $uibModal.open({
-            animation: $ctrl.animationsEnabled,
-            component: 'modalComponent',
-            resolve: {
-                items: function () {
-                    return $ctrl.items;
+
+
+    //Times
+    $scope.timeBegin = new Date();
+    $scope.timeEnd = null;
+
+    var setDatesMatch = function () {
+        //Set dates begin and end
+        $scope.match.dateBegin.setHours($scope.timeBegin.getHours());
+        $scope.match.dateBegin.setMinutes($scope.timeBegin.getMinutes());
+        if($scope.timeEnd){
+            $scope.match.dateEnd = new Date();
+            $scope.match.dateEnd.setDate($scope.match.dateBegin.getDate());
+            $scope.match.dateEnd.setHours($scope.timeEnd.getHours());
+            $scope.match.dateEnd.setMinutes($scope.timeEnd.getMinutes());
+        }
+    }
+
+    var createMatchTeam = function (responseMatch) {
+        var matchTeam = {};
+        matchTeam.idMatch = responseMatch.data._id;
+        matchTeam.idTeamHome = $localStorage.currentTeam.team_id;
+        matchTeam.idTeamGuest = $ctrl.selectedTeam._id;
+        matchTeam.dateCreated = new Date();
+        matchTeam.confirmed = false;
+
+        return matchTeam;
+    }
+
+    $scope.createMatch = function () {
+
+        setDatesMatch();
+
+        ApiService.createMatch($scope.match).then(
+            function (responseMatch) {
+                console.log(responseMatch.data);
+                if(responseMatch.statusText=="OK"){
+                    ApiService.createMatchTeam(createMatchTeam(responseMatch)).then(
+                        function (responseMatchTeam) {
+                            if(responseMatchTeam.statusText=="OK"){
+                                console.log(responseMatchTeam.data);
+                            }
+                        }
+                    )
                 }
             }
-        });
+        )
+    }
 
-        modalInstance.result.then(function (selectedItem) {
-            $ctrl.selected = selectedItem;
-        }, function () {
-            $log.info('modal-component dismissed at: ' + new Date());
-        });
-    };
-
-    $ctrl.openMultipleModals = function () {
-        $uibModal.open({
-            animation: $ctrl.animationsEnabled,
-            ariaLabelledBy: 'modal-title-bottom',
-            ariaDescribedBy: 'modal-body-bottom',
-            templateUrl: 'stackedModal.html',
-            size: 'sm',
-            controller: function($scope) {
-                $scope.name = 'bottom';
-            }
-        });
-
-        $uibModal.open({
-            animation: $ctrl.animationsEnabled,
-            ariaLabelledBy: 'modal-title-top',
-            ariaDescribedBy: 'modal-body-top',
-            templateUrl: 'stackedModal.html',
-            size: 'sm',
-            controller: function($scope) {
-                $scope.name = 'top';
-            }
-        });
-    };
-
-    $ctrl.toggleAnimation = function () {
-        $ctrl.animationsEnabled = !$ctrl.animationsEnabled;
-    };
 });
 
-app.controller('ModalInstanceCtrl', function ($uibModalInstance, items) {
+app.controller('ModalInstanceCtrl', function ($uibModalInstance,ApiService,SelectService) {
     var $ctrl = this;
-    $ctrl.items = items;
-    $ctrl.selected = {
-        item: $ctrl.items[0]
+
+    $ctrl.provinces = SelectService.getProvinces();
+
+    $ctrl.teams = [];
+
+    $ctrl.team = {
+        name:'',
+        province:null
+    };
+
+    $ctrl.selectedTeam = {
+        team: $ctrl.teams[0]
     };
 
     $ctrl.ok = function () {
-        $uibModalInstance.close($ctrl.selected.item);
+        $uibModalInstance.close($ctrl.selectedTeam.team);
     };
 
     $ctrl.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+    $ctrl.searchTeam = function () {
+        ApiService.findTeamsByName($ctrl.team.name).then(function (teamsRespond) {
+            if(teamsRespond.statusText=="OK"){
+                $ctrl.teams = teamsRespond.data;
+                for(var i = 0;i<$ctrl.teams.length;i++){
+                    $ctrl.teams[i].provinces = SelectService.getNamesByIds($ctrl.teams[i].province);
+                }
+                console.log($ctrl.teams);
+            }
+        });
+    };
+    $ctrl.selectTeam = function (team) {
+        $ctrl.selectedTeam.team = team;
+    };
+
 });
 
 // Please note that the close and dismiss bindings are from $uibModalInstance.
@@ -322,18 +360,88 @@ app.component('modalComponent', {
         var $ctrl = this;
 
         $ctrl.$onInit = function () {
-            $ctrl.items = $ctrl.resolve.items;
-            $ctrl.selected = {
-                item: $ctrl.items[0]
+            $ctrl.teams = [];
+            $ctrl.selectedTeam = {
+                team: $ctrl.teams[0]
             };
         };
 
         $ctrl.ok = function () {
-            $ctrl.close({$value: $ctrl.selected.item});
+            $ctrl.close({$value: $ctrl.selectedTeam.team});
         };
 
         $ctrl.cancel = function () {
             $ctrl.dismiss({$value: 'cancel'});
         };
     }
+});
+
+app.controller('PendingMatchesController', function($scope,$localStorage,ApiService) {
+
+    $scope.matchesSent = [];
+    $scope.matchesReceived = [];
+    var teamId = $localStorage.currentTeam.team_id;
+    console.log($scope.privileges);
+
+    $scope.loadInvitationsSent = function () {
+
+        ApiService.getInvitationMatchesSent(teamId).then(function (response) {
+            if(response.statusText=="OK"){
+                console.log(response.data);
+                $scope.matchesSent = response.data.matches;
+                for(var i = 0; i<$scope.matchesSent.length;i++){
+                    $scope.matchesSent[i].name = response.data.teams[i].name;
+                    $scope.matchesSent[i].dateCreated = response.data.matchesTeam[i].dateCreated;
+                    $scope.matchesSent[i].rejected = response.data.matchesTeam[i].rejected;
+                }
+                console.log($scope.matchesSent);
+            }
+        });
+    };
+
+    $scope.loadInvitationsSent();
+
+    $scope.loadInvitationsReceived = function () {
+
+        ApiService.getInvitationMatchesReceived(teamId).then(function (response) {
+            if(response.statusText=="OK"){
+                console.log(response.data);
+                $scope.matchesReceived = response.data.matches;
+                for(var i = 0; i<$scope.matchesReceived.length;i++){
+                    $scope.matchesReceived[i].name = response.data.teams[i].name;
+                    $scope.matchesReceived[i].dateCreated = response.data.matchesTeam[i].dateCreated;
+                    $scope.matchesReceived[i].rejected = response.data.matchesTeam[i].rejected;
+                    $scope.matchesReceived[i].confirmed = response.data.matchesTeam[i].confirmed;
+                }
+            }
+        });
+    };
+
+    $scope.cancel = function (match) {
+        console.log("Cancel");
+        console.log(match);
+        ApiService.updateMatchTeam(match._id,{rejected:true});
+        match.rejected = true;
+    };
+
+    $scope.reject = function (match) {
+        console.log("Reject");
+        console.log(match);
+        ApiService.updateMatchTeam(match._id,{rejected:true});
+        match.rejected = true;
+    };
+
+    $scope.confirm = function (match) {
+        console.log("Confirm");
+        console.log(match);
+        ApiService.updateMatchTeam(match._id,{confirmed:true});
+        match.confirmed = true;
+    };
+
+    $scope.showBtSent = function (match) {
+       return (!match.rejected && $scope.privileges.privileges);
+    };
+    $scope.showBtReceived = function (match) {
+        return (!match.rejected && !match.confirmed && $scope.privileges.privileges);
+    };
 });

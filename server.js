@@ -58,6 +58,7 @@ require('./app/controllers/userController')(app); // configure our routes
 require('./app/controllers/playerController')(app);
 require('./app/controllers/teamController')(app);
 require('./app/controllers/messageController')(app);
+require('./app/controllers/matchController')(app);
 require('./app/routes')(app);
 /*router.get('/', function(req, res) {
     res.sendfile('/public/views/index.html'); // load our public/index.html file

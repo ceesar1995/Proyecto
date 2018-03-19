@@ -163,6 +163,20 @@ module.exports = function (app) {
             res.json(Teams);
         });
     };
+
+    var checkPrivileges =  function (req, res) {
+        PlayerTeam.find({idPlayer: req.params.playerId,idTeam: req.params.teamId,privileges: true}, function (err, playerTeam) {
+            if(err)
+                res.send(err);
+            if(playerTeam[0]){
+                res.json({privileges:true});
+            }
+            else{
+                res.json({privileges:false});
+            }
+        });
+    };
+
     //player routes
     app.get('/api/player', listAllPlayers);
     app.post('/api/player', createAPlayer);
@@ -178,5 +192,8 @@ module.exports = function (app) {
 
     //searchPlayerRoutes
     app.get('/api/playersByName/:name',getPlayersByName);
+
+    //privileges
+    app.get('/api/privileges/:playerId/:teamId',checkPrivileges);
 }
 

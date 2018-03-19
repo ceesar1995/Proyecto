@@ -2,12 +2,22 @@
     <h3 class="modal-title" id="modal-title">Busca un equipo para invitarle</h3>
 </div>
 <div class="modal-body" id="modal-body">
-    <ul>
-        <li ng-repeat="item in $ctrl.items">
-            <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
-        </li>
-    </ul>
-    Selected: <b>{{ $ctrl.selected.item }}</b>
+    <form>
+        <div class="form-group">
+            <label for="form-nameTeam">Nombre equipo</label>
+            <input type="text" name="form-nameTeam" ng-model="$ctrl.team.name" placeholder="Nombre del equipo..." class="form-nameTeam form-control" id="form-nameTeam">
+        </div>
+        <div class="form-group">
+            <!--Provincia -->
+            <label  for="form-province">Provincias</label>
+            <select class="form-select form-control" multiple name="form-province" id="form-province" ng-model="$ctrl.team.province" placeholder="Provincia...">
+                <option ng-repeat="province in $ctrl.provinces" value={{province.id}}>{{province.name}}</option>
+            </select>
+        </div>
+        <button class="btn-primary btn" ng-click="$ctrl.searchTeam()">Buscar</button>
+    </form>
+    Selected: <b>{{ $ctrl.selectedTeam.team.name }}</b>
+    <team-invite-card ng-repeat="team in $ctrl.teams" name="{{team.name}}"  provinces="{{team.provinces}}" click="$event.preventDefault();$ctrl.selectTeam(team)"></team-invite-card>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
