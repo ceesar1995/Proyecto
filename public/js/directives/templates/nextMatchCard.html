@@ -1,0 +1,12 @@
+<div class='card'>
+    <div class='card-header'>
+        <h1 >Partido confirmado contra {{name}}</h1>
+    </div>
+    <div class='card-body'>
+        <h4 class='card-title'>Fecha partido: {{dateBegin | date:'d/M/yy HH:mm'}} - {{dateEnd | date:'d/M/yy HH:mm'}}</h4>
+        <h4 class='card-text'>Lugar: {{place}}</h4>
+        <h4 class='card-text'>Reglas: {{rules}}</h4>
+        <h4 class='card-text'>Fecha de creación: {{dateCreated | date:'d/M/yy HH:mm'}}</h4>
+        <button  class='btn-primary btn' ng-click='summonBt()' >Convocatoria</button>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h1 class="modal-title" id="modal-title">Convocatoria para el partido contra {{$ctrl.rivalTeamName}}</h1>
+</div>
+<div class="modal-body" id="modal-body">
+    <h2>Lista de jugadores que asistiran:</h2>
+    <div class="row">
+        <div class="col-sm-6 col-xs-12">
+            <h3>{{$ctrl.myTeamName}}</h3>
+            <player-summon-card ng-repeat="player in $ctrl.myTeamPlayers" name="{{player.name}}"  goalkeeper="{{player.goalkeeper}}" date="{{player.date}}" ></player-summon-card>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+            <h3>{{$ctrl.rivalTeamName}}</h3>
+            <player-summon-card ng-repeat="player in $ctrl.rivalPlayers" name="{{player.name}}"  goalkeeper="{{player.goalkeeper}}" date="{{player.date}}" ></player-summon-card>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="button" ng-click="$ctrl.action()">{{$ctrl.actionBtLabel}}</button>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancelar</button>
+</div>

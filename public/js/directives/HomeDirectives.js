@@ -102,3 +102,65 @@ myDirective.directive("invitationReceivedMatchCard", function(){
         templateUrl: 'js/directives/templates/invitationReceivedMatchCard.html'
     }
 });
+myDirective.directive("nextMatchCard", function(){
+    return {
+        scope: {
+            name: '@',
+            dateBegin: '@',
+            dateEnd: '@',
+            place: '@',
+            rules: '@',
+            dateCreated: '@',
+            _id:'@',
+            summonBt :'&'
+        },
+        restrict: "E",
+        templateUrl: 'js/directives/templates/nextMatchCard.html'
+    }
+});
+myDirective.directive("previousMatchCard", function(){
+    return {
+        scope: {
+            teamHome: '@',
+            teamGuest: '@',
+            dateBegin: '@',
+            dateEnd: '@',
+            place: '@',
+            rules: '@',
+            scoreHome: '@',
+            scoreGuest: '@',
+            dateCreated: '@',
+            _id:'@',
+            afterMatchReportBt :'&',
+            showBt :'&'
+
+        },
+        restrict: "E",
+        templateUrl: 'js/directives/templates/previousMatchCard.html'
+    }
+});
+myDirective.directive("playerSummonCard", function(){
+    return {
+        scope: {
+            name: '@',
+            goalkeeper:'@',
+            date:'@'
+        },
+        restrict: "E",
+        templateUrl: 'js/directives/templates/playerSummonCard.html'
+    }
+});
+myDirective.directive("playerReportCard", function(){
+    return {
+        scope: {
+            name: '@',
+            goalkeeper:'@',
+            played: '=',
+            goals: '=',
+            save: '&'
+        },
+        restrict: "E",
+        templateUrl: 'js/directives/templates/playerReportCard.html',
+
+    }
+});

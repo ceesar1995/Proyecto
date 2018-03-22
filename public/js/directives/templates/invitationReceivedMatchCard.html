@@ -1,0 +1,15 @@
+<div class='card'>
+    <div class='card-header'>
+        <h1>Invitación de {{name}}</h1>
+    </div>
+    <div class='card-body'>
+        <h4 class='card-title'>Fecha partido: {{dateBegin | date:'d/M/yy HH:mm'}} - {{dateEnd | date:'d/M/yy HH:mm'}}</h4>
+        <h4 class='card-text'>Lugar: {{place}}</h4>
+        <h4 class='card-text'>Reglas: {{rules}}</h4>
+        <h4 class='card-text'>Fecha de creación: {{dateCreated | date:'d/M/yy HH:mm'}}</h4>
+        <p class='card-text' ng-show="rejectsed == 'true'" > Partido rechazado </p>
+        <p class='card-text' ng-show="confirmed == 'true'" > Partido confirmado </p>
+        <button ng-show="showBt()" class='btn-primary btn' ng-click='clickC({_id:_id})' >Confirmar</button>
+        <button ng-show="showBt()"  class='btn-primary btn' ng-click='clickR({_id:_id})' >Rechazar</button>
+    </div>
+</div>

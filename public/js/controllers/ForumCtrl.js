@@ -239,7 +239,7 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log,$localS
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             templateUrl: 'views/modals/searchTeamModal.html',
-            controller: 'ModalInstanceCtrl',
+            controller: 'ModalInstanceSearchTeamCtrl',
             controllerAs: '$ctrl',
             size: size,
             resolve: {
@@ -307,7 +307,7 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log,$localS
 
 });
 
-app.controller('ModalInstanceCtrl', function ($uibModalInstance,ApiService,SelectService) {
+app.controller('ModalInstanceSearchTeamCtrl', function ($uibModalInstance,ApiService,SelectService) {
     var $ctrl = this;
 
     $ctrl.provinces = SelectService.getProvinces();
@@ -348,8 +348,8 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance,ApiService,Selec
 });
 
 // Please note that the close and dismiss bindings are from $uibModalInstance.
-
-app.component('modalComponent', {
+/*
+app.component('modalComponentSearchTeam', {
     templateUrl: 'views/modals/searchTeamModal.html',
     bindings: {
         resolve: '<',
@@ -375,7 +375,7 @@ app.component('modalComponent', {
         };
     }
 });
-
+*/
 app.controller('PendingMatchesController', function($scope,$localStorage,ApiService) {
 
     $scope.matchesSent = [];
@@ -444,4 +444,409 @@ app.controller('PendingMatchesController', function($scope,$localStorage,ApiServ
     $scope.showBtReceived = function (match) {
         return (!match.rejected && !match.confirmed && $scope.privileges.privileges);
     };
+});
+
+app.controller('NextMatchesController', function($scope,$localStorage,ApiService,$uibModal, $log) {
+
+    $scope.nextMatches = [];
+    var teamId = $localStorage.currentTeam.team_id;
+    var teamName = $localStorage.currentTeam.team_name;
+
+    $scope.loadNextMatches = function () {
+        console.log(teamId);
+        ApiService.getNextMatches(teamId).then(function (response) {
+            if(response.statusText=="OK"){
+                console.log(response.data);
+                var nextMatches = response.data.matches;
+                for(var i = 0; i<nextMatches.length;i++){
+                    if(nextMatches[i]){
+                        nextMatches[i].name = response.data.teams[i].name;
+                        nextMatches[i].idRivalTeam = response.data.teams[i]._id;
+                        if(teamId == response.data.matchesTeam[i].idTeamHome) {
+                            nextMatches[i].teamHome = teamName;
+                            nextMatches[i].teamGuest = response.data.teams[i].name;
+                        }
+                        else{
+                            nextMatches[i].teamGuest = teamName;
+                            nextMatches[i].teamHome = response.data.teams[i].name;
+                        }
+                        nextMatches[i].dateCreated = response.data.matchesTeam[i].dateCreated;
+                        $scope.nextMatches.push(nextMatches[i]);
+                    }
+                }
+                console.log($scope.nextMatches);
+            }
+        });
+    };
+
+    $scope.loadNextMatches();
+
+    //Functions and parameters modal
+    var $ctrl = this;
+
+
+
+    $ctrl.open =  function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'views/modals/summonMatchModal.html',
+            controller: 'ModalInstanceSummonMatchCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                match: function () {
+                    return $ctrl.match;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (msg) {
+            console.log(msg);
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+
+    $scope.showSummon = function (match) {
+        $ctrl.match = match;
+        $ctrl.open();
+    }
+
+});
+
+app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiService,match,$localStorage) {
+
+    var $ctrl = this;
+
+    var isMyPlayerAlreadySummoned = false;
+    var myPlayerSummonedByRival = false;
+    var summon = false;
+    var myTeamId = $localStorage.currentTeam.team_id;
+    $ctrl.myTeamName = $localStorage.currentTeam.team_name;
+    $ctrl.rivalTeamName = match.name;
+    $ctrl.match = match;
+    $ctrl.myTeamPlayers =[];
+    $ctrl.rivalTeamPlayers = [];
+
+    $ctrl.ok = function () {
+        if(summon != isMyPlayerAlreadySummoned){
+            if(summon){
+                var matchPlayer ={
+                    idMatch: $ctrl.match._id,
+                    idPlayer: $localStorage.currentPlayer.player_id,
+                    idTeam: myTeamId,
+                    date: new Date()
+                };
+                ApiService.createMatchPlayer(matchPlayer).then(
+                    function (respond) {
+                        if(respond.statusText = "OK"){
+                            console.log(respond.data);
+                        }
+                });
+            }
+            else{
+                var matchPlayer ={
+                    deleted: true
+                }
+                ApiService.updateMatchPlayer($ctrl.match._id,$localStorage.currentPlayer.player_id,matchPlayer).then(
+                    function (respond) {
+                        if(respond.statusText = "OK"){
+                            console.log(respond.data);
+                        }
+                    });
+            }
+        }
+        $uibModalInstance.close("OK");
+    };
+
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+
+    $ctrl.setButtons = function () {
+        console.log("OLE"+isMyPlayerAlreadySummoned);
+        if(isMyPlayerAlreadySummoned){
+            $ctrl.actionBtLabel = "Desapuntar";
+
+        }
+        else{
+            $ctrl.actionBtLabel = "Apuntarse";
+        }
+    };
+
+    $ctrl.action = function () {
+        if(isMyPlayerAlreadySummoned){
+            if(myPlayerSummonedByRival){
+                window.alert("Tu jugador ya esta convocado con el equipo rival");
+            }else{
+                console.log("ME DESAPUNTO");
+                summon = false;
+                $ctrl.actionBtLabel = "Apuntarse";
+            }
+        }
+        else{
+            console.log("ME APUNTO");
+            summon = true;
+            $ctrl.actionBtLabel = "Desapuntar";
+        }
+    }
+    var loadPlayers = function () {
+
+        ApiService.getPlayersSummoned($ctrl.match._id).then(
+            function (response) {
+                if(response.statusText=="OK"){
+                    var players = response.data.players;
+                    for(var i=0;i<players.length;i++){
+                        if($localStorage.currentPlayer.player_id == players[i]._id){
+                            isMyPlayerAlreadySummoned = true;
+                            console.log("ACIERTO");
+                            if(response.data.matchesPlayers[i].idTeam != myTeamId) {
+                                myPlayerSummonedByRival = true;
+                            }
+                        }
+                        else{
+                            console.log("FALLO");
+                        }
+                        players[i].date = response.data.matchesPlayers[i].date;
+                        console.log(players[i]);
+                        if(response.data.matchesPlayers[i].idTeam == myTeamId) {
+                            $ctrl.myTeamPlayers.push(players[i]);
+                        }
+                        else{
+                            $ctrl.rivalTeamPlayers.push(players[i]);
+                        }
+                    }
+                    console.log($ctrl.myTeamPlayers);
+                    $ctrl.setButtons();
+                }
+            });
+    };
+
+    loadPlayers();
+
+
+
+
+
+});
+
+// Please note that the close and dismiss bindings are from $uibModalInstance.
+/*
+app.component('modalComponentSummonMatch', {
+    templateUrl: 'views/modals/summonMatchModal.html',
+    bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+    },
+    controller: function () {
+        var $ctrl = this;
+
+        $ctrl.$onInit = function () {
+            $ctrl.teams = [];
+            $ctrl.selectedTeam = {
+                team: $ctrl.teams[0]
+            };
+        };
+
+        $ctrl.ok = function () {
+            $ctrl.close({$value: $ctrl.selectedTeam.team});
+        };
+
+        $ctrl.cancel = function () {
+            $ctrl.dismiss({$value: 'cancel'});
+        };
+    }
+});
+*/
+app.controller('PreviousMatchesController', function($scope,$localStorage,ApiService, $uibModal,$log) {
+
+    $scope.previousMatches = [];
+    var teamId = $localStorage.currentTeam.team_id;
+    var teamName = $localStorage.currentTeam.team_name;
+
+    $scope.loadPreviousMatches = function () {
+        ApiService.getPreviousMatches(teamId).then(function (response) {
+            if(response.statusText=="OK"){
+                console.log(response.data);
+                var previousMatches = response.data.matches;
+                for(var i = 0; i<previousMatches.length;i++){
+                    if(previousMatches[i]){
+                        if(teamId == response.data.matchesTeam[i].idTeamHome) {
+                            previousMatches[i].teamHome = teamName;
+                            previousMatches[i].teamGuest = response.data.teams[i].name;
+                        }
+                        else{
+                            previousMatches[i].teamGuest = teamName;
+                            previousMatches[i].teamHome = response.data.teams[i].name;
+                        }
+                        previousMatches[i].name = response.data.teams[i].name;
+                        previousMatches[i].dateCreated = response.data.matchesTeam[i].dateCreated;
+                        $scope.previousMatches.push(previousMatches[i]);
+                    }
+                }
+                console.log($scope.previousMatches);
+            }
+        });
+    };
+
+    $scope.showBt = function () {
+        return $scope.privileges.privileges;
+    }
+
+    $scope.loadPreviousMatches();
+
+
+
+    //Functions and parameters modal
+    var $ctrl = this;
+
+
+
+    $ctrl.open =  function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'views/modals/afterMatchReportModal.html',
+            controller: 'ModalInstanceAfterMatchReportCtrl',
+            controllerAs: '$ctrl',
+            size: 'lg',
+            resolve: {
+                match: function () {
+                    return $ctrl.match;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (msg) {
+            console.log(msg);
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+
+    $scope.showAfterMatchReport = function (match) {
+        $ctrl.match = match;
+        $ctrl.open();
+    }
+});
+
+app.controller('ModalInstanceAfterMatchReportCtrl', function ($uibModalInstance,ApiService,match,$localStorage) {
+
+    var $ctrl = this;
+
+    var myTeamId = $localStorage.currentTeam.team_id;
+    $ctrl.match = match;
+    $ctrl.scoreGuest = match.scoreGuest;
+    $ctrl.scoreHome = match.scoreHome;
+    $ctrl.playersSummoned = [];
+    $ctrl.playersNotSummoned = [];
+
+    var playersToSave = [];
+    var playersToSaveIds = [];
+    var playersSummonedId = [];
+
+    ApiService.getPlayersSummoned($ctrl.match._id).then(
+        function (response) {
+            if(response.statusText=="OK"){
+                var players = response.data.players;
+                for(var i=0;i<players.length;i++){
+                    if(response.data.matchesPlayers[i].idTeam == myTeamId) {
+                        if(response.data.matchesPlayers[i].summoned == true){
+                            players[i].played = response.data.matchesPlayers[i].played;
+                            players[i].goals = response.data.matchesPlayers[i].goals;
+                            player[i].alreadyExists = true;
+                            $ctrl.playersSummoned.push(players[i]);
+                        }
+                        playersSummonedId.push(players[i]._id);
+                    }
+                }
+                console.log($ctrl.playersSummoned);
+                ApiService.getPlayersTeam(myTeamId).then(
+                    function (responsePlayers) {
+                        if(responsePlayers.statusText="OK"){
+                            var teamPlayers = responsePlayers.data;
+                            teamPlayers.forEach(function (player) {
+                                var index = playersSummonedId.indexOf(player._id);
+                                if( index == -1){
+                                    player.played= false;
+                                    player.goals = 0;
+                                    player.alreadyExists = false;
+                                    $ctrl.playersNotSummoned.push(player);
+
+                                }
+                                else{
+                                    console.log(response.data.matchesPlayers[index]);
+                                    if(response.data.matchesPlayers[index].summoned == false){
+                                        player.alreadyExists = true;
+                                        player.played= response.data.matchesPlayers[index].played;
+                                        player.goals = response.data.matchesPlayers[index].goals;
+                                        $ctrl.playersNotSummoned.push(player);
+                                    }
+                                }
+                            });
+                            console.log($ctrl.playersNotSummoned);
+                        }
+                     }
+                );
+            }
+         }
+    );
+
+    var filter = function (player) {
+        if(playersSummonedId.indexOf(player._id) !== -1){
+            return player;
+        }
+    }
+    $ctrl.ok = function () {
+
+        playersToSave.forEach(function (player) {
+            if(player.alreadyExists){
+                var matchPlayerData = {
+                    played: player.played,
+                    goals: player.goals
+                }
+                ApiService.updateMatchPlayer($ctrl.match._id,player._id,matchPlayerData);
+            }
+            else{
+                var matchPlayerData ={
+                    idMatch: $ctrl.match._id,
+                    idPlayer: player._id,
+                    idTeam: myTeamId,
+                    date: new Date(),
+                    played: player.played,
+                    goals: player.goals,
+                    summoned:false
+
+                }
+                ApiService.createMatchPlayer(matchPlayerData);
+            }
+        });
+        if($ctrl.match.scoreHome !== $ctrl.scoreHome || $ctrl.match.scoreGuest !== $ctrl.scoreGuest){
+            $ctrl.match.scoreHome = $ctrl.scoreHome;
+            $ctrl.match.scoreGuest = $ctrl.scoreGuest;
+            var matchData = {
+                scoreHome: $ctrl.scoreHome,
+                scoreGuest : $ctrl.scoreGuest
+            }
+
+            ApiService.updateMatch($ctrl.match._id,matchData);
+        }
+        $uibModalInstance.close(playersToSave);
+
+    };
+
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+    $ctrl.save = function (player) {
+        console.log(player);
+        if(playersToSaveIds.indexOf(player._id) == -1){
+            playersToSave.push(player);
+            playersToSaveIds.push(player._id);
+        }
+    }
 });

@@ -1,0 +1,12 @@
+<!-- public/views/previousMatches.html -->
+<div class="top-content">
+    <div class="inner-bg" >
+        <div class="container">
+            <div class="row " >
+                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                    <previous-match-card ng-repeat="previousMatch in previousMatches" team-home="{{previousMatch.teamHome}}" team-guest="{{previousMatch.teamGuest}}" team-guest="{{previousMatch.teamGuest}}" score-guest="{{previousMatch.scoreGuest}}" score-home="{{previousMatch.scoreHome}}" date-begin="{{previousMatch.dateBegin}}" date-end="{{previousMatch.dateEnd}}" place="{{previousMatch.place}}" rules="{{previousMatch.rules}}" date-created="{{previousMatch.dateCreated}}" show-bt="showBt()" after-match-report-bt="showAfterMatchReport(previousMatch)" ></previous-match-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

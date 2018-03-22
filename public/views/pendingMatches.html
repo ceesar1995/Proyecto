@@ -1,0 +1,19 @@
+<!-- public/views/pendingMatches.html -->
+<div class="top-content">
+    <div class="inner-bg" >
+        <div class="container">
+            <div class="row " >
+                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                    <uib-tabset active="activeJustified" justified="true">
+                        <uib-tab ng-click="loadInvitationsSent()" index="0" heading="Invitaciones enviadas">
+                            <invitation-sent-match-card   ng-repeat="match in matchesSent" name="{{match.name}}"  date-begin="{{match.dateBegin}}" date-end="{{match.dateEnd}}" place="{{match.place}}" rules="{{match.rules}}" date-created="{{match.dateCreated}}" _id="{{match._id}}" rejected="{{match.rejected}}" click="cancel(match)" show-bt="showBtSent(match)" ></invitation-sent-match-card>
+                        </uib-tab>
+                        <uib-tab ng-click="loadInvitationsReceived()" index="1" heading="Invitaciones recibidas">
+                            <invitation-received-match-card  ng-repeat="match in matchesReceived" name="{{match.name}}"  date-begin="{{match.dateBegin}}" date-end="{{match.dateEnd}}" place="{{match.place}}" rules="{{match.rules}}" date-created="{{match.dateCreated}}" _id="{{match._id}}" rejected="{{match.rejected}}" click-r="reject(match)" click-c="confirm(match)" confirmed="{{match.confirmed}}" show-bt="showBtReceived(match)" ></invitation-received-match-card>
+                        </uib-tab>
+                    </uib-tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

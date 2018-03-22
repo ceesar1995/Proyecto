@@ -109,7 +109,24 @@ angular.module('ApiService', []).factory('ApiService', ['$http','$q', function($
         },
         getPrivilegesPlayerId : function (idPlayer,idTeam) {
             return $http.get('/api/privileges/'+idPlayer+'/'+idTeam);
+        },
+        getNextMatches : function (idTeam) {
+            return $http.get('/api/nextMatches/'+idTeam);
+        },
+        getPreviousMatches : function (idTeam) {
+            return $http.get('/api/previousMatches/'+idTeam);
+        },
+        getPlayersSummoned : function (idMatch) {
+            return $http.get('/api/playersSummoned/'+idMatch);
+        },
+        createMatchPlayer : function(matchPlayerData) {
+            return $http.post('/api/matchPlayer', matchPlayerData);
+        },
+        updateMatchPlayer : function(idMatch,idPlayer,matchData) {
+            return $http.put('/api/matchPlayer/' + idMatch+ '/'+idPlayer,matchData);
         }
+
+
 
 
 

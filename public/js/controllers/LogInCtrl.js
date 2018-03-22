@@ -76,8 +76,8 @@ app.controller('SelectTeamController',function ($scope,$localStorage,ApiService,
         }
     );
 
-    $scope.selectTeam = function (id) {
-        $localStorage.currentTeam = {team_id: id};
+    $scope.selectTeam = function (id,team) {
+        $localStorage.currentTeam = {team_id: id, team_name:team.name};
         //window.location.href = "/views/home.html";
         //$event.currentTarget.class="active";
         $timeout(sendHome,2000);

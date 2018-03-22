@@ -56,6 +56,14 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
         .when('/pendingMatches', {
             templateUrl: 'views/pendingMatches.html',
             controller: 'PendingMatchesController'
+        })
+        .when('/nextMatches', {
+            templateUrl: 'views/nextMatches.html',
+            controller: 'NextMatchesController as $ctrl'
+        })
+        .when('/previousMatches', {
+            templateUrl: 'views/previousMatches.html',
+            controller: 'PreviousMatchesController'
         });
 
 
