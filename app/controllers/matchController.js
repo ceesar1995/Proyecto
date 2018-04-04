@@ -67,31 +67,21 @@ module.exports = function (app) {
     };
 
     var getInvitationMatchesSent = function (req,res) {
-        var matchesTeam = [];
-        var matches = [];
+        var Matches = [];
         var teams = [];
-        MatchTeam.find({idTeamHome: req.params.teamId,deleted:false,confirmed:false }).then(
-            function (matchesT) {
-                matchesTeam = matchesT;
-                matchesT.forEach(function (matchT) {
-                    matches.push(Match.findOne({_id:matchT.idMatch,deleted:false}));
+        Match.find({idTeamHome: req.params.teamId,deleted:false,confirmed:false }).then(
+            function (matches) {
+                Matches = matches;
+                matches.forEach(function (match) {
+                    teams.push(Team.findOne({_id:match.idTeamGuest,deleted:false}));
                 });
-                return Promise.all(matches);
+                return Promise.all(teams);
             }
-        ).then(function (Matches) {
-            matches = Matches;
-            matchesTeam.forEach(function (matchT) {
-                teams.push(Team.findOne({_id:matchT.idTeamGuest,deleted:false,}));
-            });
-
-            return Promise.all(teams);
-
-        }).then(function (teams) {
+        ).then(function (teams) {
 
 
             var answer = {
-                matches: matches,
-                matchesTeam: matchesTeam,
+                matches: Matches,
                 teams: teams
             };
 
@@ -104,32 +94,20 @@ module.exports = function (app) {
 
 
     var getInvitationMatchesReceived = function (req,res) {
-        var matchesTeam = [];
-        var matches = [];
+        var Matches = [];
         var teams = [];
-        MatchTeam.find({idTeamGuest: req.params.teamId,deleted:false,confirmed:false }).then(
-            function (matchesT) {
-                matchesTeam = matchesT;
-                matchesT.forEach(function (matchT) {
-                    matches.push(Match.findOne({_id:matchT.idMatch,deleted:false}));
+        Match.find({idTeamGuest: req.params.teamId,deleted:false,confirmed:false }).then(
+            function (matches) {
+                Matches = matches;
+                matches.forEach(function (match) {
+                    teams.push(Team.findOne({_id:match.idTeamHome,deleted:false}));
                 });
-                return Promise.all(matches);
+                return Promise.all(teams);
             }
-        ).then(function (Matches) {
-
-            matches = Matches;
-
-            matchesTeam.forEach(function (matchT) {
-                teams.push(Team.findOne({_id:matchT.idTeamHome,deleted:false}));
-            });
-
-            return Promise.all(teams);
-
-        }).then(function (teams) {
+        ).then(function (teams) {
 
             var answer = {
-                matches: matches,
-                matchesTeam: matchesTeam,
+                matches: Matches,
                 teams: teams
             };
 
@@ -150,39 +128,27 @@ module.exports = function (app) {
     };
 
     var getNextMatches = function (req, res) {
-        var matchesTeam = [];
-        var matches = [];
+        var Matches = [];
         var teams = [];
-        MatchTeam.find({$or: [ {idTeamHome: req.params.teamId},{idTeamGuest: req.params.teamId}],deleted:false,confirmed:true}).then(
-            function (matchesT) {
-                matchesTeam = matchesT;
-                matchesT.forEach(function (matchT) {
-                    matches.push(Match.findOne({_id:matchT.idMatch,deleted:false, dateBegin:{ $gt: new Date() }}));
+        Match.find({$or: [ {idTeamHome: req.params.teamId},{idTeamGuest: req.params.teamId}],deleted:false,confirmed:true,dateBegin:{ $gt: new Date() }}).then(
+            function (matches) {
+                Matches = matches;
+                matches.forEach(function (match) {
+                    var id;
+                    if(match.idTeamHome==req.params.teamId){
+                        id = match.idTeamGuest;
+                    }
+                    else{
+                        id = match.idTeamHome;
+                    }
+                    teams.push(Team.findOne({_id:id,deleted:false}));
                 });
-                return Promise.all(matches);
+                return Promise.all(teams);
             }
-        ).then(function (Matches) {
-
-            matches = Matches;
-
-            matchesTeam.forEach(function (matchT) {
-                var id;
-                if(matchT.idTeamHome==req.params.teamId){
-                    id = matchT.idTeamGuest;
-                }
-                else{
-                    id = matchT.idTeamHome;
-                }
-                teams.push(Team.findOne({_id:id,deleted:false}));
-            });
-
-            return Promise.all(teams);
-
-        }).then(function (teams) {
+        ).then(function (teams) {
 
             var answer = {
-                matches: matches,
-                matchesTeam: matchesTeam,
+                matches: Matches,
                 teams: teams
             };
 
@@ -194,39 +160,27 @@ module.exports = function (app) {
     };
 
     var getPreviousMatches = function (req, res) {
-        var matchesTeam = [];
-        var matches = [];
+        var Matches = [];
         var teams = [];
-        MatchTeam.find({$or: [ {idTeamHome: req.params.teamId},{idTeamGuest: req.params.teamId}],deleted:false,confirmed:true}).then(
-            function (matchesT) {
-                matchesTeam = matchesT;
-                matchesT.forEach(function (matchT) {
-                    matches.push(Match.findOne({_id:matchT.idMatch,deleted:false, dateBegin:{ $lt: new Date() }}));
+        Match.find({$or: [ {idTeamHome: req.params.teamId},{idTeamGuest: req.params.teamId}],deleted:false,confirmed:true,dateEnd:{ $lt: new Date() }}).then(
+            function (matches) {
+                Matches = matches;
+                matches.forEach(function (match) {
+                    var id;
+                    if(match.idTeamHome==req.params.teamId){
+                        id = match.idTeamGuest;
+                    }
+                    else{
+                        id = match.idTeamHome;
+                    }
+                    teams.push(Team.findOne({_id:id,deleted:false}));
                 });
-                return Promise.all(matches);
+                return Promise.all(teams);
             }
-        ).then(function (Matches) {
-
-            matches = Matches;
-
-            matchesTeam.forEach(function (matchT) {
-                var id;
-                if(matchT.idTeamHome==req.params.teamId){
-                    id = matchT.idTeamGuest;
-                }
-                else{
-                    id = matchT.idTeamHome;
-                }
-                teams.push(Team.findOne({_id:id,deleted:false}));
-            });
-
-            return Promise.all(teams);
-
-        }).then(function (teams) {
+        ).then(function (teams) {
 
             var answer = {
-                matches: matches,
-                matchesTeam: matchesTeam,
+                matches: Matches,
                 teams: teams
             };
 
@@ -252,6 +206,7 @@ module.exports = function (app) {
             }
         ).then(function (players) {
 
+
             var answer = {
                 players: players,
                 matchesPlayers: MatchesPlayers
@@ -275,11 +230,46 @@ module.exports = function (app) {
     };
 
     var updateAMatchPlayer = function (req, res) {
-        MatchPlayer.findOneAndUpdate({idMatch: req.params.matchId,idPlayer:req.params.playerId}, req.body, {new: true}, function (err, match) {
+        MatchPlayer.findOneAndUpdate({idMatch: req.params.matchId,idPlayer:req.params.playerId,deleted:false}, req.body, {new: true}, function (err, match) {
             if (err)
                 res.send(err);
             res.json(match);
         });
+    };
+
+
+    var findMatches = function (req, res) {
+
+        var place = req.body.place;
+        var province = req.body.province;
+        var dateBegin = req.body.dateBegin;
+        var dateEnd = req.body.dateEnd;
+        var Matches = [];
+        var teams = [];
+
+        Match.find({place :{$regex: place, $options: 'i'},dateBegin:{$gt:dateBegin},dateEnd:{$lt:dateEnd},province:{$in:province},idTeamGuest:null,confirmed:false,rejected:false,deleted:false} ).then(
+            function (matches) {
+                Matches = matches;
+                matches.forEach(function (match) {
+                    console.log(match)
+                    teams.push(Team.findOne({_id:match.idTeamHome,deleted:false}));
+                })
+                return Promise.all(teams);
+            }
+        ).then(function (teams) {
+
+            var answer = {
+                matches: Matches,
+                teams:teams
+            };
+
+            res.json(answer);
+        }).catch(function (error) {
+            res.status(500).send('one of the queries failed',error);
+        });
+
+
+
     };
 
     app.get('/api/match', listAllTeams);
@@ -287,6 +277,7 @@ module.exports = function (app) {
     app.get('/api/match/:matchId', readAMatch);
     app.put('/api/match/:matchId', updateAMatch);
     app.delete('/api/match/:matchId', deleteAMatch);
+    app.post('/api/findMatch',findMatches);
 
     //MatchTeam routes
 

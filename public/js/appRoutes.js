@@ -64,6 +64,26 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
         .when('/previousMatches', {
             templateUrl: 'views/previousMatches.html',
             controller: 'PreviousMatchesController'
+        })
+        .when('/changeTeam', {
+            templateUrl: 'views/changeTeam.html',
+            controller: 'SelectTeamController'
+        })
+        .when('/editData', {
+        templateUrl: 'views/editData.html',
+        controller: 'EditDataController'
+        })
+        .when('/createNewTeam', {
+            templateUrl: 'views/createTeam2.html',
+            controller: 'CreateTeamController'
+        })
+        .when('/messages', {
+            templateUrl: 'views/messages.html',
+            controller: 'MessagesController'
+        })
+        .when('/searchMatch', {
+            templateUrl: 'views/searchMatch.html',
+            controller: 'SearchMatchController'
         });
 
 

@@ -39,11 +39,30 @@ module.exports = function (app) {
     };
 
     var updateAnUser = function (req, res) {
-        User.findOneAndUpdate({_id: req.params.userId}, req.body, {new: true}, function (err, user) {
-            if (err)
-                res.send(err);
-            res.json(user);
-        });
+
+        var user = new User();
+        user.hash = req.body.hash;
+        user.salt = req.body.salt;
+        if(req.body.oldPassword && user.validPassword(req.body.oldPassword) && req.body.password){
+
+            user.setPassword(req.body.password);
+            req.body.hash = user.hash ;
+            req.body.salt = user.salt ;
+
+           User.findOneAndUpdate({_id: req.params.userId}, req.body, {new: true}, function (err, user) {
+                if (err)
+                    res.send(err);
+                res.json(user);
+            });
+        }else {
+            User.findOneAndUpdate({_id: req.params.userId}, req.body, {new: true}, function (err, user) {
+                if (err)
+                    res.send(err);
+                res.json(user);
+            });
+        }
+
+
     };
 
 
@@ -112,7 +131,8 @@ module.exports = function (app) {
                 res.status(200);
                 res.json({
                     "user_id" : user._id,
-                    "token" : token
+                    "token" : token,
+                    "username" : user.username
                 });
             }
             else {
@@ -155,5 +175,7 @@ module.exports = function (app) {
 
     app.post('/logIn',userLogin);
     app.post('/register',registerUser);
+
+
 }
 

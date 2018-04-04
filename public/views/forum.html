@@ -4,27 +4,36 @@
         <div class="container">
             <div class="row " >
                 <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                    <div class="row card">
-                        <div class="form-group col-xs-12 col-sm-8">
-                            <label for="inputsm">Mensaje</label>
-                            <input placeholder="Asunto..." class="form-control input-sm" id="inputsm" ng-model="message.subject" type="text">
-                        </div>
-                        <div class="col-xs-12  form-group">
-                            <div class="row">
-                                <div class="col-sm-8 col-xs-12">
-                                    <input placeholder="Mensaje..." class="form-control input-lg" id="inputlg" ng-model="message.text" type="text">
+                    <uib-tabset active="activeJustified" justified="true">
+                        <uib-tab ng-click="loadMessagesForum()" index="0" heading="Foro">
+                            <div class="row card">
+                                <div class="form-group col-xs-12 col-sm-8">
+                                    <label for="inputsm">Mensaje</label>
+                                    <input placeholder="Asunto..." class="form-control input-sm" id="inputsm" ng-model="message.subject" type="text">
                                 </div>
-                                <div class="col-sm-4 col-xs-12">
-                                    <button class="btn-primary btn" ng-click="sendMessage()">Enviar</button>
+                                <div class="col-xs-12  form-group">
+                                    <div class="row">
+                                        <div class="col-sm-8 col-xs-12">
+                                            <input placeholder="Mensaje..." class="form-control input-lg" id="inputlg" ng-model="message.text" type="text">
+                                        </div>
+                                        <div class="col-sm-4 col-xs-12">
+                                            <button class="btn-primary btn" ng-click="sendMessage()">Enviar</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div id="box" class="col-xs-12 form-box">
-                            <forum-card ng-repeat="message in messages" player="{{message.player}}" date="{{message.date}}" text="{{message.text}}" subject="{{message.subject}}"></forum-card>
-                        </div>
-                    </div>
+                            <forum-card ng-repeat="message in messages" name="{{message.player}}" date="{{message.date}}" text="{{message.text}}" subject="{{message.subject}}" delete="deleteMessage(message,0)" ></forum-card>
+                        </uib-tab>
+                        <uib-tab ng-click="loadMessagesAnnouncement()" index="1" heading="Avisos recibidos">
+                            <forum-card ng-repeat="messageAnnouncement in messagesAnnouncement" name="{{messageAnnouncement.player}}" date="{{messageAnnouncement.date}}" text="{{messageAnnouncement.text}}" subject="{{messageAnnouncement.subject}}" delete="deleteMessage(messageAnnouncement,3)"></forum-card>
+                        </uib-tab>
+                        <uib-tab ng-click="loadMessagesTeamReceived()" index="2" heading="Mensajes recibidos">
+                            <forum-card ng-repeat="messageReceived in messagesTeamReceived" name="{{messageReceived.player}}" date="{{messageReceived.date}}" text="{{messageReceived.text}}" subject="{{messageReceived.subject}}" delete="deleteMessage(messageReceived,2)"></forum-card>
+                        </uib-tab>
+                        <uib-tab ng-click="loadMessagesTeamSent()" index="3" heading="Mensajes enviados">
+                            <forum-card ng-repeat="messageSent in messagesTeamSent" name="{{messageSent.player}}" date="{{messageSent.date}}" text="{{messageSent.text}}" subject="{{messageSent.subject}}" delete="deleteMessage(messageSent,1)"></forum-card>
+                        </uib-tab>
+                    </uib-tabset>
                 </div>
             </div>
         </div>

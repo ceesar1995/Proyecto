@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500"><!-- custom styles -->
     <link rel="stylesheet" href="css/home.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
     <!--<link rel="stylesheet" href="css/form-elements.css">-->
 
 
@@ -36,10 +37,16 @@
 
      <!-- ANGULAR CUSTOM
      <script src="js/controllers/DropdownController.js"></script>-->
+    <script src="js/directives/LogInDirectives.js"></script>
     <script src="js/directives/HomeDirectives.js"></script>
     <script src="js/services/ApiService.js"></script>
     <script src="js/services/SelectService.js"></script>
+    <script src="js/services/AnnouncementService.js"></script>
+    <script src="js/services/ModalService.js"></script>
+    <script src="js/services/RouterService.js"></script>
     <script src="js/controllers/ForumCtrl.js"></script>
+    <script src="js/controllers/LogInCtrl.js"></script>
+    <script src="js/controllers/ModalCtrl.js"></script>
     <script src="js/appRoutes.js"></script>
     <script src="js/app.js"></script>
 </head>
@@ -75,6 +82,7 @@
                             <li><a href="/previousMatches">Historial partidos</a></li>
                             <li class="divider"></li>
                             <li><a href="/createMatch">Crear partido</a></li>
+                            <li><a href="/searchMatch">Buscar partido</a></li>
                             <li class="divider"></li>
                             <li><a href="/pendingMatches">Partidos pendientes de confirmacion</a></li>
                         </ul>
@@ -91,13 +99,16 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            Usuario <b class="caret"></b>
+                            Usuario: {{username}}<b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Cambiar equipo</a></li>
-                            <li><a href="#">Cambiar jugador</a></li>
-                            <li><a href="#">Editar perfiles</a></li>
+                            <li><a href="/changeTeam">Cambiar equipo</a></li>
+                            <li><a ng-show="coordinator" href="/createNewTeam">Crear equipo</a></li>
+                            <li><a href="/editData">Editar perfiles</a></li>
                             <li class="divider"></li>
+                            <li><a href="/messages">Mensajes</a></li>
+                            <li class="divider"></li>
+                            <li><a ng-click="dropOut()">Darse da baja en equipo</a></li>
                             <li><a ng-click="logOut()">Cerrar sesion</a></li>
                         </ul>
                     </li>

@@ -7,7 +7,8 @@ var MessageTeamToTeamSchema   = new Schema({
     idTeamRem: {type:Schema.Types.ObjectId, ref:'Team',required:true},
     idTeamRec: {type:Schema.Types.ObjectId, ref:'Team',required:true},
     idMessage: {type:Schema.Types.ObjectId, ref:'Message',required:true},
-    deleted: {type:Boolean,default:false}
+    deletedRem: {type:Boolean,default:false},
+    deletedRec: {type:Boolean,default:false}
 });
 
 module.exports = mongoose.model('MessageTeamToTeam', MessageTeamToTeamSchema);

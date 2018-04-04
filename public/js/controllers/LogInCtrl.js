@@ -1,5 +1,5 @@
 // public/js/controllers/LogInCtrl.js
-var app = angular.module('LogInCtrl', ['ApiService','RouterService','ngStorage']);
+var app = angular.module('LogInCtrl', ['ApiService','RouterService','ngStorage','ui.bootstrap','ngAnimate','ngTouch','AnnouncementService','ModalService']);
 
 app.controller('LogInController', function($scope,ApiService,RouterService,$http,$localStorage,$location) {
 
@@ -15,7 +15,7 @@ app.controller('LogInController', function($scope,ApiService,RouterService,$http
                 if (token) {
                     var id = response.data.user_id;
                     // store username and token in local storage to keep user logged in between page refreshes
-                    $localStorage.currentUser = {user_id: id, token: token};
+                    $localStorage.currentUser = {user_id: id, token: token, username: response.data.username};
 
                     // add jwt token to auth header for all requests made by the $http service
                     $http.defaults.headers.common.Authorization =  token;
@@ -26,7 +26,7 @@ app.controller('LogInController', function($scope,ApiService,RouterService,$http
                         if(response.statusText=="OK"){
                             if(response.data.idPlayer){
                                 ApiService.getPlayerById(response.data.idPlayer).then(function (responsePlayer) {
-                                    $localStorage.currentPlayer = {player_id: responsePlayer.data._id, player_name : responsePlayer.data.name};
+                                    $localStorage.currentPlayer = {player_id: responsePlayer.data._id, player_name : responsePlayer.data.name,player_coordinator:responsePlayer.data.coordinator};
                                     $location.path("/selectTeam");
                                 });
                             }
@@ -59,12 +59,12 @@ app.controller('SelectPlayerController',function ($scope,$localStorage,ApiServic
     );
 
     $scope.selectPlayer = function (player) {
-        $localStorage.currentPlayer = {player_id: player._id, player_name : player.name};
+        $localStorage.currentPlayer = {player_id: player._id, player_name : player.name,player_coordinator:player.coordinator};
         //$location.path("/selectTeam");
     }
 
 });
-app.controller('SelectTeamController',function ($scope,$localStorage,ApiService,$timeout) {
+app.controller('SelectTeamController',function ($scope,$localStorage,ApiService,$timeout,$uibModal,ModalService,$log) {
 
     $scope.teams = [];
     var id = $localStorage.currentPlayer.player_id;
@@ -77,6 +77,20 @@ app.controller('SelectTeamController',function ($scope,$localStorage,ApiService,
     );
 
     $scope.selectTeam = function (id,team) {
+        var data = {
+            data: function () {
+                return 'Vas a seleccionar a '+team.name+' como equipo¿Estás seguro?';
+            }
+        };
+        var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
+        modalInstance.result.then(function () {
+            console.log("CONFIRMADO");
+           selectTeam(id,team);
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    }
+    var selectTeam = function (id,team) {
         $localStorage.currentTeam = {team_id: id, team_name:team.name};
         //window.location.href = "/views/home.html";
         //$event.currentTarget.class="active";

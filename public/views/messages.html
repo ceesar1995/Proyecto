@@ -1,0 +1,19 @@
+<!-- public/views/messages.html -->
+<div class="top-content">
+    <div class="inner-bg" >
+        <div class="container">
+            <div class="row " >
+                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                    <uib-tabset active="activeJustified" justified="true">
+                        <uib-tab ng-click="loadMessagesReceived()" index="0" heading="Mensajes recibidos">
+                            <message-card ng-repeat="message in messagesReceived" player="{{message.player}}" date="{{message.date}}" text="{{message.text}}" subject="{{message.subject}}" delete="deleteMessageReceived(message)"></message-card>
+                        </uib-tab>
+                        <uib-tab ng-click="loadMessagesSent()" index="1" heading="Mensajes enviados">
+                            <message-card ng-repeat="message in messagesSent" player="{{message.player}}" date="{{message.date}}" text="{{message.text}}" subject="{{message.subject}}" delete="deleteMessageSent(message)"></message-card>
+                        </uib-tab>
+                    </uib-tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

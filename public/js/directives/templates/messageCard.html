@@ -3,13 +3,10 @@
     <a class="list-group-item">
         <div class="row">
             <div class="col-xs-11">
-                <div class='card-header'>
-                    {{name}}
-                </div>
+                <div class='card-header'>Asunto: {{subject}}  Autor:   {{player}} </div>
                 <div class='card-body'>
-                    <h5 class="card-title">Asunto: {{subject}}</h5>
-                    <h5 class='card-text'>Mensaje: {{text}} </h5>
-                    <p class='card-text'>{{date | date:'d/M/yy HH:mm'}} </p>
+                    <h5 class='card-title'>{{text}} </h5>
+                    <p class='card-text'>{{date}} </p>
                 </div>
             </div>
             <div ng-click="delete()" class="col-xs-1">

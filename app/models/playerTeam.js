@@ -9,7 +9,7 @@ var PlayerTeamSchema   = new Schema({
     date: {type:Date,required:true},
     creator: Boolean,
     privileges: Boolean,
-    active: Boolean,
+    active: {type:Boolean,default:true},
     deleted: {type:Boolean,default:false}
 });
 

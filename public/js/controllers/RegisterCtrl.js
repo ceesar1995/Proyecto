@@ -26,7 +26,7 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
 
     $scope.team = {
         name:'',
-        province:null,
+        province:[],
         dateCreated: null,
     }
 
@@ -103,7 +103,7 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
     }
 
     $scope.searchTeam = function () {
-        ApiService.findTeamsByName($scope.team.name).then(function (teamsRespond) {
+        ApiService.findTeams($scope.team).then(function (teamsRespond) {
            if(teamsRespond.statusText=="OK"){
                $scope.teams = teamsRespond.data;
                for(var i = 0;i<$scope.teams.length;i++){

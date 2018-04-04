@@ -5,6 +5,9 @@ angular.module('ApiService', []).factory('ApiService', ['$http','$q', function($
         getPlayer : function() {
             return $http.get('/api/player');
         },
+        getPlayer : function(id) {
+            return $http.get('/api/player/'+id);
+        },
 
         createPlayer : function(playerData) {
             return $http.post('/api/player', playerData);
@@ -16,6 +19,9 @@ angular.module('ApiService', []).factory('ApiService', ['$http','$q', function($
         getTeam : function() {
             return $http.get('/api/team');
         },
+        getTeam : function(id) {
+            return $http.get('/api/team/'+id);
+        },
 
         createTeam : function(teamData) {
             return $http.post('/api/team', teamData);
@@ -26,6 +32,9 @@ angular.module('ApiService', []).factory('ApiService', ['$http','$q', function($
         },
         getUser : function() {
             return $http.get('/api/user');
+        },
+        getUser : function(id) {
+            return $http.get('/api/user/'+id);
         },
 
         createUser : function(userData) {
@@ -72,8 +81,8 @@ angular.module('ApiService', []).factory('ApiService', ['$http','$q', function($
         getPlayersTeam : function (id) {
             return $http.get('/api/playersByTeamId/'+id);
         },
-        findTeamsByName: function (name) {
-            return $http.get('/api/teamsByName/'+name);
+        findTeams: function (teamData) {
+            return $http.post('/api/findTeams',teamData);
         },
         getUserById : function (id) {
             return $http.get('/api/user/'+id);
@@ -124,7 +133,58 @@ angular.module('ApiService', []).factory('ApiService', ['$http','$q', function($
         },
         updateMatchPlayer : function(idMatch,idPlayer,matchData) {
             return $http.put('/api/matchPlayer/' + idMatch+ '/'+idPlayer,matchData);
+        },
+        updatePlayerTeam : function(idTeam,idPlayer,playerTeamData) {
+            return $http.put('/api/playerTeam/' + idTeam+ '/'+idPlayer,playerTeamData);
+        },
+        getMessagesReceived : function (idPlayer) {
+            return $http.get('/api/messagesPlayerReceived/'+idPlayer);
+        },
+        getMessagesSent : function (idPlayer) {
+            return $http.get('/api/messagesPlayerSent/'+idPlayer);
+        },
+        sendMessagePlayer : function (messagePlayerData) {
+            return $http.post('/api/messagePlayer',messagePlayerData);
+        },
+        sendMessageTeam : function (messageTeamData) {
+            return $http.post('/api/messageTeam',messageTeamData);
+        },
+        getMessagesTeamReceived : function (idTeam) {
+            return $http.get('/api/messagesTeamReceived/'+idTeam);
+        },
+        getMessagesTeamSent : function (idTeam) {
+            return $http.get('/api/messagesTeamSent/'+idTeam);
+        },
+        getMessagesAnnouncement : function (idTeam) {
+            return $http.get('/api/messagesAnnouncement/'+idTeam);
+        },
+        sendMessageAnnouncement : function (messageAnouncementData) {
+            return $http.post('/api/messageAnnouncement',messageAnouncementData);
+        },
+        updateMessage : function(idMessage,playerTeamData) {
+            return $http.put('/api/message/' + idMessage,playerTeamData);
+        },
+        updateMessageForum : function(idMessage,playerTeamData) {
+            return $http.put('/api/messageForum/' + idMessage,playerTeamData);
+        },
+        updateMessagePlayer : function(idMessage,playerTeamData) {
+            return $http.put('/api/messagePlayer/' + idMessage,playerTeamData);
+        },
+        updateMessageTeam : function(idMessage,playerTeamData) {
+            return $http.put('/api/messageTeam/' + idMessage,playerTeamData);
         }
+        ,
+        updateMessageAnnouncement : function(idMessage,idTeam,playerTeamData) {
+            return $http.put('/api/messageAnnouncement/' + idMessage+'/'+idTeam,playerTeamData);
+        },
+        getPlayerTeam :function(idTeam,idPlayer) {
+            return $http.get('/api/playerTeam/' + idTeam+ '/'+idPlayer);
+        },
+        findMatches :  function (matchData) {
+            return $http.post('/api/findMatch',matchData);
+        },
+
+
 
 
 

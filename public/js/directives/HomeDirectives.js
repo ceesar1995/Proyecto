@@ -7,7 +7,8 @@ myDirective.directive("forumCard", function(){
             subject: '@',
             text:'@',
             date: '@',
-            player : '@'
+            name : '@',
+            delete: '&'
         },
         restrict: "E",
         templateUrl: 'js/directives/templates/forumCard.html'
@@ -32,7 +33,12 @@ myDirective.directive("teamSearchCard", function(){
             name: '@',
             provinces: '@',
             _id:'@',
-            click:'&'
+            click:'&',
+            showBt: '&',
+            show: '@',
+            subject: '=',
+            text: '=',
+            joinTeam: '&'
         },
         restrict: "E",
         templateUrl: 'js/directives/templates/teamSearchCard.html'
@@ -45,7 +51,10 @@ myDirective.directive("playerSearchCard", function(){
             teamNames:'@',
             provinces: '@',
             _id:'@',
-            click:'&'
+            click:'&',
+            show: '@',
+            subject: '=',
+            text: '='
         },
         restrict: "E",
         templateUrl: 'js/directives/templates/playerSearchCard.html'
@@ -162,5 +171,37 @@ myDirective.directive("playerReportCard", function(){
         restrict: "E",
         templateUrl: 'js/directives/templates/playerReportCard.html',
 
+    }
+});
+myDirective.directive("messageCard", function(){
+    return {
+        scope: {
+            subject: '@',
+            text:'@',
+            date: '@',
+            player : '@',
+            delete: '&'
+        },
+        restrict: "E",
+        templateUrl: 'js/directives/templates/messageCard.html'
+    }
+});
+
+myDirective.directive("matchSearchCard", function(){
+    return {
+        scope: {
+            name: '@',
+            provinces: '@',
+            dateBegin: '@',
+            dateEnd: '@',
+            dateCreated: '@',
+            province: '@',
+            place: '@',
+            rules: '@',
+            accept:'&',
+            showBt: '&'
+        },
+        restrict: "E",
+        templateUrl: 'js/directives/templates/matchSearchCard.html'
     }
 });

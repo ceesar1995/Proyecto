@@ -1,8 +1,33 @@
 
 <div class='card'>
-    <div class='card-header'>Nombre: {{name}}</div>
-    <div class='card-body'>
-        <h5 class='card-title'>Provincia: {{provinces}} </h5>
-        <button class='btn-primary btn' ng-click='click({_id:_id})' >Mandar mensaje</button>
-    </div>
+    <a class="list-group-item" >
+        <div class='card-header'>Nombre: {{name}}</div>
+        <div class='card-body'>
+            <h5 class='card-title'>Provincia: {{provinces}} </h5>
+        </div>
+        <div ng-click="showBt()" ng-show="show == 'false'">
+            <i class="fas fa-arrow-down"  ></i>
+        </div>
+        <div ng-show="show == 'true'" class="card-footer">
+            <div ng-click="showBt()">
+                <i class="fas fa-arrow-up" ></i>
+            </div>
+            <div class=" row">
+                <div class="form-group col-xs-12">
+                    <label for="inputsm">Mensaje</label>
+                    <input placeholder="Asunto..." class="form-control input-sm" id="inputsm"  ng-model="subject" type="text">
+                </div>
+                <div class=" form-group col-xs-12">
+                    <input placeholder="Mensaje..." class="form-control input-lg" id="inputlg" ng-model="text" type="text">
+                </div>
+                <div class="form-group col-xs-12">
+                    <button class='btn-primary btn' ng-click='click({_id:_id})' >Mandar mensaje</button>
+                    <button class='btn-primary btn' ng-click='joinTeam()' >Unirse equipo</button>
+                </div>
+            </div>
+        </div>
+        <div ng-show="show=='false' ">
+            <button class='btn-primary btn' ng-click='joinTeam()' >Unirse equipo</button>
+        </div>
+    </a>
 </div>

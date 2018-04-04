@@ -4,17 +4,14 @@
         <div class="container">
             <div class="row " >
                 <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                    <div class="row">
-                        <div class="col-sm-6 col-xs-12">
-                            <button class="btn-primary btn" ng-click="searchTeams()">Resultados equipos</button>
-                        </div>
-                        <div class="col-sm-6 col-xs-12">
-                            <button class="btn-primary btn" ng-click="searchPlayers()">Resultados jugadores</button>
-                        </div>
-                    </div>
-                    <hr>
-                    <team-search-card ng-repeat="team in teams" name="{{team.name}}" provinces="{{team.provinces}}"></team-search-card>
-                    <player-search-card ng-repeat="player in players" name="{{player.name}}" provinces="{{player.provinces}}" team-names="{{player.teamNames}}" ></player-search-card>
+                    <uib-tabset active="activeJustified" justified="true">
+                        <uib-tab ng-click="searchTeams()" index="0" heading="Resultados equipos">
+                            <team-search-card ng-repeat="team in teams" name="{{team.name}}" provinces="{{team.provinces}}" show-bt="showBtTeam(team)" show="{{team.show}}" click="sendMessageTeam(team)" subject="team.subject" text="team.text" join-team="joinTeam(team)" ></team-search-card>
+                        </uib-tab>
+                        <uib-tab ng-click="searchPlayers()" index="1" heading="Resultados jugadores">
+                            <player-search-card ng-repeat="player in players" name="{{player.name}}" provinces="{{player.provinces}}" team-names="{{player.teamNames}}"  show="{{player.show}}" click="sendMessagePlayer(player)" subject="player.subject" text="player.text" ></player-search-card>
+                        </uib-tab>
+                    </uib-tabset>
                     <p>{{errorMessage}}</p>
                 </div>
             </div>

@@ -1,0 +1,25 @@
+<!-- public/views/changeTeams.html -->
+<div class="top-content">
+    <div class="inner-bg" >
+        <div class="container">
+            <div class="row " >
+                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                    <form role="form"  class="login-form">
+                        <div class="form-group">
+                            <label for="form-nameTeam">Nombre equipo</label>
+                            <input type="text" name="form-nameTeam" ng-model="team.name" placeholder="Nombre del equipo..." class="form-nameTeam form-control" id="form-nameTeam">
+                        </div>
+                        <div class="form-group">
+                            <!--Provincia -->
+                            <label  for="form-province">Provincias</label>
+                            <select class="form-select form-control" multiple name="form-province" id="form-province" ng-model="team.province" placeholder="Provincia...">
+                                <option ng-repeat="province in provinces" ng-value="province.id" >{{province.name}}</option>
+                            </select>
+                        </div>
+                        <button ng-click="createTeam()" class="btn">Crear equipo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

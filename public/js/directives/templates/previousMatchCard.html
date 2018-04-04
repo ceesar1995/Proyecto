@@ -1,12 +1,14 @@
 <div class='card'>
-    <div class='card-header'>
-        <h1 >{{teamHome}}: {{scoreHome}} - {{scoreGuest}}:{{teamGuest}}</h1>
-    </div>
-    <div class='card-body'>
-        <h4 class='card-title'>Fecha partido: {{dateBegin | date:'d/M/yy HH:mm'}} - {{dateEnd | date:'d/M/yy HH:mm'}}</h4>
-        <h4 class='card-text'>Lugar: {{place}}</h4>
-        <h4 class='card-text'>Reglas: {{rules}}</h4>
-        <h4 class='card-text'>Fecha de creación: {{dateCreated | date:'d/M/yy HH:mm'}}</h4>
-        <button  class='btn-primary btn' ng-show="showBt()" ng-click='afterMatchReportBt()' >Informe post partido</button>
-    </div>
+    <a  class='list-group-item'>
+        <div class='card-header'>
+            <h1 >{{teamHome}}: {{scoreHome}} - {{scoreGuest}}:{{teamGuest}}</h1>
+        </div>
+        <div class='card-body'>
+            <h4 class='card-title'>Fecha partido: {{dateBegin | date:'d/M/yy HH:mm'}} - {{dateEnd | date:'d/M/yy HH:mm'}}</h4>
+            <h4 class='card-text'>Lugar: {{place}}</h4>
+            <h4 class='card-text'>Reglas: {{rules}}</h4>
+            <h4 class='card-text'>Fecha de creación: {{dateCreated | date:'d/M/yy HH:mm'}}</h4>
+            <button  class='btn-primary btn' ng-show="showBt()" ng-click='afterMatchReportBt()' >Informe post partido</button>
+        </div>
+    </a>
 </div>

@@ -11,7 +11,7 @@
             <!--Provincia -->
             <label  for="form-province">Provincias</label>
             <select class="form-select form-control" multiple name="form-province" id="form-province" ng-model="$ctrl.team.province" placeholder="Provincia...">
-                <option ng-repeat="province in $ctrl.provinces" value={{province.id}}>{{province.name}}</option>
+                <option ng-repeat="province in $ctrl.provinces" ng-value="province.id" >{{province.name}}</option>
             </select>
         </div>
         <button class="btn-primary btn" ng-click="$ctrl.searchTeam()">Buscar</button>

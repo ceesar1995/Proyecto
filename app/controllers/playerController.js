@@ -176,6 +176,21 @@ module.exports = function (app) {
             }
         });
     };
+    var updatePlayerTeam = function (req, res) {
+        PlayerTeam.findOneAndUpdate({idPlayer: req.params.playerId,idTeam: req.params.teamId}, req.body, {new: true}, function (err, playerTeam) {
+            if (err)
+                res.send(err);
+            res.json(playerTeam);
+        });
+    };
+    var getPlayerTeam = function (req, res) {
+        PlayerTeam.findOne({idPlayer: req.params.playerId,idTeam: req.params.teamId,deleted:false}, req.body, {new: true}, function (err, playerTeam) {
+            if (err)
+                res.send(err);
+            res.json(playerTeam);
+        });
+    };
+
 
     //player routes
     app.get('/api/player', listAllPlayers);
@@ -187,8 +202,10 @@ module.exports = function (app) {
 
     //playerTeamRoutes
     app.post('/api/playerTeam', addPlayerToTeam);
+    app.put('/api/playerTeam/:teamId/:playerId',updatePlayerTeam);
     app.get('/api/teamsByPlayerId/:playerId', getTeamsByPlayerId);
     app.get('/api/playersByTeamId/:teamId', getPlayersByTeamId);
+    app.get('/api/playerTeam/:teamId/:playerId',getPlayerTeam);
 
     //searchPlayerRoutes
     app.get('/api/playersByName/:name',getPlayersByName);

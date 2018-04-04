@@ -52,13 +52,23 @@ module.exports = function (app) {
     };
 
 
-    var findTeamsByName = function (req, res) {
-        var name = req.params.name;
-        Team.find({name :{$regex: name, $options: 'i'} },function (err, teams) {
-            if (err)
-                res.send(err);
-            res.json(teams);
-        });
+    var findTeams = function (req, res) {
+        var name = req.body.name;
+        var provinces = req.body.province;
+        if(provinces.length>0){
+            Team.find({name :{$regex: name, $options: 'i'},province: {$elemMatch:{$in:provinces}}},function (err, teams) {
+                if (err)
+                    res.send(err);
+                res.json(teams);
+            });
+        }
+       else {
+            Team.find({name :{$regex: name, $options: 'i'}},function (err, teams) {
+                if (err)
+                    res.send(err);
+                res.json(teams);
+            });
+        }
     };
 
 
@@ -69,6 +79,6 @@ module.exports = function (app) {
     app.delete('/api/team/:teamId', deleteATeam);
 
 
-    app.get('/api/teamsByName/:name',findTeamsByName);
+    app.post('/api/findTeams',findTeams);
 }
 
