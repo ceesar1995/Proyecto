@@ -36,6 +36,7 @@ UserSchema.methods.generateJwt = function() {
         _id: this._id,
         email: this.email,
         username: this.username,
+        idPlayer: this.idPlayer,
         exp: parseInt(expiry.getTime() / 1000),
     }, process.env.SECRET_KEY); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };

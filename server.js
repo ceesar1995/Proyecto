@@ -6,8 +6,10 @@ var bodyParser     = require('body-parser');
 var cors = require('cors');
 var mongoose = require('mongoose');
 var methodOverride = require('method-override');
+var nodeMailer = require('nodemailer');
 var passport = require('passport');
 var user     = require('./app/models/user');
+var playerTeam     = require('./app/models/playerTeam');
 // configuration ===========================================
 
 
@@ -28,6 +30,8 @@ var dbM = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 dbM.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+
+//app.set('view engine', 'ejs');
 // get all data/stuff of the body (POST) parameters
 // parse application/json
 app.use(bodyParser.json());
@@ -59,6 +63,7 @@ require('./app/controllers/playerController')(app);
 require('./app/controllers/teamController')(app);
 require('./app/controllers/messageController')(app);
 require('./app/controllers/matchController')(app);
+require('./app/controllers/emailController')(app);
 require('./app/routes')(app);
 /*router.get('/', function(req, res) {
     res.sendfile('/public/views/index.html'); // load our public/index.html file

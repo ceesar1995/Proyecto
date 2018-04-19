@@ -1,18 +1,22 @@
 <!-- public/views/pendingMatches.html -->
 <div class="top-content">
-    <div class="inner-bg" >
-        <div class="container">
-            <div class="row " >
-                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                    <uib-tabset active="activeJustified" justified="true">
-                        <uib-tab ng-click="loadInvitationsSent()" index="0" heading="Invitaciones enviadas">
-                            <invitation-sent-match-card   ng-repeat="match in matchesSent" name="{{match.name}}"  date-begin="{{match.dateBegin}}" date-end="{{match.dateEnd}}" place="{{match.place}}" rules="{{match.rules}}" date-created="{{match.dateCreated}}" _id="{{match._id}}" rejected="{{match.rejected}}" click="action(match,0)" show-bt="showBtSent(match)" ></invitation-sent-match-card>
-                        </uib-tab>
-                        <uib-tab ng-click="loadInvitationsReceived()" index="1" heading="Invitaciones recibidas">
-                            <invitation-received-match-card  ng-repeat="match in matchesReceived" name="{{match.name}}"  date-begin="{{match.dateBegin}}" date-end="{{match.dateEnd}}" place="{{match.place}}" rules="{{match.rules}}" date-created="{{match.dateCreated}}" _id="{{match._id}}" rejected="{{match.rejected}}" click-r="action(match,1)" click-c="action(match,2)" confirmed="{{match.confirmed}}" show-bt="showBtReceived(match)" ></invitation-received-match-card>
-                        </uib-tab>
-                    </uib-tabset>
+    <div class="container">
+        <div class="row " >
+            <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                <uib-tabset active="activeJustified" justified="true">
+                    <uib-tab ng-click="loadInvitationsSent()" index="0" heading="Invitaciones enviadas">
+                        <invitation-sent-match-card   ng-repeat="match in matchesSent.slice(((currentPage-1)*10), ((currentPage)*10))" name="{{match.name}}"  date-begin="{{match.dateBegin}}" date-end="{{match.dateEnd}}" place="{{match.place}}" rules="{{match.rules}}" date-created="{{match.dateCreated}}" _id="{{match._id}}" rejected="{{match.rejected}}" click="action(match,0)" show-bt="showBtSent(match)" ></invitation-sent-match-card>
+                    </uib-tab>
+                    <uib-tab ng-click="loadInvitationsReceived()" index="1" heading="Invitaciones recibidas">
+                        <invitation-received-match-card  ng-repeat="match in matchesReceived.slice(((currentPage-1)*10), ((currentPage)*10))" name="{{match.name}}"  date-begin="{{match.dateBegin}}" date-end="{{match.dateEnd}}" place="{{match.place}}" rules="{{match.rules}}" date-created="{{match.dateCreated}}" _id="{{match._id}}" rejected="{{match.rejected}}" click-r="action(match,1)" click-c="action(match,2)" confirmed="{{match.confirmed}}" show-bt="showBtReceived(match)" ></invitation-received-match-card>
+                    </uib-tab>
+                </uib-tabset>
+                <div class="row">
+                    <div class="col-sm-offset-4 col-sm-6 col-xs-12">
+                        <p ng-show="totalItems==0">No hay partidos pendientes</p>
+                    </div>
                 </div>
+                <ul uib-pagination total-items="totalItems" ng-show="totalItems>10" ng-model="currentPage" ></ul>
             </div>
         </div>
     </div>

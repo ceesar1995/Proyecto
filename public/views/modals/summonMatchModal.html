@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-6 col-xs-12">
             <h3>{{$ctrl.rivalTeamName}}</h3>
-            <player-summon-card ng-repeat="player in $ctrl.rivalPlayers" name="{{player.name}}"  goalkeeper="{{player.goalkeeper}}" date="{{player.date}}" ></player-summon-card>
+            <player-summon-card ng-repeat="player in $ctrl.rivalTeamPlayers" name="{{player.name}}"  goalkeeper="{{player.goalkeeper}}" date="{{player.date}}" ></player-summon-card>
         </div>
     </div>
     <button class="btn btn-primary" type="button" ng-click="$ctrl.action()">{{$ctrl.actionBtLabel}}</button>

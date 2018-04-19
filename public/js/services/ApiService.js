@@ -183,6 +183,34 @@ angular.module('ApiService', []).factory('ApiService', ['$http','$q', function($
         findMatches :  function (matchData) {
             return $http.post('/api/findMatch',matchData);
         },
+        getUserByUsername : function (username) {
+            return $http.get('/userByUsername/'+username);
+        },
+        getTeamByName : function (name) {
+            return $http.get('/api/teamByName/'+ name);
+        },
+        getPlayerGoals :function(idTeam,idPlayer) {
+            return $http.get('/api/playerGoals/' + idTeam+ '/'+idPlayer);
+        },
+        getPlayerMatchesSummoned :function(idTeam,idPlayer) {
+            return $http.get('/api/playerMatchesSummoned/' + idTeam+ '/'+idPlayer);
+        },
+        getPlayerMatchesPlayed :function(idTeam,idPlayer) {
+            return $http.get('/api/playerMatchesPlayed/' + idTeam+ '/'+idPlayer);
+        },
+        checkTeamPassword :  function (idTeam,password) {
+            return $http.post('/api/checkTeamPassword/'+idTeam,password);
+        },
+        sendEmailWelcome :  function (emailInfo) {
+            return $http.post('/welcomeEmail/',emailInfo);
+        },
+        sendEmailResetPassword :  function (email) {
+            return $http.get('/forgottenPassword/'+email);
+        },resetPassword :  function (password) {
+            return $http.put('/api/resetPassword/',password);
+        }
+
+
 
 
 

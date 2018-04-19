@@ -56,13 +56,30 @@ module.exports = function (app) {
     };
 
     var addPlayerToTeam = function (req, res) {
+        var idTeam = req.body.idTeam;
+        Team.findOne({_id:idTeam},function (err,team) {
+            if(team.private){
+                if(team.validPassword(req.body.password)){
+                    addPlayerT(req,res);
+                }
+                else{
+                    res.json(null);
+                }
+            }
+            else{
+                addPlayerT(req,res);
+            }
+        })
+
+    };
+    var addPlayerT = function (req,res) {
         var newPlayerToTeam = new PlayerTeam(req.body);
         newPlayerToTeam.save(function (err, playerToTeam) {
             if (err)
                 res.send(err);
             res.json(playerToTeam);
         });
-    };
+    }
 
     var getPlayersByUserId =  function (req, res) {
         Player.find({idUser: req.params.userId}, function (err, players) {
@@ -73,11 +90,11 @@ module.exports = function (app) {
     };
     var getTeamsByPlayerId =  function (req, res) {
 
-        PlayerTeam.find({idPlayer: req.params.playerId}).then(
+        PlayerTeam.find({idPlayer: req.params.playerId,deleted:false,active:true}).then(
             function (playersTeam) {
                 var Teams = [];
                 playersTeam.forEach(function (player) {
-                    Teams.push(Team.findOne({_id:player.idTeam}));
+                    Teams.push(Team.findOne({_id:player.idTeam,deleted:false}));
                 });
                 return Promise.all(Teams);
             }
@@ -89,7 +106,7 @@ module.exports = function (app) {
     };
 
     var getPlayersByTeamId =  function (req, res) {
-        PlayerTeam.find({idTeam: req.params.teamId}).then(
+        PlayerTeam.find({idTeam: req.params.teamId,active:true}).then(
             function (playersTeam) {
                 var Players = [];
                 playersTeam.forEach(function (playerTeam) {
@@ -165,7 +182,7 @@ module.exports = function (app) {
     };
 
     var checkPrivileges =  function (req, res) {
-        PlayerTeam.find({idPlayer: req.params.playerId,idTeam: req.params.teamId,privileges: true}, function (err, playerTeam) {
+        PlayerTeam.find({idPlayer: req.params.playerId,idTeam: req.params.teamId,privileges: true,deleted:false}, function (err, playerTeam) {
             if(err)
                 res.send(err);
             if(playerTeam[0]){
@@ -177,12 +194,29 @@ module.exports = function (app) {
         });
     };
     var updatePlayerTeam = function (req, res) {
+        Team.findOne({_id:req.params.teamId},function (err,team) {
+            if (team.private && req.body.active && req.body.active==true) {
+                if (team.validPassword(req.body.password)) {
+                    updatePlayerT(req, res);
+                }
+                else {
+                    res.json(null);
+                }
+            }
+            else {
+                updatePlayerT(req, res);
+            }
+        })
+
+    };
+
+    var updatePlayerT = function (req, res) {
         PlayerTeam.findOneAndUpdate({idPlayer: req.params.playerId,idTeam: req.params.teamId}, req.body, {new: true}, function (err, playerTeam) {
             if (err)
                 res.send(err);
             res.json(playerTeam);
         });
-    };
+    }
     var getPlayerTeam = function (req, res) {
         PlayerTeam.findOne({idPlayer: req.params.playerId,idTeam: req.params.teamId,deleted:false}, req.body, {new: true}, function (err, playerTeam) {
             if (err)
@@ -193,12 +227,12 @@ module.exports = function (app) {
 
 
     //player routes
-    app.get('/api/player', listAllPlayers);
+    //app.get('/api/player', listAllPlayers);
     app.post('/api/player', createAPlayer);
     app.get('/api/player/:playerId', readAPlayer);
     app.put('/api/player/:playerId', updateAPlayer);
-    app.delete('/api/player/:playerId', deleteAPlayer);
-    app.get('/api/playersByUserId/:userId', getPlayersByUserId);
+    //app.delete('/api/player/:playerId', deleteAPlayer);
+    //app.get('/api/playersByUserId/:userId', getPlayersByUserId);
 
     //playerTeamRoutes
     app.post('/api/playerTeam', addPlayerToTeam);

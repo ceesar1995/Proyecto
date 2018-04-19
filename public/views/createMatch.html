@@ -1,55 +1,58 @@
 <!-- public/views/createMatch.html -->
 <div class="top-content">
-    <div class="inner-bg" >
-        <div class="container">
-            <div class="row " >
-                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <form>
-                                <div class="form-group">
-                                    <label for="placeInput">Lugar del partido:</label>
-                                    <input type="text" class="form-control" id="placeInput" placeholder="Lugar del partido" ng-model="match.place">
+    <div class="container">
+        <div class="row " >
+            <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form name="createMatchForm" novalidate>
+                            <div class="form-group" ng-class="{ 'has-error' : createMatchForm.matchPlace.$invalid && submittedMatch }">
+                                <label for="placeInput">Lugar del partido:</label>
+                                <input type="text" name="matchPlace" class="form-control" id="placeInput" required placeholder="Lugar del partido" ng-model="match.place">
+                                <p ng-show="createMatchForm.matchPlace.$invalid &&  submittedMatch" class="help-block">Introduce el lugar del partido</p>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : createMatchForm.matchProvince.$invalid  && submittedMatch }">
+                                <!--Provincia -->
+                                <label  for="form-province">Provincias</label>
+                                <select name="matchProvince" class="form-select form-control" required name="form-province" id="form-province" ng-model="match.province" placeholder="Provincia...">
+                                    <option ng-repeat="province in provinces" ng-value="province.id">{{province.name}}</option>
+                                </select>
+                                <p ng-show="createMatchForm.matchProvince.$invalid && submittedMatch" class="help-block">Selecciona la provincia en la que se jugara el partido</p>
+                            </div>
+                            <div class="form-group" >
+                                <label for="rulesInput">Reglas:</label>
+                                <textarea class="form-control" id="rulesInput" rows="3" ng-model="match.rules" ></textarea>
+                                <small id="rulesHelp" class="form-text text-muted">Reglas o información que se necesitan aclarar para el partido.</small>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : createMatchForm.matchDate.$invalid && submittedMatch }">
+                                <label for="dateInput">Fecha:</label>
+                                <p class="input-group">
+                                    <input name="matchDate" id="dateInput" type="text" class="form-control" required uib-datepicker-popup="{{format}}" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-model="match.dateBegin" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                                <p ng-show="createMatchForm.matchProvince.$invalid && submittedMatch" class="help-block">Introduce la fecha en la que se jugara el partido</p>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-12 form-group" ng-class="{ 'has-error' : createMatchForm.matchHourBegin.$invalid && submittedMatch }">
+                                    <label>Hora de inicio:</label>
+                                    <div required name="matchHourBegin" uib-timepicker ng-model="timeBegin" hour-step="1" minute-step="5" show-meridian="false"></div>
+                                    <p ng-show="createMatchForm.matchHourBegin.$invalid && submittedMatch" class="help-block">Introduce la hora en la que se iniciara el partido</p>
                                 </div>
-                                <div class="form-group">
-                                    <!--Provincia -->
-                                    <label  for="form-province">Provincias</label>
-                                    <select class="form-select form-control"  name="form-province" id="form-province" ng-model="match.province" placeholder="Provincia...">
-                                        <option ng-repeat="province in provinces" ng-value="province.id">{{province.name}}</option>
-                                    </select>
+                                <div class="col-sm-6 col-xs-12 form-group" ng-class="{ 'has-error' : createMatchForm.matchHourEnd.$invalid  && submittedMatch }">
+                                    <label>Hora de fin:</label>
+                                    <div name="matchHourEnd" uib-timepicker ng-model="timeEnd" hour-step="1" minute-step="5" show-meridian="false" required></div>
+                                    <p ng-show="createMatchForm.matchHourEnd.$invalid && submittedMatch" class="help-block">Introduce la hora en la que se terminara el partido</p>
                                 </div>
-                                <div class="form-group">
-                                    <label for="rulesInput">Reglas:</label>
-                                    <textarea class="form-control" id="rulesInput" rows="3" ng-model="match.rules" ></textarea>
-                                    <small id="rulesHelp" class="form-text text-muted">Reglas o información que se necesitan aclarar para el partido.</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="dateInput">Fecha:</label>
-                                    <p class="input-group">
-                                        <input id="dateInput" type="text" class="form-control" uib-datepicker-popup="{{format}}" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-model="match.dateBegin" />
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                        </span>
-                                    </p>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6 col-xs-12 form-group">
-                                        <label>Hora de inicio:</label>
-                                        <div uib-timepicker ng-model="timeBegin" hour-step="1" minute-step="5" show-meridian="false"></div>
-                                    </div>
-                                    <div class="col-sm-6 col-xs-12 form-group">
-                                        <label>Hora de fin:</label>
-                                        <div uib-timepicker ng-model="timeEnd" hour-step="1" minute-step="5" show-meridian="false"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group" >
-                                    <label >Equipo invitado:</label>
-                                    <input type="text" readonly class="form-control" ng-model="$ctrl.selectedTeam.name">
-                                </div>
-                                <button  ng-click="createMatch()" class="btn btn-primary">Crear partido</button>
-                                <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Invita a un equipo</button>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="form-group" >
+                                <label >Equipo invitado:</label>
+                                <input type="text" readonly class="form-control" ng-model="$ctrl.selectedTeam.name">
+                            </div>
+                            <button  ng-click="createMatch(createMatchForm.matchPlace.$invalid || createMatchForm.matchProvince.$invalid || createMatchForm.matchDate.$invalid || createMatchForm.matchHourBegin.$invalid || createMatchForm.matchHourEnd.$invalid )" class="btn btn-primary">Crear partido</button>
+                            <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Invita a un equipo</button>
+                        </form>
                     </div>
                 </div>
             </div>

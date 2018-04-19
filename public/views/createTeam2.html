@@ -1,24 +1,36 @@
 <!-- public/views/changeTeams.html -->
 <div class="top-content">
-    <div class="inner-bg" >
-        <div class="container">
-            <div class="row " >
-                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                    <form role="form"  class="login-form">
-                        <div class="form-group">
-                            <label for="form-nameTeam">Nombre equipo</label>
-                            <input type="text" name="form-nameTeam" ng-model="team.name" placeholder="Nombre del equipo..." class="form-nameTeam form-control" id="form-nameTeam">
-                        </div>
-                        <div class="form-group">
-                            <!--Provincia -->
-                            <label  for="form-province">Provincias</label>
-                            <select class="form-select form-control" multiple name="form-province" id="form-province" ng-model="team.province" placeholder="Provincia...">
-                                <option ng-repeat="province in provinces" ng-value="province.id" >{{province.name}}</option>
-                            </select>
-                        </div>
-                        <button ng-click="createTeam()" class="btn">Crear equipo</button>
-                    </form>
-                </div>
+    <div class="container">
+        <div class="row " >
+            <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                <form role="form" name="createTeamForm" class="login-form" novalidate>
+                    <div class="form-group" ng-class="{ 'has-error' : createTeamForm.formnameTeam.$invalid  && submittedTeam }">
+                        <label for="form-nameTeam">Nombre equipo</label>
+                        <input type="text" name="formnameTeam" ng-model="team.name" placeholder="Nombre del equipo..." class="form-nameTeam form-control" id="form-nameTeam" required>
+                        <p ng-show="createTeamForm.formnameTeam.$invalid &&  submittedTeam" class="help-block">Introduce el nombre de tu jugador</p>
+                    </div>
+                    <div class="form-group">
+                        <!--Privado  -->
+                        <input type="checkbox" ng-model="team.private" id="form-private" name="formprivate">
+                        <label class="form-check-label" for="form-private">Privado</label>
+                    </div>
+                    <div ng-show="team.private" class="form-group" ng-class="{ 'has-error' : createTeamForm.formpassword.$invalid && submittedTeam }">
+                        <label for="form-password">Contraseña</label>
+                        <input type="password" name="formpassword" ng-model="team.password" placeholder="Contraseña..." class="form-password form-control" ng-required="team.private" id="form-password" ng-minlength="8" ng-maxlength="16">
+                        <p ng-show="createTeamForm.formpassword.$invalid && submittedTeam && !createTeamForm.formpassword.$error.minlength && !createTeamForm.formpassword.$error.maxlength " class="help-block">Introduce una contraseña</p>
+                        <p ng-show="createTeamForm.formpassword.$error.minlength" class="help-block">Contraseña demasiado corta(min. 8).</p>
+                        <p ng-show="createTeamForm.formpassword.$error.maxlength" class="help-block">Contraseña demasiado larga (max. 16).</p>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' : createTeamForm.formprovince.$invalid  && submittedTeam }">
+                        <!--Provincia -->
+                        <label  for="form-province">Provincias</label>
+                        <select class="form-select form-control" multiple name="formprovince" id="form-province" ng-model="team.province" placeholder="Provincia..." required>
+                            <option ng-repeat="province in provinces" ng-value="province.id" >{{province.name}}</option>
+                        </select>
+                        <p ng-show="createTeamForm.formprovince.$invalid  && submittedTeam" class="help-block">Selecciona al menos una provincias</p>
+                    </div>
+                    <button ng-click="createTeam(createTeamForm.formprovince.$invalid || createTeamForm.formname.$invalid || createTeamForm.formpassword.$invalid)" class="btn"  uib-popover="Nombre de equipo ya en uso, cambialo." popover-placement="bottom" popover-trigger="'none'" popover-is-open="popoverOpen" >Crear equipo</button>
+                </form>
             </div>
         </div>
     </div>

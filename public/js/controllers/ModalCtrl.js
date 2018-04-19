@@ -49,6 +49,8 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
     var myPlayerSummonedByRival = false;
     var summon = false;
     var myTeamId = $localStorage.currentTeam.team_id;
+    var newSummon = false;
+    var index = -1;
     $ctrl.myTeamName = $localStorage.currentTeam.team_name;
     $ctrl.rivalTeamName = match.name;
     $ctrl.match = match;
@@ -95,6 +97,7 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
         console.log("OLE"+isMyPlayerAlreadySummoned);
         if(isMyPlayerAlreadySummoned){
             $ctrl.actionBtLabel = "Desapuntar";
+            summon = true;
 
         }
         else{
@@ -103,17 +106,27 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
     };
 
     $ctrl.action = function () {
-        if(isMyPlayerAlreadySummoned){
+        if(isMyPlayerAlreadySummoned && summon){
             if(myPlayerSummonedByRival){
                 window.alert("Tu jugador ya esta convocado con el equipo rival");
             }else{
                 console.log("ME DESAPUNTO");
+                if(index || newSummon)
+                    $ctrl.myTeamPlayers.pop();
+                else
+                    $ctrl.myTeamPlayers.splice(index,index+1);
                 summon = false;
                 $ctrl.actionBtLabel = "Apuntarse";
             }
         }
         else{
             console.log("ME APUNTO");
+            var player = {
+                name: $localStorage.currentPlayer.player_name,
+                date: new Date()
+            };
+            $ctrl.myTeamPlayers.push(player);
+            newSummon = true;
             summon = true;
             $ctrl.actionBtLabel = "Desapuntar";
         }
@@ -126,10 +139,15 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
                     var players = response.data.players;
                     for(var i=0;i<players.length;i++){
                         if($localStorage.currentPlayer.player_id == players[i]._id){
+                            index = i;
                             isMyPlayerAlreadySummoned = true;
                             console.log("ACIERTO");
                             if(response.data.matchesPlayers[i].idTeam != myTeamId) {
                                 myPlayerSummonedByRival = true;
+                                $ctrl.rivalTeamPlayers.push(players[i]);
+                            }
+                            else{
+                                $ctrl.myTeamPlayers.push(players[i]);
                             }
                         }
                         else{
@@ -137,12 +155,6 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
                         }
                         players[i].date = response.data.matchesPlayers[i].date;
                         console.log(players[i]);
-                        if(response.data.matchesPlayers[i].idTeam == myTeamId) {
-                            $ctrl.myTeamPlayers.push(players[i]);
-                        }
-                        else{
-                            $ctrl.rivalTeamPlayers.push(players[i]);
-                        }
                     }
                     console.log($ctrl.myTeamPlayers);
                     $ctrl.setButtons();
@@ -282,5 +294,96 @@ app.controller('ModalInstanceConfirmCtrl', function ($uibModalInstance,data) {
     $ctrl.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+
+});
+app.controller('ModalCreateOrJoinTeamCtrl', function ($uibModalInstance) {
+
+    var $ctrl = this;
+
+    $ctrl.ok = function (createTeam) {
+        $uibModalInstance.close(createTeam);
+    };
+
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+});
+app.controller('ModalPasswordTeamCtrl', function ($uibModalInstance) {
+
+    var $ctrl = this;
+
+    $ctrl.ok = function (invalid) {
+        $ctrl.submitted = true;
+        if(!invalid){
+            $uibModalInstance.close($ctrl.password);
+        }
+
+    };
+
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+});
+app.controller('ModalDetailsPlayerCtrl', function ($uibModalInstance,player,ApiService,$localStorage,$scope,privileges) {
+
+    var $ctrl = this;
+
+    var modified = false;
+
+    $ctrl.player = player;
+    $ctrl.privileges = privileges;
+
+
+    ApiService.getPlayerTeam($localStorage.currentTeam.team_id,player._id).then(
+        function (responsePlayerTeam) {
+            if(responsePlayerTeam.statusText =="OK"){
+                $ctrl.playerTeam= responsePlayerTeam.data;
+            }
+        }
+    );
+
+    ApiService.getPlayerGoals($localStorage.currentTeam.team_id,player._id).then(
+        function (responsePlayerGoals) {
+            if(responsePlayerGoals.statusText =="OK"){
+                if(responsePlayerGoals.data[0])
+                    $ctrl.playerGoals= responsePlayerGoals.data[0].total;
+                else
+                    $ctrl.playerGoals=0;
+            }
+        }
+    );
+    ApiService.getPlayerMatchesPlayed($localStorage.currentTeam.team_id,player._id).then(
+        function (responsePlayerMatchesPlayed) {
+            if(responsePlayerMatchesPlayed.statusText =="OK"){
+                if(responsePlayerMatchesPlayed.data[0])
+                    $ctrl.playerMatchesPlayed= responsePlayerMatchesPlayed.data[0].total;
+                else
+                    $ctrl.playerMatchesPlayed=0;
+            }
+        }
+    );
+    ApiService.getPlayerMatchesSummoned($localStorage.currentTeam.team_id,player._id).then(
+        function (responsePlayerMatchesSummoned){
+            if(responsePlayerMatchesSummoned.statusText =="OK"){
+                if( responsePlayerMatchesSummoned.data[0])
+                     $ctrl.playerMatchesSummoned= responsePlayerMatchesSummoned.data[0].total;
+                else
+                    $ctrl.playerMatchesSummoned=0;
+            }
+        }
+    );
+    $ctrl.ok = function () {
+        $uibModalInstance.close(modified);
+    };
+
+    $ctrl.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+    $ctrl.givePrivileges = function () {
+        $ctrl.playerTeam.privileges = true;
+        modified = true;
+    }
 
 });

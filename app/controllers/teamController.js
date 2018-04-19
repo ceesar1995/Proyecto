@@ -15,6 +15,9 @@ module.exports = function (app) {
 
     var createATeam = function (req, res) {
         var newTeam = new Team(req.body);
+        if(newTeam.private){
+            newTeam.setPassword(req.body.password);
+        }
         newTeam.save(function (err, team) {
             if (err)
                 res.send(err);
@@ -72,13 +75,38 @@ module.exports = function (app) {
     };
 
 
-    app.get('/api/team', listAllTeams);
-    app.post('/api/team', createATeam);
-    app.get('/api/team/:teamId', readATeam);
-    app.put('/api/team/:teamId', updateATeam);
-    app.delete('/api/team/:teamId', deleteATeam);
+    var getTeamByName = function (req, res) {
+        Team.findOne({name: req.params.teamName,deleted:false}, function (err, team) {
+            if (err)
+                res.send(err);
+            res.json(team);
+        });
+    };
 
+    var checkPassword = function (req, res) {
+        Team.findOne({_id: req.params.teamId}, function (err, team) {
+            if (err)
+                res.send(err);
+            if(team.validPassword(req.body.password)){
+                res.json(team);
+            }
+            else{
+                res.json(null);
+            }
+
+        });
+    };
+
+
+    //app.get('/api/team', listAllTeams);
+    app.post('/api/team', createATeam);
+    //app.get('/api/team/:teamId', readATeam);
+    app.put('/api/team/:teamId', updateATeam);
+    //app.delete('/api/team/:teamId', deleteATeam);
 
     app.post('/api/findTeams',findTeams);
+    app.get('/api/teamByName/:teamName',getTeamByName);
+
+    app.post('/api/checkTeamPassword/:teamId',checkPassword);
 }
 

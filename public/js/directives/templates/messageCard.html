@@ -6,7 +6,7 @@
                 <div class='card-header'>Asunto: {{subject}}  Autor:   {{player}} </div>
                 <div class='card-body'>
                     <h5 class='card-title'>{{text}} </h5>
-                    <p class='card-text'>{{date}} </p>
+                    <p class='card-text'>{{date | date:'d/M/yy HH:mm'}} </p>
                 </div>
             </div>
             <div ng-click="delete()" class="col-xs-1">

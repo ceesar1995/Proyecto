@@ -1,89 +1,98 @@
 <!-- public/views/editData.html -->
 <div class="top-content">
-    <div class="inner-bg" >
-        <div class="container">
-            <div class="row " >
-                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                    <uib-tabset active="activeJustified" justified="true">
-                        <uib-tab  index="0" heading="Editar datos usuario">
-                            <form role="form"  class="login-form">
-                                <div class="form-group">
-                                    <label  for="form-old-password">Contraseña antigua</label>
-                                    <input type="password" name="form-old-password" ng-model="user.oldPassword" placeholder="Contraseña antigua..." class="form-username form-control" id="form-old-password">
-                                </div>
-                                <div class="form-group">
-                                    <label for="form-password">Nueva contraseña</label>
-                                    <input type="password" name="form-password" ng-model="user.password" placeholder="Nueva contraseña..." class="form-password form-control" id="form-password">
-                                </div>
-                                <div class="form-group">
-                                    <label  for="form-email">Email</label>
-                                    <input type="text" name="form-email" ng-model="user.email" placeholder="Email..." class="form-email form-control" id="form-email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="form-name">Nombre</label>
-                                    <input type="text" name="form-name" ng-model="user.name" placeholder="Nombre..." class="form-name form-control" id="form-name">
-                                </div>
-                                <div class="form-group">
-                                    <label  for="form-surname">Apellido</label>
-                                    <input type="text" name="form-surname" ng-model="user.surname" placeholder="Apellido..." class="form-surname form-control" id="form-surname">
-                                </div>
-                                <div class="form-group">
-                                    <!--Fecha nacimiento -->
-                                    <label for="dateInput" >Fecha de nacimiento</label>
-                                    <p class="input-group">
-                                        <input id="dateInput" type="text" class="form-control" uib-datepicker-popup="{{format}}" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-model="dateBorn" />
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                        </span>
-                                    </p>
-                                </div>
-                                <button ng-click="save(0)" class="btn">Guardar</button>
-                            </form>
-                        </uib-tab>
-                        <uib-tab index="1" heading="Editar datos jugador">
-                            <form role="form"  class="login-form">
-                                <div class="form-group">
-                                    <label for="form-namePlayer">Nombre jugador</label>
-                                    <input type="text" name="form-namePlayer" ng-model="player.name" placeholder="Nombre del jugador..." class="form-namePlayer form-control" id="form-namePlayer">
-                                </div>
-                                <div class="form-group">
-                                    <!--Portero -->
-                                    <input type="checkbox" ng-model="player.goalkeeper" id="form-goalkeeper" name="form-goalkeeper">
-                                    <label class="form-check-label" for="form-goalkeeper">Portero</label>
-                                </div>
-                                <div class="form-group">
-                                    <!--Coordinador -->
-                                    <input type="checkbox"  ng-model="player.coordinator" id="form-coordinator" name="form-coordinator">
-                                    <label class="form-check-label" for="form-coordinator">Coordinador</label>
-                                </div>
-                                <div class="form-group">
-                                    <!--Provincia -->
-                                    <label  for="form-province">Provincias</label>
-                                    <select class="form-select form-control" multiple name="form-province" id="form-province" ng-model="player.province" placeholder="Provincia...">
-                                        <option ng-repeat="province in provinces" ng-value="province.id">{{province.name}}</option>
-                                    </select>
-                                </div>
-                                <button ng-click="save(1)" class="btn">Guardar</button>
-                            </form>
-                        </uib-tab>
-                        <uib-tab ng-show="privileges.privileges" index="2" heading="Editar datos equipo">
-                            <form role="form"  class="login-form">
-                                <div class="form-group">
-                                    <label for="form-nameTeam">Nombre equipo</label>
-                                    <input type="text" name="form-nameTeam" ng-model="team.name" placeholder="Nombre del equipo..." class="form-nameTeam form-control" id="form-nameTeam">
-                                </div>
-                                <div class="form-group">
-                                    <!--Provincia -->
-                                    <label  for="form-province2">Provincias</label>
-                                    <select class="form-select form-control" multiple name="form-province" id="form-province2" ng-model="team.province" placeholder="Provincia...">
-                                        <option ng-repeat="province in provinces" ng-value="province.id">{{province.name}}</option>
-                                    </select>
-                                </div>
-                                <button ng-click="save(2)" class="btn">Guardar</button>
-                            </form>
-                        </uib-tab>
-                    </uib-tabset>
-                </div>
+    <div class="container">
+        <div class="row " >
+            <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                <uib-tabset active="activeJustified" justified="true">
+                    <uib-tab  index="0" heading="Editar datos usuario" >
+                        <form role="form" name="userDataForm" class="login-form" novalidate>
+                            <div class="form-group" ng-class="{ 'has-error' : userDataForm.oldPassword.$invalid && submittedUser }">
+                                <label  for="form-old-password">Contraseña antigua</label>
+                                <input ng-required="user.password!=''" type="password" name="oldPassword" ng-model="user.oldPassword" placeholder="Contraseña antigua..." class="form-username form-control" id="form-old-password">
+                                <p ng-show="userDataForm.oldPassword.$invalid && submittedUser " class="help-block">Introduce la contraseña antigua para cambiar a una nueva.</p>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : userDataForm.newPassword.$invalid && submittedUser }">
+                                <label for="form-password">Nueva contraseña</label>
+                                <input type="password" name="newPassword" ng-model="user.password" placeholder="Nueva contraseña..." class="form-password form-control" id="form-password" ng-minlength="8" ng-maxlength="16">
+                                <p ng-show="userDataForm.newPassword.$error.minlength" class="help-block">Contraseña demasiado corta(min. 8).</p>
+                                <p ng-show="userDataForm.newPassword.$error.maxlength" class="help-block">Contraseña demasiado larga (max. 16).</p>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : userDataForm.email.$invalid && submittedUser }">
+                                <label  for="form-email">Email</label>
+                                <input required  type="email" name="email" ng-model="user.email" placeholder="Email..." class="form-email form-control" id="form-email">
+                                <p ng-show="userDataForm.email.$invalid && submittedUser " class="help-block">Introduce tu email.</p>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : userDataForm.name.$invalid && submittedUser }">
+                                <label for="form-name">Nombre</label>
+                                <input required type="text" name="name" ng-model="user.name" placeholder="Nombre..." class="form-name form-control" id="form-name">
+                                <p ng-show="userDataForm.name.$invalid && submittedUser " class="help-block">Introduce tu nombre.</p>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : userDataForm.surname.$invalid && submittedUser }">
+                                <label  for="form-surname">Apellido</label>
+                                <input required type="text" name="surname" ng-model="user.surname" placeholder="Apellido..." class="form-surname form-control" id="form-surname">
+                                <p ng-show="userDataForm.surname.$invalid && submittedUser " class="help-block">Introduce tu apellido.</p>
+                            </div>
+                            <div ng-show="false" class="form-group" ng-class="{ 'has-error' : userDataForm.dateBorn.$invalid && submittedUser }">
+                                <!--Fecha nacimiento -->
+                                <label for="dateInput" >Fecha de nacimiento</label>
+                                <p class="input-group">
+                                    <input name="dateBorn" required id="dateInput" type="text" class="form-control" uib-datepicker-popup="{{format}}" is-open="popup1.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" ng-model="dateBorn" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                                <p ng-show="userDataForm.dateBorn.$invalid && submittedUser " class="help-block">Introduce tu fecha de nacimiento.</p>
+                            </div>
+                            <button ng-click="save(0,userDataForm.email.$invalid || userDataForm.name.$invalid || userDataForm.surname.$invalid || userDataForm.oldPassword.$invalid || userDataForm.newPassword.$invalid)" class="btn">Guardar</button>
+                        </form>
+                    </uib-tab>
+                    <uib-tab index="1" heading="Editar datos jugador" >
+                        <form role="form"  name="playerDataForm" class="login-form" novalidate>
+                            <div class="form-group"  ng-class="{ 'has-error' : playerDataForm.namePlayer.$invalid && submittedPlayer }">
+                                <label for="form-namePlayer">Nombre jugador</label>
+                                <input required type="text" name="namePlayer" ng-model="player.name" placeholder="Nombre del jugador..." class="form-namePlayer form-control" id="form-namePlayer">
+                                <p ng-show="playerDataForm.namePlayer.$invalid && submittedPlayer " class="help-block">Introduce el nombre de tu jugador.</p>
+                            </div>
+                            <div class="form-group">
+                                <!--Portero -->
+                                <input type="checkbox" ng-model="player.goalkeeper" id="form-goalkeeper" name="form-goalkeeper">
+                                <label class="form-check-label" for="form-goalkeeper">Portero</label>
+                            </div>
+                            <div class="form-group">
+                                <!--Coordinador -->
+                                <input type="checkbox"  ng-model="player.coordinator" id="form-coordinator" name="form-coordinator">
+                                <label class="form-check-label" for="form-coordinator">Coordinador</label>
+                            </div>
+                            <div class="form-group"  ng-class="{ 'has-error' : playerDataForm.provincePlayer.$invalid && submittedPlayer }">
+                                <!--Provincia -->
+                                <label  for="form-province">Provincias</label>
+                                <select required class="form-select form-control" multiple name="provincePlayer" id="form-province" ng-model="player.province" placeholder="Provincia...">
+                                    <option ng-repeat="province in provinces" ng-value="province.id">{{province.name}}</option>
+                                </select>
+                                <p ng-show="playerDataForm.provincePlayer.$invalid && submittedPlayer " class="help-block">Seleccione las provincias del jugador.</p>
+                            </div>
+                            <button ng-click="save(1,playerDataForm.provincePlayer.$invalid || playerDataForm.namePlayer.$invalid)" class="btn">Guardar</button>
+                        </form>
+                    </uib-tab>
+                    <uib-tab ng-show="privileges.privileges" index="2" heading="Editar datos equipo" >
+                        <form role="form" name="teamDataForm" class="login-form" novalidate>
+                            <div class="form-group"  ng-class="{ 'has-error' : teamDataForm.nameTeam.$invalid && submittedTeam }">
+                                <label for="form-nameTeam">Nombre equipo</label>
+                                <input required type="text" name="nameTeam" ng-model="team.name" placeholder="Nombre del equipo..." class="form-nameTeam form-control" id="form-nameTeam">
+                                <p ng-show="teamDataForm.nameTeam.$invalid && submittedTeam " class="help-block">Introduce el nombre del equipo.</p>
+                            </div>
+                            <div class="form-group"  ng-class="{ 'has-error' : teamDataForm.provinceTeam.$invalid && submittedTeam }">
+                                <!--Provincia -->
+                                <label  for="form-province2">Provincias</label>
+                                <select required class="form-select form-control" multiple name="provinceTeam" id="form-province2" ng-model="team.province" placeholder="Provincia...">
+                                    <option ng-repeat="province in provinces" ng-value="province.id">{{province.name}}</option>
+                                </select>
+                                <p ng-show="teamDataForm.provinceTeam.$invalid && submittedTeam " class="help-block">Seleccione las provincias del equipo.</p>
+                            </div>
+                            <button ng-click="save(2,teamDataForm.provinceTeam.$invalid || teamDataForm.nameTeam.$invalid)" class="btn" uib-popover="Nombre de equipo ya en uso, cambialo." popover-placement="bottom" popover-trigger="'none'" popover-is-open="popoverOpen">Guardar</button>
+                        </form>
+                    </uib-tab>
+                </uib-tabset>
             </div>
         </div>
     </div>

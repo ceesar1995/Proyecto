@@ -5,17 +5,31 @@
             <h1>Crea tu <strong>Equipo</strong></h1>
         </div>
         <div class="form-bottom">
-            <form role="form"  class="login-form">
-                <div class="form-group">
+            <form role="form" name="createTeamForm" class="login-form">
+                <div class="form-group" ng-class="{ 'has-error' : createTeamForm.formnameTeam.$invalid &&  submittedTeam }">
                     <label for="form-nameTeam">Nombre equipo</label>
-                    <input type="text" name="form-nameTeam" ng-model="team.name" placeholder="Nombre del equipo..." class="form-nameTeam form-control" id="form-nameTeam">
+                    <input type="text" name="formnameTeam" ng-model="team.name" placeholder="Nombre del equipo..." class="form-nameTeam form-control" id="form-nameTeam" required>
+                    <p ng-show="createTeamForm.formnameTeam.$invalid &&  submittedTeam" class="help-block">Introduce el nombre de tu jugador</p>
                 </div>
                 <div class="form-group">
+                    <!--Privado  -->
+                    <input type="checkbox" ng-model="team.private" id="form-private" name="formprivate">
+                    <label class="form-check-label" for="form-private">Privado</label>
+                </div>
+                <div ng-show="team.private" class="form-group" ng-class="{ 'has-error' : createTeamForm.formpassword.$invalid && submittedTeam }">
+                    <label for="form-password">Contraseña</label>
+                    <input type="password" name="formpassword" ng-model="team.password" placeholder="Contraseña..." class="form-password form-control" ng-required="team.private" id="form-password" ng-minlength="8" ng-maxlength="16">
+                    <p ng-show="createTeamForm.formpassword.$invalid && submittedTeam && !createTeamForm.formpassword.$error.minlength && !createTeamForm.formpassword.$error.maxlength " class="help-block">Introduce una contraseña</p>
+                    <p ng-show="createTeamForm.formpassword.$error.minlength" class="help-block">Contraseña demasiado corta(min. 8).</p>
+                    <p ng-show="createTeamForm.formpassword.$error.maxlength" class="help-block">Contraseña demasiado larga (max. 16).</p>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : createTeamForm.formprovince.$invalid  && submittedTeam }">
                     <!--Provincia -->
                     <label  for="form-province">Provincias</label>
-                    <select class="form-select form-control" multiple name="form-province" id="form-province" ng-model="team.province" placeholder="Provincia...">
+                    <select class="form-select form-control" multiple name="formprovince" id="form-province" ng-model="team.province" placeholder="Provincia..." required>
                         <option ng-repeat="province in provinces" ng-value="province.id" >{{province.name}}</option>
                     </select>
+                    <p ng-show="createTeamForm.formprovince.$invalid &&  submittedTeam" class="help-block">Selecciona al menos una provincias</p>
                 </div>
                 <nav class="navbar ">
                     <div class="navbar-header">
@@ -23,7 +37,7 @@
                     </div>
                     <!-- LINK TO OUR PAGES. ANGULAR HANDLES THE ROUTING HERE -->
                     <ul class="nav navbar-nav">
-                        <li><a href="/home" ng-click="registerPlayerAndTeam()">Siguiente</a></li>
+                        <li><a  ng-click="registerPlayerAndTeam(createTeamForm.formprovince.$invalid || createTeamForm.formnameTeam.$invalid || createTeamForm.formpassword.$invalid)" uib-popover="Nombre de equipo ya en uso, cambialo." popover-placement="bottom" popover-trigger="'none'" popover-is-open="popoverOpen">Siguiente</a></li>
                     </ul>
                 </nav>
             </form>

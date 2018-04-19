@@ -1,89 +1,68 @@
 // app/routes.js
-/*
-'use strict';
 
-var mongoose = require('mongoose'),
-    User = mongoose.model('User');
-var express = require('express');
-var router = express.Router();
-var bodyParser = require('body-parser');
-
-router.use(bodyParser.urlencoded({ extended: true }));
-
-
-
-
-
-  app.route('/user')
-     .get(userController.listAllUsers())
-     .post(userController.createAnUser());
-
- app.route('/user/:userId')
-    .get(userController.readAnUser())
-    .put(userController.updateAnUser())
-    .delete(userController.deleteAnUser());
-
-
-app.get('/api/user',function(req, res) {
-    User.find(function (err, users) {
-        if (err)
-            res.send(err);
-        res.json(users);
-    });
-});
-
-router.get('/api/users',function(req, res) {
-    User.find(function(err, users) {
-        if (err)
-            res.send(err);
-        res.json(users);
-    });
-});
-router.post('/api/user',function(req, res) {
-    var newUser = new User(req.body);
-    newUser.save(function(err, user) {
-        if (err)
-            res.send(err);
-        res.json(user);
-    });
-});
-
-router.get('/', function(req, res) {
-    res.sendfile('./public/views/index.html'); // load our public/index.html file
-});
-
-module.exports = router;
-*/
 module.exports = function(app) {
-
-    // server routes ===========================================================
-    // handle things like api calls
-    // authentication routes
-
-    // sample api route
-    app.get('/api/nerds', function(req, res) {
-        // use mongoose to get all nerds in the database
-        Nerd.find(function(err, nerds) {
-
-            // if there is an error retrieving, send the error.
-            // nothing after res.send(err) will execute
-            if (err)
-                res.send(err);
-
-            res.json(nerds); // return all nerds in JSON format
-        });
-    });
-
-    // route to handle creating goes here (app.post)
-    // route to handle delete goes here (app.delete)
-
-    // frontend routes =========================================================
-    // route to handle all angular requests
 
     app.get('/', function(req, res) {
         res.sendfile('./public/views/index.html'); // load our public/index.html file
     });
+    app.get('/register', function(req, res) {
+        res.sendfile('./public/views/index.html');
+    });
+    app.get('/forgottenPassword', function(req, res) {
+        res.sendfile('./public/views/index.html');
+    });
+    app.get('/firstLogIn', function(req, res) {
+        res.sendfile('./public/views/firstLogIn.html');
+    });
+    app.get('/createTeam', function(req, res) {
+        res.sendfile('./public/views/firstLogIn.html');
+    });
+    app.get('/joinTeam', function(req, res) {
+        res.sendfile('./public/views/firstLogIn.html');
+    });
+    app.get('/home', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/selectTeam', function(req, res) {
+        res.sendfile('./public/views/firstLogIn.html');
+    });
+    app.get('/playersTeam', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/search', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/createMatch', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/pendingMatches', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/nextMatches', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/previousMatches', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/changeTeam', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/editData', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/createNewTeam', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/messages', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
+    app.get('/searchMatch', function(req, res) {
+        res.sendfile('./public/views/home.html');
+    });
 
+    app.get('/resetPassword/:token', function(req, res) {
+        res.sendfile('./public/views/resetPassword.html');
+    });
 
 };
 

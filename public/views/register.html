@@ -1,13 +1,12 @@
 <!-- public/views/register.html -->
 <!-- HEADER -->
-<nav class="navbar ">
-    <div class="navbar-header">
+<nav class="navbar row ">
+    <div class="navbar-header col-sm-offset-4 col-sm-8 col-xs-12">
         <a class="navbar-brand" href="/">Log In</a>
+        <a class="navbar-brand"  href="/register">Register</a>
     </div>
     <!-- LINK TO OUR PAGES. ANGULAR HANDLES THE ROUTING HERE -->
-    <ul class="nav navbar-nav">
-        <li><a href="/register">Register</a></li>
-    </ul>
+
 </nav>
 <div class="form-top">
     <div class="form-top-left">
@@ -19,33 +18,48 @@
 </div>
 </div>
 <div class="form-bottom">
-    <form role="form"  class="login-form">
-        <div class="form-group">
+    <form role="form" name="registerForm" class="login-form" novalidate>
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.formusername.$invalid &&  submitted }">
             <label  for="form-username">Username</label>
-            <input type="text" name="form-username" ng-model="user.username" placeholder="Username..." class="form-username form-control" id="form-username">
+            <input type="text" name="formusername" ng-model="user.username" placeholder="Nombre de usuario..." required class="form-username form-control" id="form-username" ng-minlength="4" ng-maxlength="9">
+            <p ng-show="registerForm.formusername.$invalid &&  submitted && !registerForm.formusername.$error.minlength && !registerForm.formusername.$error.maxlength " class="help-block">Introduce un nombre de usuario</p>
+            <p ng-show="registerForm.formusername.$error.minlength" class="help-block">Usuario demasiado corto (min. 4).</p>
+            <p ng-show="registerForm.formusername.$error.maxlength" class="help-block">Username demasiado largo (max. 9).</p>
         </div>
-        <div class="form-group">
-            <label for="form-password">Password</label>
-            <input type="password" name="form-password" ng-model="user.password" placeholder="Password..." class="form-password form-control" id="form-password">
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.formpassword.$invalid && submitted }">
+            <label for="form-password">Contraseña</label>
+            <input type="password" name="formpassword" ng-model="user.password" placeholder="Contraseña..." class="form-password form-control" required id="form-password" ng-minlength="8" ng-maxlength="16">
+            <p ng-show="registerForm.formpassword.$invalid && submitted && !registerForm.formpassword.$error.minlength && !registerForm.formpassword.$error.maxlength " class="help-block">Introduce una contraseña</p>
+            <p ng-show="registerForm.formpassword.$error.minlength" class="help-block">Contraseña demasiado corta(min. 8).</p>
+            <p ng-show="registerForm.formpassword.$error.maxlength" class="help-block">Contraseña demasiado larga (max. 16).</p>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.formemail.$invalid && submitted }">
             <label  for="form-email">Email</label>
-            <input type="text" name="form-email" ng-model="user.email" placeholder="Email..." class="form-email form-control" id="form-email">
+            <input type="email" name="formemail" ng-model="user.email" placeholder="Email..." class="form-email form-control" required id="form-email">
+            <p ng-show="registerForm.formemail.$invalid && submitted " class="help-block">Email vacio o incorrecto.</p>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.formname.$invalid && submitted }">
             <label for="form-name">Nombre</label>
-            <input type="text" name="form-name" ng-model="user.name" placeholder="Nombre..." class="form-name form-control" id="form-name">
+            <input type="text" name="formname" ng-model="user.name" placeholder="Nombre..." class="form-name form-control" id="form-name" required>
+            <p ng-show="registerForm.formname.$invalid && submitted " class="help-block">Introduce tu nombre.</p>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.formsurname.$invalid && submitted }">
             <label  for="form-surname">Apellido</label>
-            <input type="text" name="form-surname" ng-model="user.surname" placeholder="Apellido..." class="form-surname form-control" id="form-surname">
+            <input type="text" name="formsurname" ng-model="user.surname" placeholder="Apellido..." class="form-surname form-control" required id="form-surname">
+            <p ng-show="registerForm.formsurname.$invalid && submitted " class="help-block">Introduce tu apellido.</p>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-class="{ 'has-error' : registerForm.formdate.$invalid && submitted }">
             <!--Fecha nacimiento -->
-            <label for="form-date" >Fecha de nacimiento</label>
-            <input type="date" class="form-dateBorn form-control" id="form-date" name="form-date" ng-model="user.dateBorn" placeholder="dd-MM-yyyy" min="01-01-1900" max="20-02-2018"/>
+            <label for="dateInput">Fecha de nacimiento</label>
+            <p class="input-group">
+                <input id="dateInput" type="text" name="formdate" class="form-control" uib-datepicker-popup="{{format}}" is-open="popup1.opened" datepicker-options="dateOptions" required close-text="Close" alt-input-formats="altInputFormats" ng-model="user.dateBorn" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
+            <p ng-show="registerForm.formdate.$invalid && submitted " class="help-block">Introduce tu fecha de nacimiento.</p>
         </div>
-        <button ng-click="registerUser()" class="btn">Registrarse</button>
+        <button ng-click="registerUser(registerForm.formusername.$invalid || registerForm.formpassword.$invalid || registerForm.formname.$invalid || registerForm.formsurname.$invalid || registerForm.formemail.$invalid || registerForm.formdate.$invalid)"  class="btn" uib-popover="Nombre de usuario ya en uso, cambialo." popover-placement="bottom" popover-trigger="'none'" popover-is-open="popoverOpen">Registrarse</button>
     </form>
 </div>
 

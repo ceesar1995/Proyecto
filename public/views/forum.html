@@ -1,40 +1,47 @@
 <!-- public/views/forum.html -->
 <div class="top-content">
-    <div class="inner-bg" >
-        <div class="container">
-            <div class="row " >
-                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                    <uib-tabset active="activeJustified" justified="true">
-                        <uib-tab ng-click="loadMessagesForum()" index="0" heading="Foro">
-                            <div class="row card">
+    <div class="container">
+        <div class="row " >
+            <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                <uib-tabset active="activeJustified" justified="true">
+                    <uib-tab ng-click="loadMessagesForum()" index="0" heading="Foro">
+                        <div class="row card">
+                            <form name="messageForumForm" novalidate>
                                 <div class="form-group col-xs-12 col-sm-8">
                                     <label for="inputsm">Mensaje</label>
                                     <input placeholder="Asunto..." class="form-control input-sm" id="inputsm" ng-model="message.subject" type="text">
                                 </div>
-                                <div class="col-xs-12  form-group">
+                                <div class="col-xs-12  form-group" ng-class="{ 'has-error' : messageForumForm.message.$invalid && submittedMessage }">
                                     <div class="row">
                                         <div class="col-sm-8 col-xs-12">
-                                            <input placeholder="Mensaje..." class="form-control input-lg" id="inputlg" ng-model="message.text" type="text">
+                                            <input placeholder="Mensaje..." name="message" required class="form-control input-lg" id="inputlg" ng-model="message.text" type="text">
+                                            <p ng-show="messageForumForm.message.$invalid && submittedMessage" class="help-block">No se puede enviar un mensaje sin texto</p>
                                         </div>
                                         <div class="col-sm-4 col-xs-12">
-                                            <button class="btn-primary btn" ng-click="sendMessage()">Enviar</button>
+                                            <button class="btn-primary btn" ng-click="sendMessage(messageForumForm.message.$invalid)">Enviar</button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <forum-card ng-repeat="message in messages" name="{{message.player}}" date="{{message.date}}" text="{{message.text}}" subject="{{message.subject}}" delete="deleteMessage(message,0)" ></forum-card>
-                        </uib-tab>
-                        <uib-tab ng-click="loadMessagesAnnouncement()" index="1" heading="Avisos recibidos">
-                            <forum-card ng-repeat="messageAnnouncement in messagesAnnouncement" name="{{messageAnnouncement.player}}" date="{{messageAnnouncement.date}}" text="{{messageAnnouncement.text}}" subject="{{messageAnnouncement.subject}}" delete="deleteMessage(messageAnnouncement,3)"></forum-card>
-                        </uib-tab>
-                        <uib-tab ng-click="loadMessagesTeamReceived()" index="2" heading="Mensajes recibidos">
-                            <forum-card ng-repeat="messageReceived in messagesTeamReceived" name="{{messageReceived.player}}" date="{{messageReceived.date}}" text="{{messageReceived.text}}" subject="{{messageReceived.subject}}" delete="deleteMessage(messageReceived,2)"></forum-card>
-                        </uib-tab>
-                        <uib-tab ng-click="loadMessagesTeamSent()" index="3" heading="Mensajes enviados">
-                            <forum-card ng-repeat="messageSent in messagesTeamSent" name="{{messageSent.player}}" date="{{messageSent.date}}" text="{{messageSent.text}}" subject="{{messageSent.subject}}" delete="deleteMessage(messageSent,1)"></forum-card>
-                        </uib-tab>
-                    </uib-tabset>
+                            </form>
+                        </div>
+                        <forum-card ng-repeat="message in messages.slice(((currentPage-1)*10), ((currentPage)*10))" name="{{message.player}}" date="{{message.date}}" text="{{message.text}}" subject="{{message.subject}}" delete="deleteMessage(message,0)" ></forum-card>
+                    </uib-tab>
+                    <uib-tab ng-click="loadMessagesAnnouncement()" index="1" heading="Avisos recibidos">
+                        <forum-card ng-repeat="messageAnnouncement in messagesAnnouncement.slice(((currentPage-1)*10), ((currentPage)*10))" name="{{messageAnnouncement.player}}" date="{{messageAnnouncement.date}}" text="{{messageAnnouncement.text}}" subject="{{messageAnnouncement.subject}}" delete="deleteMessage(messageAnnouncement,3)"></forum-card>
+                    </uib-tab>
+                    <uib-tab ng-click="loadMessagesTeamReceived()" index="2" heading="Mensajes recibidos">
+                        <forum-card ng-repeat="messageReceived in messagesTeamReceived.slice(((currentPage-1)*10), ((currentPage)*10))" name="{{messageReceived.player}}" date="{{messageReceived.date}}" text="{{messageReceived.text}}" subject="{{messageReceived.subject}}" delete="deleteMessage(messageReceived,2)"></forum-card>
+                    </uib-tab>
+                    <uib-tab ng-click="loadMessagesTeamSent()" index="3" heading="Mensajes enviados">
+                        <forum-card ng-repeat="messageSent in messagesTeamSent.slice(((currentPage-1)*10), ((currentPage)*10))" name="{{messageSent.player}}" date="{{messageSent.date}}" text="{{messageSent.text}}" subject="{{messageSent.subject}}" delete="deleteMessage(messageSent,1)"></forum-card>
+                    </uib-tab>
+                </uib-tabset>
+                <div class="row">
+                    <div class="col-sm-offset-4 col-sm-6 col-xs-12">
+                        <p ng-show="totalItemsM==0">No hay mensajes que mostrar</p>
+                    </div>
                 </div>
+                <ul uib-pagination total-items="totalItemsM" ng-show="totalItemsM>10" ng-model="currentPage" ></ul>
             </div>
         </div>
     </div>

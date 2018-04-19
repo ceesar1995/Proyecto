@@ -1,13 +1,13 @@
 // public/js/services/AnnouncementService.js
-angular.module('AnnouncementService', []).factory('AnnouncementService', ['ApiService',function(ApiService) {
+angular.module('AnnouncementService', []).factory('AnnouncementService', ['ApiService',function(ApiService,$localStorage) {
     return {
-        createAnnouncement : function (announcement,match,idTeam,nameTeam) {
+        createAnnouncement : function (announcement,match,idTeam,nameTeam,date) {
 
             var message = {};
             message.date = new Date();
-            var d = new Date(match.dateBegin);
             message.subject = announcement + nameTeam;
-            message.text = "El partido se realizaría en la siguiente fecha: " + d.getUTCDay() +"/" + d.getUTCMonth() + " - " + d.getUTCHours() + ":" + d.getUTCMinutes() + " ,en el siguiente lugar: "+match.place+".";
+            message.text = "El partido se realizaría en la siguiente fecha: " + date + " ,en el siguiente lugar: "+match.place+".";
+            message.idUser = $localStorage.currentUser.user_id;
             ApiService.createMessage(message).then(
                 function (responseMessage) {
                     if(responseMessage.statusText=="OK"){
@@ -26,12 +26,12 @@ angular.module('AnnouncementService', []).factory('AnnouncementService', ['ApiSe
                 }
             )
         },
-        createAnnouncementsConfirmed :function (match,idTeam,teamName) {
+        createAnnouncementsConfirmed :function (match,idTeam,teamName,date) {
             var message = {};
             message.date = new Date();
-            var d = new Date(match.dateBegin);
             message.subject = "Partido confirmado entre " + match.name + " - " + teamName;
-            message.text = "El partido se realizara en la siguiente fecha: " + d.getUTCDay() +"/" + d.getUTCMonth() + " - " + d.getUTCHours() + ":" + d.getUTCMinutes() + " ,en el siguiente lugar: "+match.place+".";
+            message.text = "El partido se realizara en la siguiente fecha: " + date + " ,en el siguiente lugar: "+match.place+".";
+            message.idUser = $localStorage.currentUser.user_id;
             ApiService.createMessage(message).then(
                 function (responseMessage) {
                     if (responseMessage.statusText == "OK") {
@@ -50,6 +50,7 @@ angular.module('AnnouncementService', []).factory('AnnouncementService', ['ApiSe
             ApiService.createMessage(message).then(
                 function (responseMessage) {
                     if (responseMessage.statusText == "OK") {
+                        var messageAnnouncement = {};
                         messageAnnouncement.idMessage = responseMessage.data._id;
                         messageAnnouncement.idTeam = match.idTeam;
                         ApiService.sendMessageAnnouncement(messageAnnouncement).then(
@@ -59,6 +60,30 @@ angular.module('AnnouncementService', []).factory('AnnouncementService', ['ApiSe
                                 }
                             }
                         );
+                    }
+                }
+            )
+        },createAnnouncementCancelled : function (announcement,idTeam,nameTeam,date) {
+
+            var message = {};
+            message.date = new Date();
+            message.subject = announcement + nameTeam;
+            message.text = "El partido ha sido cancelado el " + date  +".";
+            message.idUser = $localStorage.currentUser.user_id;
+            ApiService.createMessage(message).then(
+                function (responseMessage) {
+                    if(responseMessage.statusText=="OK"){
+                        var messageAnnouncement = {};
+                        messageAnnouncement.idMessage = responseMessage.data._id;
+                        messageAnnouncement.idTeam = idTeam;
+                        ApiService.sendMessageAnnouncement(messageAnnouncement).then(
+                            function (responseMessageTeam) {
+                                if(responseMessageTeam.statusText=="OK"){
+                                    console.log(responseMessageTeam.data);
+                                }
+                            }
+                        );
+
                     }
                 }
             )

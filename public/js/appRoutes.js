@@ -13,7 +13,7 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
             controller: 'RegisterController'
         })
 
-        .when('/views/firstLogIn.html', {
+        .when('/firstLogIn', {
             templateUrl: 'views/createPlayer.html',
             controller: 'RegisterController'
         })
@@ -84,7 +84,15 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
         .when('/searchMatch', {
             templateUrl: 'views/searchMatch.html',
             controller: 'SearchMatchController'
-        });
+        })
+        .when('/forgottenPassword', {
+            templateUrl: 'views/forgottenPassword.html',
+            controller: 'ForgottenPasswordController'
+        })
+        .when('/resetPassword/:token', {
+            templateUrl: 'views/resetPassword.html',
+            controller: 'ResetPasswordController'
+        }).otherwise({ redirectTo: '/'});
 
 
 

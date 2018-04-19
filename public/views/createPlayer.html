@@ -5,27 +5,29 @@
             <h1>Crea tu perfil de <strong>Jugador</strong></h1>
         </div>
         <div class="form-bottom">
-            <form role="form"  class="login-form">
-                <div class="form-group">
+            <form role="form"  name="createPlayerForm" class="login-form" novalidate>
+                <div class="form-group" ng-class="{ 'has-error' : createPlayerForm.formnamePlayer.$invalid &&  submittedPlayer }">
                     <label for="form-namePlayer">Nombre jugador</label>
-                    <input type="text" name="form-namePlayer" ng-model="player.name" placeholder="Nombre del jugador..." class="form-namePlayer form-control" id="form-namePlayer">
+                    <input type="text" name="formnamePlayer" ng-model="player.name" placeholder="Nombre del jugador..." class="form-namePlayer form-control" required id="form-namePlayer">
+                    <p ng-show="createPlayerForm.formnamePlayer.$invalid && submittedPlayer" class="help-block">Introduce el nombre de tu jugador</p>
                 </div>
                 <div class="form-group">
                     <!--Portero -->
-                    <input type="checkbox" ng-model="player.goalkeeper" id="form-goalkeeper" name="form-goalkeeper">
+                    <input type="checkbox" ng-model="player.goalkeeper" id="form-goalkeeper" name="formgoalkeeper">
                     <label class="form-check-label" for="form-goalkeeper">Portero</label>
                 </div>
                 <div class="form-group">
                     <!--Coordinador -->
-                    <input type="checkbox"  ng-model="player.coordinator" id="form-coordinator" name="form-coordinator">
+                    <input type="checkbox"  ng-model="player.coordinator" id="form-coordinator" name="formcoordinator">
                     <label class="form-check-label" for="form-coordinator">Coordinador</label>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-class="{ 'has-error' : createPlayerForm.formprovince.$invalid &&  submittedPlayer }">
                     <!--Provincia -->
                     <label  for="form-province">Provincias</label>
-                    <select class="form-select form-control" multiple name="form-province" id="form-province" ng-model="player.province" placeholder="Provincia...">
+                    <select class="form-select form-control" multiple name="formprovince" id="form-province" ng-model="player.province" required placeholder="Provincia...">
                         <option ng-repeat="province in provinces" value={{province.id}}>{{province.name}}</option>
                     </select>
+                    <p ng-show="createPlayerForm.formprovince.$invalid && submittedPlayer " class="help-block">Seleccione al menos una provincia</p>
                 </div>
                 <nav class="navbar ">
                     <div class="navbar-header">
@@ -33,7 +35,7 @@
                     </div>
                     <!-- LINK TO OUR PAGES. ANGULAR HANDLES THE ROUTING HERE -->
                     <ul class="nav navbar-nav">
-                        <li><a  ng-click="savePlayerData()">Siguiente</a></li>
+                        <li><a  ng-click="savePlayerData(createPlayerForm.formprovince.$invalid || createPlayerForm.formnamePlayer.$invalid)">Siguiente</a></li>
                     </ul>
                 </nav>
             </form>

@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Ficha de {{$ctrl.player.name}}</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="row">
+        <div class="col-sm-4 col-xs-12">
+            <label>Fecha de inscripcion equipo: {{$ctrl.playerTeam.date | date:'d/M/yy' }}</label>
+        </div>
+        <div class="col-sm-4 col-xs-12 form-group">
+            <!--Creador -->
+            <input disabled readonly type="checkbox" ng-model="$ctrl.playerTeam.creator" id="formCreator" >
+            <label class="form-check-label" for="formCreator">Creador del equipo</label>
+        </div>
+        <div class="col-sm-4 col-xs-12 form-group">
+            <!--Privilegios -->
+            <input disabled readonly type="checkbox" ng-model="$ctrl.playerTeam.privileges" id="formPrivileges" >
+            <label class="form-check-label" for="formPrivileges">Tiene permisos</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 col-xs-12">
+            <label>Goles: {{$ctrl.playerGoals}}</label>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <label>Partidos jugados: {{$ctrl.playerMatchesPlayed}}</label>
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            <label>Partidos convocado: {{$ctrl.playerMatchesSummoned}}</label>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="button" ng-click="$ctrl.givePrivileges()" ng-show="!$ctrl.playerTeam.privileges && $ctrl.privileges">Dar permisos</button>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancelar</button>
+</div>

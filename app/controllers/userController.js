@@ -88,7 +88,10 @@ module.exports = function (app) {
         User.findOne({username:req.params.username}, function (err, user) {
             if (err)
                 res.send(err);
-            res.json(user);
+            if(user)
+                res.json("USER FOUND");
+            else
+                res.json(null);
         });
     };
 
@@ -125,6 +128,7 @@ module.exports = function (app) {
             // Return if user not found in database
             if (!user) {
                 res.status(401).json(err);
+                return;
             }
             if (user.validPassword(req.body.password)) {
                 token = user.generateJwt();
@@ -164,18 +168,17 @@ module.exports = function (app) {
         });
     }
 
-    app.get('/api/user', listAllUsers);
+    //app.get('/api/user', listAllUsers);
     app.post('/api/user', createAnUser);
     app.get('/api/user/:userId', readAnUser);
     app.put('/api/user/:userId', updateAnUser);
-    app.delete('/api/user/:userId', deleteAnUser);
+    //app.delete('/api/user/:userId', deleteAnUser);
 
-    app.post('/api/checkUser', checkUser);
-    app.get('/api/userByUsername/:username', getUserByUsername);
+    //app.post('/api/checkUser', checkUser);
+    app.get('/userByUsername/:username', getUserByUsername);
 
     app.post('/logIn',userLogin);
     app.post('/register',registerUser);
-
 
 }
 

@@ -1,20 +1,20 @@
 <div class='card'>
-    <div class='card-body row'>
-        <div class="col-xs-2">
-            <h5>{{name}}</h5>
+        <div class='card-body row'>
+            <div class="col-xs-2">
+                <h5>{{name}}</h5>
+            </div>
+            <div class="col-xs-2">
+                <h5 class='card-text' ng-show="goalkeeper == 'false'" >Jugador</h5>
+                <h5 class='card-text' ng-show="goalkeeper == 'true'" >Portero</h5>
+            </div>
+            <div class="col-xs-2">
+                <input class="form-check-input" ng-model="played" type="checkbox" id="playedCheckbox">
+            </div>
+            <div class="col-xs-3">
+                <input type="number" class="form-control" id="goalsInput" min="0" ng-model="goals">
+            </div>
+            <div class="col-xs-3">
+                <button  class='btn-primary btn' ng-click='save()' >Guardar</button>
+            </div>
         </div>
-        <div class="col-xs-2">
-            <h5 class='card-text' ng-show="goalkeeper == 'false'" >Jugador</h5>
-            <h5 class='card-text' ng-show="goalkeeper == 'true'" >Portero</h5>
-        </div>
-        <div class="col-xs-2">
-            <input class="form-check-input" ng-model="played" type="checkbox" id="playedCheckbox">
-        </div>
-        <div class="col-xs-3">
-            <input type="number" class="form-control" id="goalsInput" min="0" ng-model="goals">
-        </div>
-        <div class="col-xs-3">
-            <button  class='btn-primary btn' ng-click='save()' >Guardar</button>
-        </div>
-    </div>
 </div>

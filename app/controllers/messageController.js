@@ -339,11 +339,11 @@ module.exports = function (app) {
         });
     };
 
-    app.get('/api/message', listAllMessage);
+    // app.get('/api/message', listAllMessage);
     app.post('/api/message', createAMessage);
-    app.get('/api/message/:messageId', readAMessage);
+    // app.get('/api/message/:messageId', readAMessage);
     app.put('/api/message/:messageId', updateAMessage);
-    app.delete('/api/message/:messageId', deleteAMessage);
+    //app.delete('/api/message/:messageId', deleteAMessage);
 
     //Forum
     app.get('/api/messagesForum/:teamId',getMessagesForum);

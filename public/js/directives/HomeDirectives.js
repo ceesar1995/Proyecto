@@ -21,7 +21,8 @@ myDirective.directive("playerCard", function(){
             goalkeeper:'@',
             coordinator: '@',
             date : '@',
-            provinces: '@'
+            provinces: '@',
+            showDetails:'&'
         },
         restrict: "E",
         templateUrl: 'js/directives/templates/playerCard.html'
@@ -35,10 +36,11 @@ myDirective.directive("teamSearchCard", function(){
             _id:'@',
             click:'&',
             showBt: '&',
-            show: '@',
+            show: '=',
             subject: '=',
             text: '=',
-            joinTeam: '&'
+            joinTeam: '&',
+            submittedMessage: '='
         },
         restrict: "E",
         templateUrl: 'js/directives/templates/teamSearchCard.html'
@@ -52,9 +54,10 @@ myDirective.directive("playerSearchCard", function(){
             provinces: '@',
             _id:'@',
             click:'&',
-            show: '@',
+            show: '=',
             subject: '=',
-            text: '='
+            text: '=',
+            submittedMessage: '='
         },
         restrict: "E",
         templateUrl: 'js/directives/templates/playerSearchCard.html'
@@ -121,7 +124,9 @@ myDirective.directive("nextMatchCard", function(){
             rules: '@',
             dateCreated: '@',
             _id:'@',
-            summonBt :'&'
+            summonBt :'&',
+            showBt :'&',
+            cancel :'&'
         },
         restrict: "E",
         templateUrl: 'js/directives/templates/nextMatchCard.html'

@@ -1,11 +1,9 @@
 <!-- public/views/changeTeam.html -->
 <div class="top-content">
-    <div class="inner-bg" >
-        <div class="container">
-            <div class="row " >
-                <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                    <team ng-repeat="team in teams" name="{{team.name}}"  id="{{team._id}}" click="selectTeam(id,team)" ></team>
-                </div>
+    <div class="container">
+        <div class="row " >
+            <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
+                <team ng-repeat="team in teams" name="{{team.name}}"  id="{{team._id}}" click="selectTeam(id,team)" ></team>
             </div>
         </div>
     </div>
