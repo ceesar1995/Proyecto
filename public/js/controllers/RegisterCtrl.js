@@ -3,6 +3,8 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
 
     $scope.submitted = false;
 
+    $scope.termConditions = false;
+
     if($localStorage.currentUser){
         $http.defaults.headers.common.Authorization =  $localStorage.currentUser.token;
     }
@@ -391,5 +393,22 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
         window.location.href = "/home"
     }
 
+
+    $scope.termsConditions = function () {
+        console.log("OK");
+        var data = {
+            data : function () {
+            return 'OK';
+        }
+        };
+        var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/termsConditionsModal.html','ModalInstanceConfirmCtrl','lg',data));
+        modalInstance.result.then(function () {
+            console.log("CONFIRMADO");
+            joinTeamPublic(team);
+
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    }
 
 });
