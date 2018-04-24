@@ -403,4 +403,24 @@ module.exports = function (app) {
     app.put('/api/resetPassword', resetPassword);
 
 
+    var updateToken = function (req, res) {
+
+        User.findOne({_id: tokenDecoded._id ,deleted:false}, function (err, user) {
+            if(err){
+                res.send(err);
+            }
+
+            if(user){
+                var token = user.generateJwt();
+                res.status(200).json(token);
+            }
+            else{
+                res.json(null);
+            }
+        });
+
+
+    };
+
+    app.get('/api/tokenUpdated',updateToken);
 }

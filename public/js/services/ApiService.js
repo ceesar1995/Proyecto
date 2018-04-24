@@ -208,6 +208,9 @@ angular.module('ApiService', []).factory('ApiService', ['$http','$q', function($
             return $http.get('/forgottenPassword/'+email);
         },resetPassword :  function (password) {
             return $http.put('/api/resetPassword/',password);
+        },
+        updateToken : function () {
+            return $http.get('/api/tokenUpdated');
         }
 
 

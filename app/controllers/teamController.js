@@ -100,7 +100,7 @@ module.exports = function (app) {
 
     //app.get('/api/team', listAllTeams);
     app.post('/api/team', createATeam);
-    //app.get('/api/team/:teamId', readATeam);
+    app.get('/api/team/:teamId', readATeam);
     app.put('/api/team/:teamId', updateATeam);
     //app.delete('/api/team/:teamId', deleteATeam);
 

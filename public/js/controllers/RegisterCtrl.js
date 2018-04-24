@@ -67,7 +67,7 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
                                             var id = response.data.user_id;
                                             // store username and token in local storage to keep user logged in between page refreshes
                                             $localStorage.currentUser = {user_id: id, token: token};
-                                            RouterService.openPage("/views/firstLogIn.html");
+                                            $location.path("/firstLogIn");
                                         }
                                     }
                                 });
@@ -265,7 +265,7 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
     }
     var joinTeamPrivate = function (team,password) {
         if(!$localStorage.currentPlayer){
-            ApiService.checkTeamPassword(team._id,password).then(
+            ApiService.checkTeamPassword(team._id,{password:password}).then(
                 function (responsePassword) {
                     if(responsePassword.statusText="OK"){
                         if(responsePassword)
@@ -346,9 +346,19 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
                                 $localStorage.currentTeam = {team_id: responsePlayerToTeam.data.idTeam,team_name: team.name};
                                 $localStorage.currentPlayer = {
                                     player_id: responsePlayerToTeam.data.idPlayer,
-                                    player_name: responsePlayer.data.name
+                                    player_name: responsePlayer.data.name,
+                                    player_coordinator:responsePlayer.data.coordinator
                                 };
-                                $timeout(sendHome,2000);
+                                ApiService.updateToken().then(
+                                    function (tokenUpdated) {
+                                        if(tokenUpdated.statusText="OK"){
+                                            if(tokenUpdated.data){
+                                                $localStorage.currentUser.token = tokenUpdated.data;
+                                                $timeout(sendHome,2000);
+                                            }
+                                        }
+                                    }
+                                )
                             })
                         }
                     )
@@ -404,8 +414,6 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/termsConditionsModal.html','ModalInstanceConfirmCtrl','lg',data));
         modalInstance.result.then(function () {
             console.log("CONFIRMADO");
-            joinTeamPublic(team);
-
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
