@@ -22,7 +22,7 @@ myDirective.directive("team", function(){
             click:'&'
         },
         restrict: "E",
-        template: "<div class='list-group' ng-click='click({id:id})'> <a  class='list-group-item'>   <h4 class='list-group-item-heading'>{{name}}</h4>  </a>  </div>"
+        template: "<div class='list-group pointer' ng-click='click({id:id})'> <a  class='list-group-item'>   <h4 class='list-group-item-heading'>{{name}}</h4>  </a>  </div>"
     }
 });
 myDirective.directive("teamJoinCard", function(){

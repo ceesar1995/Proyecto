@@ -96,9 +96,13 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
     $ctrl.setButtons = function () {
         console.log("OLE"+isMyPlayerAlreadySummoned);
         if(isMyPlayerAlreadySummoned){
-            $ctrl.actionBtLabel = "Desapuntar";
+            if(myPlayerSummonedByRival){
+                $ctrl.actionBtLabel = "Apuntarse";
+            }
+            else{
+                $ctrl.actionBtLabel = "Desapuntar";
+            }
             summon = true;
-
         }
         else{
             $ctrl.actionBtLabel = "Apuntarse";
@@ -152,6 +156,12 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
                         }
                         else{
                             console.log("FALLO");
+                            if(response.data.matchesPlayers[i].idTeam != myTeamId) {
+                                $ctrl.rivalTeamPlayers.push(players[i]);
+                            }
+                            else{
+                                $ctrl.myTeamPlayers.push(players[i]);
+                            }
                         }
                         players[i].date = response.data.matchesPlayers[i].date;
                         console.log(players[i]);

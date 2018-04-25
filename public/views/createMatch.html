@@ -4,7 +4,7 @@
         <div class="row " >
             <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-xs-12 padding-bottom">
                         <form name="createMatchForm" novalidate>
                             <div class="form-group" ng-class="{ 'has-error' : createMatchForm.matchPlace.$invalid && submittedMatch }">
                                 <label for="placeInput">Lugar del partido:</label>
@@ -32,10 +32,10 @@
                                         <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
                                 </p>
-                                <p ng-show="createMatchForm.matchProvince.$invalid && submittedMatch" class="help-block">Introduce la fecha en la que se jugara el partido</p>
+                                <p ng-show="createMatchForm.matchDate.$invalid && submittedMatch" class="help-block">Introduce la fecha en la que se jugara el partido</p>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-6 col-xs-12 form-group" ng-class="{ 'has-error' : createMatchForm.matchHourBegin.$invalid && submittedMatch }">
+                            <div class="row center">
+                                <div class="col-sm-6 col-xs-12 " ng-class="{ 'has-error' : createMatchForm.matchHourBegin.$invalid && submittedMatch }">
                                     <label>Hora de inicio:</label>
                                     <div required name="matchHourBegin" uib-timepicker ng-model="timeBegin" hour-step="1" minute-step="5" show-meridian="false"></div>
                                     <p ng-show="createMatchForm.matchHourBegin.$invalid && submittedMatch" class="help-block">Introduce la hora en la que se iniciara el partido</p>

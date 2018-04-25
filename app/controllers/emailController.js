@@ -3,7 +3,6 @@
 var nodeMailer = require('nodemailer');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var EmailTemplate = require('email-templates').EmailTemplate;
 var handlebars = require('handlebars');
 var fs = require('fs');
 
@@ -89,7 +88,7 @@ module.exports = function(app) {
             var mailOptions = {
                 from: '"PachangaNet" <pachangaNetInfo@gmail.com>', // sender address
                 to: email, // list of receivers
-                subject: "Reset Password", // Subject line
+                subject: "Contraseña olvidada", // Subject line
                 text: "pulse el siguiente link", // plain text body
                 html: htmlToSend// html body
             };
@@ -130,5 +129,4 @@ module.exports = function(app) {
     };
 
 }
-
 

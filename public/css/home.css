@@ -25,13 +25,13 @@ form.tab-form-demo .tab-pane {
 }
 
 body {
+    background-color: #e7e7e7;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 300;
     color: #888;
     line-height: 30px;
     text-align: center;
-    background-image: url("/public/assets/img/backgrounds/futbol-sala-fondo2.png");
 }
 
 strong { font-weight: 500; }
@@ -215,4 +215,25 @@ img { max-width: 100%; }
 
 }
 
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.35);
+    color: white;
+    text-align: center;
+}
+.padding-bottom {
+    padding-bottom: 5em;
+}
+.pointer {cursor: pointer;}
 
+.padding-top {
+    padding-top: 5em;
+}

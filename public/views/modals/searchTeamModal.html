@@ -16,7 +16,7 @@
         </div>
         <button class="btn-primary btn" ng-click="$ctrl.searchTeam()">Buscar</button>
     </form>
-    Selected: <b>{{ $ctrl.selectedTeam.team.name }}</b>
+    Seleccionado: <b>{{ $ctrl.selectedTeam.team.name }}</b>
     <team-invite-card ng-repeat="team in $ctrl.teams" name="{{team.name}}"  provinces="{{team.provinces}}" click="$event.preventDefault();$ctrl.selectTeam(team)"></team-invite-card>
 </div>
 <div class="modal-footer">

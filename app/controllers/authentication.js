@@ -86,7 +86,7 @@ module.exports = function (app) {
                 });
             }
             catch (err){
-                res.send(err);
+                res.sendfile('./public/views/index.html');
             }
 
         }

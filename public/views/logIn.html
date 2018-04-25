@@ -3,15 +3,15 @@
 <nav class="navbar row ">
     <div class="navbar-header col-sm-offset-4 col-sm-8 col-xs-12">
         <a class="navbar-brand" href="/">Log In</a>
-        <a class="navbar-brand"  href="/register">Register</a>
+        <a class="navbar-brand"  href="/register">Registrate</a>
     </div>
     <!-- LINK TO OUR PAGES. ANGULAR HANDLES THE ROUTING HERE -->
 
 </nav>
 <div class="form-top">
     <div class="form-top-left">
-        <h3>Login to our site</h3>
-        <p>Enter your username and password to log on:</p>
+        <h3>Log in</h3>
+        <p>Introduce tu nombre de usuario y contraseña para loguearte:</p>
     </div>
     <div class="form-top-right">
         <i class="fa fa-lock"></i>
@@ -20,19 +20,21 @@
 <div class="form-bottom">
     <form role="form" name="loginForm" class="login-form" novalidate>
         <div class="form-group" ng-class="{ 'has-error' : loginForm.formusername.$invalid &&  submitted }">
-            <label class="sr-only" for="form-username">Username</label>
-            <input type="text" name="formusername" ng-model="username" placeholder="Username..." class="form-username form-control" required id="form-username">
+            <label class="sr-only" for="form-username">Nombre de usuario</label>
+            <input type="text" name="formusername" ng-model="username" placeholder="Nombre de usuario..." class="form-username form-control" required id="form-username">
             <p ng-show="loginForm.formusername.$invalid &&  submitted " class="help-block">Introduce tu nombre de usuario</p>
         </div>
         <div class="form-group" ng-class="{ 'has-error' : loginForm.formpassword.$invalid  && submitted }">
-            <label class="sr-only" for="form-password">Password</label>
-            <input type="password" name="formpassword" ng-model="password" placeholder="Password..." class="form-password form-control" required id="form-password">
+            <label class="sr-only" for="form-password">Contraseña</label>
+            <input type="password" name="formpassword" ng-model="password" placeholder="Contraseña..." class="form-password form-control" required id="form-password">
             <p ng-show="loginForm.formpassword.$invalid &&  submitted " class="help-block">Introduce tu contraseña</p>
 
         </div>
-        <button uib-popover="Usuario o contraseña incorrecto" popover-placement="bottom" popover-trigger="'none'" popover-is-open="popoverOpen" ng-click="checkUser()" class="btn">Sign in!</button>
+        <button uib-popover="Usuario o contraseña incorrecto" popover-placement="bottom" popover-trigger="'none'" popover-is-open="popoverOpen" ng-click="checkUser()" class="btn">Entrar</button>
     </form>
-    <a href="/forgottenPassword">¿Has olvidado tu contraseña?</a>
+    <div class="center">
+        <a href="/forgottenPassword">¿Has olvidado tu contraseña?</a>
+    </div>
 </div>
 
 

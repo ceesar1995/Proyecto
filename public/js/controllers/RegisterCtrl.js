@@ -66,7 +66,7 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
                                             ApiService.sendEmailWelcome(email);
                                             var id = response.data.user_id;
                                             // store username and token in local storage to keep user logged in between page refreshes
-                                            $localStorage.currentUser = {user_id: id, token: token};
+                                            $localStorage.currentUser = {user_id: id, token: token,username:userData.username};
                                             $location.path("/firstLogIn");
                                         }
                                     }
@@ -163,7 +163,16 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
                                                 player_id: responsePlayerToTeam.data.idPlayer,
                                                 player_name: responsePlayer.data.name
                                             };
-                                            $timeout(sendHome,2000);
+                                            ApiService.updateToken().then(
+                                                function (tokenUpdated) {
+                                                    if(tokenUpdated.statusText="OK"){
+                                                        if(tokenUpdated.data){
+                                                            $localStorage.currentUser.token = tokenUpdated.data;
+                                                            $timeout(sendHome,2000);
+                                                        }
+                                                    }
+                                                }
+                                            )
                                         })
                                     }
                                 )

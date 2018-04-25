@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <base href="/">
-    <title>HOME</title>
+    <base href="/home">
+    <title>PachangaNet</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="libs/font-awesome//web-fonts-with-css/css/font-awesome.css">
@@ -51,7 +51,7 @@
     <script src="js/app.js"></script>
 </head>
 <body ng-app="homeApp" ng-controller="ForumController">
-    <nav class="navbar navbar-default" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top " role="navigation" style="background-color: #bac1b9;">
         <div class="container-fluid">
             <!-- El logotipo y el icono que despliega el menú se agrupan
                  para mostrarlos mejor en los dispositivos móviles -->
@@ -93,7 +93,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control" ng-model="searchForm" laceholder="Buscar jugadores o equipos">
                     </div>
-                    <button  class="btn btn-success" href="/search" ng-click="search()">Buscar</button>
+                    <button  class="btn btn-primary" href="/search" ng-click="search()">Buscar</button>
                 </form>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -116,7 +116,12 @@
             </div>
         </div>
     </nav>
-    <div ng-view></div>
+    <div class="padding-top">
+        <div ng-view></div>
+    </div>
+    <div class="footer " >
+        pachanganetinfo@gmail.com
+    </div>
 </body>
 </html>
 

@@ -11,6 +11,8 @@ var passport = require('passport');
 var user     = require('./app/models/user');
 var playerTeam     = require('./app/models/playerTeam');
 // configuration ===========================================
+var schedule = require('node-schedule');
+
 
 
 var app = express();
@@ -64,9 +66,13 @@ require('./app/controllers/messageController')(app);
 require('./app/controllers/matchController')(app);
 require('./app/controllers/emailController')(app);
 require('./app/routes')(app);
-/*router.get('/', function(req, res) {
-    res.sendfile('/public/views/index.html'); // load our public/index.html file
-});*/
+
+var sendAnnouncements = schedule.scheduleJob('* 03 * * *', function(){
+    var schedulerController = require('./app/controllers/schedulerController');
+    schedulerController.sendAnnouncements();
+});
+
+
 // start app ===============================================
 // error handlers
 // Catch unauthorised errors
