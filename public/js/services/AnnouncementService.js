@@ -1,13 +1,13 @@
 // public/js/services/AnnouncementService.js
-angular.module('AnnouncementService', []).factory('AnnouncementService', ['ApiService',function(ApiService,$localStorage) {
+angular.module('AnnouncementService', []).factory('AnnouncementService', ['ApiService',function(ApiService) {
     return {
-        createAnnouncement : function (announcement,match,idTeam,nameTeam,date) {
+        createAnnouncement : function (announcement,match,idTeam,nameTeam,date,userId) {
 
             var message = {};
             message.date = new Date();
             message.subject = announcement + nameTeam;
             message.text = "El partido se realizaría en la siguiente fecha: " + date + " ,en el siguiente lugar: "+match.place+".";
-            message.idUser = $localStorage.currentUser.user_id;
+            message.idUser = userId;
             ApiService.createMessage(message).then(
                 function (responseMessage) {
                     if(responseMessage.statusText=="OK"){
@@ -26,12 +26,12 @@ angular.module('AnnouncementService', []).factory('AnnouncementService', ['ApiSe
                 }
             )
         },
-        createAnnouncementsConfirmed :function (match,idTeam,teamName,date) {
+        createAnnouncementsConfirmed :function (match,idTeam,teamName,date,userId) {
             var message = {};
             message.date = new Date();
             message.subject = "Partido confirmado entre " + match.name + " - " + teamName;
             message.text = "El partido se realizara en la siguiente fecha: " + date + " ,en el siguiente lugar: "+match.place+".";
-            message.idUser = $localStorage.currentUser.user_id;
+            message.idUser = userId;
             ApiService.createMessage(message).then(
                 function (responseMessage) {
                     if (responseMessage.statusText == "OK") {
@@ -63,13 +63,13 @@ angular.module('AnnouncementService', []).factory('AnnouncementService', ['ApiSe
                     }
                 }
             )
-        },createAnnouncementCancelled : function (announcement,idTeam,nameTeam,date) {
+        },createAnnouncementCancelled : function (announcement,idTeam,nameTeam,date,userId) {
 
             var message = {};
             message.date = new Date();
             message.subject = announcement + nameTeam;
             message.text = "El partido ha sido cancelado el " + date  +".";
-            message.idUser = $localStorage.currentUser.user_id;
+            message.idUser = userId;
             ApiService.createMessage(message).then(
                 function (responseMessage) {
                     if(responseMessage.statusText=="OK"){

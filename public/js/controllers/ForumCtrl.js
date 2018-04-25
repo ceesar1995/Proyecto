@@ -663,7 +663,7 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log,$localS
                         window.alert("Partido creado con éxito");
                         if($ctrl.selectedTeam != undefined) {
                             var date = $filter('date')($scope.match.dateBegin,'d/M/yy HH:mm');
-                            AnnouncementService.createAnnouncement("Invitacion recibida de ",responseMatch.data,$ctrl.selectedTeam._id,$localStorage.currentTeam.team_name,date);
+                            AnnouncementService.createAnnouncement("Invitacion recibida de ",responseMatch.data,$ctrl.selectedTeam._id,$localStorage.currentTeam.team_name,date,$localStorage.currentUser.user_id);
                         }
                     }
                 });
@@ -777,8 +777,8 @@ app.controller('PendingMatchesController', function($scope,$localStorage,ApiServ
         console.log(match);
         ApiService.updateMatch(match._id,{rejected:true});
         var date = $filter('date')(new Date(),'d/M/yy HH:mm');
-        AnnouncementService.createAnnouncementCancelled("Partido cancelado por ",match.idTeam,$localStorage.currentTeam.team_name,date);
-        AnnouncementService.createAnnouncementCancelled("Partico cancelado contra ",$localStorage.currentTeam.team_id,match.name,date);
+        AnnouncementService.createAnnouncementCancelled("Partido cancelado por ",match.idTeam,$localStorage.currentTeam.team_name,date,$localStorage.currentUser.user_id);
+        AnnouncementService.createAnnouncementCancelled("Partico cancelado contra ",$localStorage.currentTeam.team_id,match.name,date,$localStorage.currentUser.user_id);
         match.rejected = true;
     };
 
@@ -789,7 +789,7 @@ app.controller('PendingMatchesController', function($scope,$localStorage,ApiServ
         ApiService.updateMatch(match._id,{confirmed:true});
         //createAnnouncements(match);
         var date = $filter('date')(match.dateBegin,'d/M/yy HH:mm');
-        AnnouncementService.createAnnouncementsConfirmed(match,$localStorage.currentTeam.team_id,$localStorage.currentTeam.team_name,date);
+        AnnouncementService.createAnnouncementsConfirmed(match,$localStorage.currentTeam.team_id,$localStorage.currentTeam.team_name,date,$localStorage.currentUser.user_id);
         match.confirmed = true;
 
     };
@@ -896,8 +896,8 @@ app.controller('NextMatchesController', function($scope,$localStorage,ApiService
             }
         );
         var date = $filter('date')(new Date(),'d/M/yy HH:mm');
-        AnnouncementService.createAnnouncementCancelled("Partido cancelado por ",match.idRivalTeam,$localStorage.currentTeam.team_name,date);
-        AnnouncementService.createAnnouncementCancelled("Partico cancelado contra ",$localStorage.currentTeam.team_id,match.name,date);
+        AnnouncementService.createAnnouncementCancelled("Partido cancelado por ",match.idRivalTeam,$localStorage.currentTeam.team_name,date,$localStorage.currentUser.user_id);
+        AnnouncementService.createAnnouncementCancelled("Partico cancelado contra ",$localStorage.currentTeam.team_id,match.name,date,$localStorage.currentUser.user_id);
     }
 
     $scope.showBt = function () {
@@ -1412,8 +1412,8 @@ app.controller('SearchMatchController', function ($scope,$localStorage,ApiServic
         console.log("PARTIDO ACEPTADO");
         ApiService.updateMatch(match._id,{idTeamGuest:$localStorage.currentTeam.team_id,confirmed:true});
         var date = $filter('date')(match.dateBegin,'d/M/yy HH:mm');
-        AnnouncementService.createAnnouncement("Invitacion aceptada por ",match,match.idTeamHome,$localStorage.currentTeam.team_name,date);
-        AnnouncementService.createAnnouncement("Invitacion aceptada de ",match,$localStorage.currentTeam.team_id,match.teamName,date);
+        AnnouncementService.createAnnouncement("Invitacion aceptada por ",match,match.idTeamHome,$localStorage.currentTeam.team_name,date,$localStorage.currentUser.user_id);
+        AnnouncementService.createAnnouncement("Invitacion aceptada de ",match,$localStorage.currentTeam.team_id,match.teamName,date,$localStorage.currentUser.user_id);
     }
 
 });
