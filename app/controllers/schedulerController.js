@@ -12,7 +12,7 @@ var Team = mongoose.model('Team');
 
 module.exports = {
     sendAnnouncements: function () {
-        var tomorrow = new Date(new Date().getTime() + 21*60*60*1000);
+        var tomorrow = new Date(new Date().getTime() + 19*60*60*1000);
         var dayAfterTomorrow = new Date(tomorrow.getTime() + 24*60*60*1000);
 
         var Matches = [];

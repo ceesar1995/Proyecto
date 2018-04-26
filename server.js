@@ -67,7 +67,7 @@ require('./app/controllers/matchController')(app);
 require('./app/controllers/emailController')(app);
 require('./app/routes')(app);
 
-var sendAnnouncements = schedule.scheduleJob('* 03 * * *', function(){
+var sendAnnouncements = schedule.scheduleJob('00 03 * * *', function(){
     var schedulerController = require('./app/controllers/schedulerController');
     schedulerController.sendAnnouncements();
 });
