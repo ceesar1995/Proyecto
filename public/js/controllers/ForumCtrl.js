@@ -612,8 +612,7 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log,$localS
         $scope.match.dateBegin.setHours($scope.timeBegin.getHours());
         $scope.match.dateBegin.setMinutes($scope.timeBegin.getMinutes());
         if($scope.timeEnd){
-            $scope.match.dateEnd = new Date();
-            $scope.match.dateEnd.setDate($scope.match.dateBegin.getDate());
+            $scope.match.dateEnd = new Date($scope.match.dateBegin.getTime());
             $scope.match.dateEnd.setHours($scope.timeEnd.getHours());
             $scope.match.dateEnd.setMinutes($scope.timeEnd.getMinutes());
         }
