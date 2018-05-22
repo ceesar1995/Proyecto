@@ -175,7 +175,7 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
     loadPlayers();
 
 });
-app.controller('ModalInstanceAfterMatchReportCtrl', function ($uibModalInstance,ApiService,match,$localStorage) {
+app.controller('ModalInstanceAfterMatchReportCtrl', function ($uibModalInstance,ApiService,match,$localStorage,privileges) {
 
     var $ctrl = this;
 
@@ -290,6 +290,10 @@ app.controller('ModalInstanceAfterMatchReportCtrl', function ($uibModalInstance,
             playersToSaveIds.push(player._id);
             console.log(player);
         }
+    }
+
+    $ctrl.showBt = function () {
+        return privileges;
     }
 });
 app.controller('ModalInstanceConfirmCtrl', function ($uibModalInstance,data) {

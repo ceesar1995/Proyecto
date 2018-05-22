@@ -22,7 +22,6 @@
                             <div class="form-group" >
                                 <label for="rulesInput">Reglas:</label>
                                 <textarea class="form-control" id="rulesInput" rows="3" ng-model="match.rules" ></textarea>
-                                <small id="rulesHelp" class="form-text text-muted">Reglas o información que se necesitan aclarar para el partido.</small>
                             </div>
                             <div class="form-group" ng-class="{ 'has-error' : createMatchForm.matchDate.$invalid && submittedMatch }">
                                 <label for="dateInput">Fecha:</label>
@@ -50,7 +49,7 @@
                                 <label >Equipo invitado:</label>
                                 <input type="text" readonly class="form-control" ng-model="$ctrl.selectedTeam.name">
                             </div>
-                            <button  ng-click="createMatch(createMatchForm.matchPlace.$invalid || createMatchForm.matchProvince.$invalid || createMatchForm.matchDate.$invalid || createMatchForm.matchHourBegin.$invalid || createMatchForm.matchHourEnd.$invalid )" class="btn btn-primary">Crear partido</button>
+                            <button ng-disabled="!privileges.privileges" ng-click="createMatch(createMatchForm.matchPlace.$invalid || createMatchForm.matchProvince.$invalid || createMatchForm.matchDate.$invalid || createMatchForm.matchHourBegin.$invalid || createMatchForm.matchHourEnd.$invalid )" class="btn btn-primary">Crear partido</button>
                             <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Invita a un equipo</button>
                         </form>
                     </div>

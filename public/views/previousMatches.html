@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row " >
             <div class="col-sm-offset-2 col-sm-8 col-xs-12 ">
-                <previous-match-card ng-repeat="previousMatch in previousMatches.slice(((currentPage-1)*10), ((currentPage)*10))" team-home="{{previousMatch.teamHome}}" team-guest="{{previousMatch.teamGuest}}" team-guest="{{previousMatch.teamGuest}}" score-guest="{{previousMatch.scoreGuest}}" score-home="{{previousMatch.scoreHome}}" date-begin="{{previousMatch.dateBegin}}" date-end="{{previousMatch.dateEnd}}" place="{{previousMatch.place}}" rules="{{previousMatch.rules}}" date-created="{{previousMatch.dateCreated}}" show-bt="showBt()" after-match-report-bt="showAfterMatchReport(previousMatch)" ></previous-match-card>
+                <previous-match-card ng-repeat="previousMatch in previousMatches.slice(((currentPage-1)*10), ((currentPage)*10))" team-home="{{previousMatch.teamHome}}" team-guest="{{previousMatch.teamGuest}}" team-guest="{{previousMatch.teamGuest}}" score-guest="{{previousMatch.scoreGuest}}" score-home="{{previousMatch.scoreHome}}" date-begin="{{previousMatch.dateBegin}}" date-end="{{previousMatch.dateEnd}}" place="{{previousMatch.place}}" rules="{{previousMatch.rules}}" date-created="{{previousMatch.dateCreated}}"  after-match-report-bt="showAfterMatchReport(previousMatch)" ></previous-match-card>
                 <div class="row">
                     <div class="col-sm-offset-4 col-sm-6 col-xs-12">
                         <p ng-show="totalItems==0">No tienes ningún partido en el historial</p>

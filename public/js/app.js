@@ -1,3 +1,3 @@
 // public/js/app.js
 angular.module('sampleApp', ['ngRoute','ngStorage','logInDirectives', 'appRoutes', 'LogInCtrl', 'RegisterCtrl','RouterService','ApiService','SelectService','ui.bootstrap','ngAnimate','ngTouch','AnnouncementService','ModalService','ModalCtrl','homeDirectives']);
-angular.module('homeApp', ['ngRoute','homeDirectives','ForumCtrl','appRoutes','ngStorage','ApiService','SelectService','ui.bootstrap','ngAnimate','ngTouch','logInDirectives', 'LogInCtrl','RouterService','AnnouncementService','ModalService','ModalCtrl']);
+angular.module('homeApp', ['ngRoute','homeDirectives','HomeCtrl','appRoutes','ngStorage','ApiService','SelectService','ui.bootstrap','ngAnimate','ngTouch','logInDirectives', 'LogInCtrl','RouterService','AnnouncementService','ModalService','ModalCtrl']);

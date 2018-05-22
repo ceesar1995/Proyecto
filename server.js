@@ -7,7 +7,6 @@ var cors = require('cors');
 var mongoose = require('mongoose');
 var methodOverride = require('method-override');
 var nodeMailer = require('nodemailer');
-var passport = require('passport');
 var user     = require('./app/models/user');
 var playerTeam     = require('./app/models/playerTeam');
 // configuration ===========================================
@@ -18,7 +17,6 @@ var schedule = require('node-schedule');
 var app = express();
 // config files
 var db = require('./config/db');
-require('./app/config/passport');
 // set our port
 var port = process.env.PORT || 8080;
 

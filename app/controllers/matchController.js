@@ -1,7 +1,6 @@
 // app/controllers/matchController.js
 
 var Match = require('../models/match');
-var MatchTeam = require('../models/matchTeam');
 var Team = require('../models/team');
 var MatchPlayer = require('../models/matchPlayer');
 var Player = require('../models/player');
@@ -59,19 +58,12 @@ module.exports = function (app) {
     };
 
 
-    var createAMatchTeam = function (req, res) {
-        var newMatchTeam = new MatchTeam(req.body);
-        newMatchTeam.save(function (err, matchTeam) {
-            if (err)
-                res.send(err);
-            res.json(matchTeam);
-        });
-    };
+
 
     var getInvitationMatchesSent = function (req,res) {
         var Matches = [];
         var teams = [];
-        Match.find({idTeamHome: req.params.teamId,deleted:false,confirmed:false }).then(
+        Match.find({idTeamHome: req.params.teamId,deleted:false,confirmed:false,dateBegin:{ $gt: new Date() } }).then(
             function (matches) {
                 Matches = matches;
                 matches.forEach(function (match) {
@@ -98,7 +90,7 @@ module.exports = function (app) {
     var getInvitationMatchesReceived = function (req,res) {
         var Matches = [];
         var teams = [];
-        Match.find({idTeamGuest: req.params.teamId,deleted:false,confirmed:false }).then(
+        Match.find({idTeamGuest: req.params.teamId,deleted:false,confirmed:false,dateBegin:{ $gt: new Date() }}).then(
             function (matches) {
                 Matches = matches;
                 matches.forEach(function (match) {
@@ -121,13 +113,6 @@ module.exports = function (app) {
     };
 
 
-    var updateAMatchTeam = function (req, res) {
-        MatchTeam.findOneAndUpdate({idMatch: req.params.matchId}, req.body, {new: true}, function (err, match) {
-            if (err)
-                res.send(err);
-            res.json(match);
-        });
-    };
 
     var getNextMatches = function (req, res) {
         var Matches = [];

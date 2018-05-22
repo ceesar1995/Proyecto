@@ -145,8 +145,7 @@ myDirective.directive("previousMatchCard", function(){
             scoreGuest: '@',
             dateCreated: '@',
             _id:'@',
-            afterMatchReportBt :'&',
-            showBt :'&'
+            afterMatchReportBt :'&'
 
         },
         restrict: "E",
@@ -171,7 +170,8 @@ myDirective.directive("playerReportCard", function(){
             goalkeeper:'@',
             played: '=',
             goals: '=',
-            save: '&'
+            save: '&',
+            showBt :'&'
         },
         restrict: "E",
         templateUrl: 'js/directives/templates/playerReportCard.html',

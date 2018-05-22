@@ -6,7 +6,7 @@ body {
     color: #888;
     line-height: 30px;
     text-align: center;
-	background-image: url("/public/assets/img/backgrounds/futbol-sala-fondo2.png");
+	background-color: #ff3333;
 }
 
 strong { font-weight: 500; }

@@ -1,5 +1,5 @@
 // public/js/controllers/ForumCtrl.js
-var app = angular.module('ForumCtrl', ['homeDirectives','ApiService','SelectService','ui.bootstrap','ngAnimate','ngTouch','AnnouncementService','ModalService']);
+var app = angular.module('HomeCtrl', ['homeDirectives','ApiService','SelectService','ui.bootstrap','ngAnimate','ngTouch','AnnouncementService','ModalService']);
 
 app.controller('ForumController', function($scope,$log,$http,$localStorage,ApiService,$location,$uibModal,ModalService,$route) {
 
@@ -938,9 +938,6 @@ app.controller('PreviousMatchesController', function($scope,$localStorage,ApiSer
         });
     };
 
-    $scope.showBt = function () {
-        return $scope.privileges.privileges;
-    }
 
     $scope.loadPreviousMatches();
 
@@ -955,6 +952,9 @@ app.controller('PreviousMatchesController', function($scope,$localStorage,ApiSer
         var match = {
             match: function () {
                 return $ctrl.match;
+            },
+            privileges: function () {
+                return $scope.privileges.privileges;
             }
         };
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/afterMatchReportModal.html','ModalInstanceAfterMatchReportCtrl','lg',match));
