@@ -67,32 +67,10 @@ module.exports = function (app) {
                 messagesForum.forEach(function (message) {
                     messagesF.push(message);
                     Messages.push(Message.findOne({_id:message.idMessage,deleted:false}));
-                    //playerIds.push(message.idPlayer);
-                    /*
-                    Player.find({_id:message.idPlayer}).then(
-                        function (player) {
-                            return Promise.all(player);
-                        }
-                    ).then(function (player) {
-                        Players.push(player[0]);
-                        //console.log(Players);
-                        //message.player = player[0];
-                    }).catch(function (error) {
-                        res.status(500).send('one of the queries failed',error);
-                    });
-                    */
                 });
                 return Promise.all(Messages);
             }
         ).then(function (messages) {
-            /*
-            console.log(messages);
-            console.log(Players);
-
-            playerIds.forEach(function (playerId) {
-                Players.push(Player.findOne({_id:playerId}));
-            });
-             */
             var Players = [];
             Messages = messages;
             messagesF.forEach(function (message) {
@@ -101,11 +79,9 @@ module.exports = function (app) {
             return Promise.all(Players);
 
 
-            //console.log(Players);
-            //res.json(messages)
+
 
         }).then(function (players) {
-            //console.log(players);
             var answer = {
                 messages: Messages,
                 players: players

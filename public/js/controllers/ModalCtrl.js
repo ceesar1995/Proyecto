@@ -25,14 +25,12 @@ app.controller('ModalInstanceSearchTeamCtrl', function ($uibModalInstance,ApiSer
         $uibModalInstance.dismiss('cancel');
     };
     $ctrl.searchTeam = function () {
-        console.log($ctrl.team);
         ApiService.findTeams($ctrl.team).then(function (teamsRespond) {
             if(teamsRespond.statusText=="OK"){
                 $ctrl.teams = teamsRespond.data;
                 for(var i = 0;i<$ctrl.teams.length;i++){
                     $ctrl.teams[i].provinces = SelectService.getNamesByIds($ctrl.teams[i].province);
                 }
-                console.log($ctrl.teams);
             }
         });
     };
@@ -69,7 +67,6 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
                 ApiService.createMatchPlayer(matchPlayer).then(
                     function (respond) {
                         if(respond.statusText = "OK"){
-                            console.log(respond.data);
                         }
                     });
             }
@@ -80,7 +77,6 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
                 ApiService.updateMatchPlayer($ctrl.match._id,$localStorage.currentPlayer.player_id,matchPlayer).then(
                     function (respond) {
                         if(respond.statusText = "OK"){
-                            console.log(respond.data);
                         }
                     });
             }
@@ -94,7 +90,6 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
 
 
     $ctrl.setButtons = function () {
-        console.log("OLE"+isMyPlayerAlreadySummoned);
         if(isMyPlayerAlreadySummoned){
             if(myPlayerSummonedByRival){
                 $ctrl.actionBtLabel = "Apuntarse";
@@ -114,7 +109,6 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
             if(myPlayerSummonedByRival){
                 window.alert("Tu jugador ya esta convocado con el equipo rival");
             }else{
-                console.log("ME DESAPUNTO");
                 if(index || newSummon)
                     $ctrl.myTeamPlayers.pop();
                 else
@@ -124,7 +118,6 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
             }
         }
         else{
-            console.log("ME APUNTO");
             var player = {
                 name: $localStorage.currentPlayer.player_name,
                 date: new Date()
@@ -145,7 +138,6 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
                         if($localStorage.currentPlayer.player_id == players[i]._id){
                             index = i;
                             isMyPlayerAlreadySummoned = true;
-                            console.log("ACIERTO");
                             if(response.data.matchesPlayers[i].idTeam != myTeamId) {
                                 myPlayerSummonedByRival = true;
                                 $ctrl.rivalTeamPlayers.push(players[i]);
@@ -155,7 +147,6 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
                             }
                         }
                         else{
-                            console.log("FALLO");
                             if(response.data.matchesPlayers[i].idTeam != myTeamId) {
                                 $ctrl.rivalTeamPlayers.push(players[i]);
                             }
@@ -164,9 +155,7 @@ app.controller('ModalInstanceSummonMatchCtrl', function ($uibModalInstance,ApiSe
                             }
                         }
                         players[i].date = response.data.matchesPlayers[i].date;
-                        console.log(players[i]);
                     }
-                    console.log($ctrl.myTeamPlayers);
                     $ctrl.setButtons();
                 }
             });
@@ -205,7 +194,6 @@ app.controller('ModalInstanceAfterMatchReportCtrl', function ($uibModalInstance,
                         playersSummonedId.push(players[i]._id);
                     }
                 }
-                console.log($ctrl.playersSummoned);
                 ApiService.getPlayersTeam(myTeamId).then(
                     function (responsePlayers) {
                         if(responsePlayers.statusText="OK"){
@@ -220,7 +208,6 @@ app.controller('ModalInstanceAfterMatchReportCtrl', function ($uibModalInstance,
 
                                 }
                                 else{
-                                    console.log(response.data.matchesPlayers[index]);
                                     if(response.data.matchesPlayers[index].summoned == false){
                                         player.alreadyExists = true;
                                         player.played= response.data.matchesPlayers[index].played;
@@ -229,7 +216,6 @@ app.controller('ModalInstanceAfterMatchReportCtrl', function ($uibModalInstance,
                                     }
                                 }
                             });
-                            console.log($ctrl.playersNotSummoned);
                         }
                     }
                 );
@@ -288,7 +274,6 @@ app.controller('ModalInstanceAfterMatchReportCtrl', function ($uibModalInstance,
         if(playersToSaveIds.indexOf(player._id) == -1){
             playersToSave.push(player);
             playersToSaveIds.push(player._id);
-            console.log(player);
         }
     }
 

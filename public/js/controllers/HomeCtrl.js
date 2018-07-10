@@ -39,14 +39,11 @@ app.controller('ForumController', function($scope,$log,$http,$localStorage,ApiSe
 
         ApiService.getMessagesForum($localStorage.currentTeam.team_id).then(
             function (response) {
-                console.log(response.data);
                 $scope.messages = response.data.messages.reverse();
                 $scope.players = response.data.players.reverse();
                 for(var i = 0;i<$scope.messages.length;i++){
                     $scope.messages[i].player = $scope.players[i][0].name;
                 }
-                console.log($scope.messages);
-                console.log($scope.privileges);
                 setPaginator($scope.messages,1);
 
             }
@@ -70,7 +67,6 @@ app.controller('ForumController', function($scope,$log,$http,$localStorage,ApiSe
                         ApiService.sendMessageForum(messagePlayerForum).then(
                             function (responseMessageForum) {
                                 if(responseMessageForum.statusText=="OK"){
-                                    console.log(responseMessageForum.data);
                                     $scope.loadMessagesForum();
                                     $scope.message = {
                                         date: null,
@@ -108,7 +104,6 @@ app.controller('ForumController', function($scope,$log,$http,$localStorage,ApiSe
         };
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
         modalInstance.result.then(function () {
-            console.log("CONFIRMADO");
             dropOut();
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
@@ -122,12 +117,10 @@ app.controller('ForumController', function($scope,$log,$http,$localStorage,ApiSe
     $scope.loadMessagesAnnouncement = function () {
         ApiService.getMessagesAnnouncement($localStorage.currentTeam.team_id).then(
             function (response) {
-                console.log(response.data);
                 $scope.messagesAnnouncement = response.data.reverse();
                 for(var i = 0;i<$scope.messagesAnnouncement.length;i++){
                     $scope.messagesAnnouncement[i].player = "AVISO";
                 }
-                console.log($scope.messagesAnnouncement);
                 setPaginator($scope.messagesAnnouncement,1);
             }
         );
@@ -136,13 +129,11 @@ app.controller('ForumController', function($scope,$log,$http,$localStorage,ApiSe
     $scope.loadMessagesTeamReceived = function () {
         ApiService.getMessagesTeamReceived($localStorage.currentTeam.team_id).then(
             function (response) {
-                console.log(response.data);
                 $scope.messagesTeamReceived = response.data.messages.reverse();
                 $scope.teams = response.data.teams.reverse();
                 for(var i = 0;i<$scope.messagesTeamReceived.length;i++){
                     $scope.messagesTeamReceived[i].player = $scope.teams[i][0].name;
                 }
-                console.log($scope.messagesTeamReceived);
                 setPaginator($scope.messagesTeamReceived,1);
             }
         );
@@ -151,13 +142,11 @@ app.controller('ForumController', function($scope,$log,$http,$localStorage,ApiSe
     $scope.loadMessagesTeamSent = function () {
         ApiService.getMessagesTeamSent($localStorage.currentTeam.team_id).then(
             function (response) {
-                console.log(response.data);
                 $scope.messagesTeamSent = response.data.messages.reverse();
                 $scope.teams = response.data.teams.reverse();
                 for(var i = 0;i<$scope.messagesTeamSent.length;i++){
                     $scope.messagesTeamSent[i].player = $scope.teams[i][0].name;
                 }
-                console.log($scope.messagesTeamSent);
                 setPaginator($scope.messagesTeamSent,1);
             }
         );
@@ -171,7 +160,6 @@ app.controller('ForumController', function($scope,$log,$http,$localStorage,ApiSe
         };
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
         modalInstance.result.then(function () {
-            console.log("CONFIRMADO");
             switch (typeMessage){
                 case 0:
                     deleteMessageForum(message);
@@ -229,7 +217,6 @@ app.controller('PlayersTeamController', function($scope,$compile,$http,$localSto
             for(var i = 0;i<$scope.players.length;i++){
                 $scope.players[i].provinces = SelectService.getNamesByIds($scope.players[i].province);
             }
-            console.log($scope.players);
             $scope.totalItems = $scope.players.length;
             $scope.currentPage = 1;
         }
@@ -248,7 +235,6 @@ app.controller('PlayersTeamController', function($scope,$compile,$http,$localSto
 
         var modalInstance = $uibModal.open(ModalService.createModal(true, 'views/modals/detailsPlayerModal.html', 'ModalDetailsPlayerCtrl','lg', data));
         modalInstance.result.then(function (playerModified) {
-            console.log("CONFIRMADO");
             if(playerModified){
                 ApiService.updatePlayerTeam($localStorage.currentTeam.team_id,player._id,{privileges:true});
             }
@@ -281,7 +267,6 @@ app.controller('SearchController', function($scope,$localStorage,ApiService,Sele
             $scope.teams = [];
 
             ApiService.findPlayersByName($scope.searchForm).then(function (response) {
-                console.log(response.data);
                 $scope.players = response.data.players;
                 var teamNumbers = response.data.teamNumber;
                 var teams = response.data.teams;
@@ -297,7 +282,6 @@ app.controller('SearchController', function($scope,$localStorage,ApiService,Sele
                     }
                 };
 
-                console.log($scope.players);
                 $scope.errorMessage = "No se encontraron jugadores";
 
 
@@ -322,9 +306,7 @@ app.controller('SearchController', function($scope,$localStorage,ApiService,Sele
                 name: $scope.searchForm,
                 province:[]
             }
-            console.log(team);
             ApiService.findTeams(team).then(function (teamsResponse) {
-                console.log(teamsResponse.data);
                 $scope.teams = teamsResponse.data;
                 for(var i = 0;i<$scope.teams.length;i++){
                     $scope.teams[i].provinces = SelectService.getNamesByIds($scope.teams[i].province);
@@ -384,7 +366,6 @@ app.controller('SearchController', function($scope,$localStorage,ApiService,Sele
                                         team.submittedMessage = false;
                                         team.subject = null;
                                         team.text = null;
-                                        console.log(responseMessageTeam.data);
                                     }
                                 }
                             )
@@ -398,7 +379,6 @@ app.controller('SearchController', function($scope,$localStorage,ApiService,Sele
     $scope.sendMessagePlayer = function (player) {
         player.submittedMessage = true;
         if(player.text){
-            console.log(player);
             var message = {};
             message.date = new Date();
             message.subject = player.subject;
@@ -419,7 +399,6 @@ app.controller('SearchController', function($scope,$localStorage,ApiService,Sele
                                     player.subject = null;
                                     player.text = null;
                                     window.alert("Mensaje enviado con exito");
-                                    console.log(responseMessagePlayer.data);
                                 }
                             }
                         )
@@ -440,7 +419,6 @@ app.controller('SearchController', function($scope,$localStorage,ApiService,Sele
            };
            modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
            modalInstance.result.then(function () {
-               console.log("CONFIRMADO");
                joinTeamPublic(team);
 
            }, function () {
@@ -578,15 +556,7 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log,$localS
         opened: false
     };
 
-    $scope.imprimir = function () {
-        console.log($scope.match);
-        console.log($ctrl.selectedTeam.name);
-        console.log($scope.timeBegin);
-        console.log($scope.timeEnd);
-    }
 
-
-    //Functions and parameters modal
     var $ctrl = this;
 
 
@@ -629,7 +599,6 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log,$localS
             };
             var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
             modalInstance.result.then(function () {
-                console.log("CONFIRMADO");
                 createMatch();
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
@@ -656,7 +625,6 @@ app.controller('CreateMatchController', function ($scope,$uibModal, $log,$localS
         if(valid){
             ApiService.createMatch($scope.match).then(
                 function (responseMatch) {
-                    console.log(responseMatch.data);
                     if(responseMatch.statusText=="OK"){
                         resetMatch();
                         window.alert("Partido creado con éxito");
@@ -691,13 +659,11 @@ app.controller('PendingMatchesController', function($scope,$localStorage,ApiServ
     $scope.matchesSent = [];
     $scope.matchesReceived = [];
     var teamId = $localStorage.currentTeam.team_id;
-    console.log($scope.privileges);
 
     $scope.loadInvitationsSent = function () {
 
         ApiService.getInvitationMatchesSent(teamId).then(function (response) {
             if(response.statusText=="OK"){
-                console.log(response.data);
                 $scope.matchesSent = response.data.matches;
                 for(var i = 0; i<$scope.matchesSent.length;i++){
                     if(response.data.teams[i]){
@@ -708,7 +674,6 @@ app.controller('PendingMatchesController', function($scope,$localStorage,ApiServ
                     }
                 }
                 setPaginator($scope.matchesSent,1);
-                console.log($scope.matchesSent);
             }
         });
     };
@@ -719,7 +684,6 @@ app.controller('PendingMatchesController', function($scope,$localStorage,ApiServ
 
         ApiService.getInvitationMatchesReceived(teamId).then(function (response) {
             if(response.statusText=="OK"){
-                console.log(response.data);
                 $scope.matchesReceived = response.data.matches;
                 for(var i = 0; i<$scope.matchesReceived.length;i++){
                     $scope.matchesReceived[i].name = response.data.teams[i].name;
@@ -752,7 +716,6 @@ app.controller('PendingMatchesController', function($scope,$localStorage,ApiServ
         };
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
         modalInstance.result.then(function () {
-            console.log("CONFIRMADO");
             switch (actionType){
                 case 0:
                     cancel(match);
@@ -772,8 +735,6 @@ app.controller('PendingMatchesController', function($scope,$localStorage,ApiServ
 
     }
     var cancel = function (match) {
-        console.log("Cancel");
-        console.log(match);
         ApiService.updateMatch(match._id,{rejected:true});
         var date = $filter('date')(new Date(),'d/M/yy HH:mm');
         AnnouncementService.createAnnouncementCancelled("Partido cancelado por ",match.idTeam,$localStorage.currentTeam.team_name,date,$localStorage.currentUser.user_id);
@@ -783,10 +744,7 @@ app.controller('PendingMatchesController', function($scope,$localStorage,ApiServ
 
 
     var confirm = function (match) {
-        console.log("Confirm");
-        console.log(match);
         ApiService.updateMatch(match._id,{confirmed:true});
-        //createAnnouncements(match);
         var date = $filter('date')(match.dateBegin,'d/M/yy HH:mm');
         AnnouncementService.createAnnouncementsConfirmed(match,$localStorage.currentTeam.team_id,$localStorage.currentTeam.team_name,date,$localStorage.currentUser.user_id);
         match.confirmed = true;
@@ -814,11 +772,9 @@ app.controller('NextMatchesController', function($scope,$localStorage,ApiService
     var teamName = $localStorage.currentTeam.team_name;
 
     $scope.loadNextMatches = function () {
-        console.log(teamId);
         $scope.nextMatches = [];
         ApiService.getNextMatches(teamId).then(function (response) {
             if(response.statusText=="OK"){
-                console.log(response.data);
                 var nextMatches = response.data.matches;
                 for(var i = 0; i<nextMatches.length;i++){
                     if(nextMatches[i]){
@@ -837,7 +793,6 @@ app.controller('NextMatchesController', function($scope,$localStorage,ApiService
                 }
                 $scope.totalItems = $scope.nextMatches.length;
                 $scope.currentPage = 1;
-                console.log($scope.nextMatches);
             }
         });
     };
@@ -858,7 +813,6 @@ app.controller('NextMatchesController', function($scope,$localStorage,ApiService
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/summonMatchModal.html','ModalInstanceSummonMatchCtrl',null,match));
 
         modalInstance.result.then(function (msg) {
-            console.log(msg);
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
@@ -878,7 +832,6 @@ app.controller('NextMatchesController', function($scope,$localStorage,ApiService
         };
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
         modalInstance.result.then(function () {
-            console.log("CONFIRMADO");
             cancel(match);
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
@@ -886,7 +839,6 @@ app.controller('NextMatchesController', function($scope,$localStorage,ApiService
 
     }
     var cancel = function (match) {
-        console.log("PARTIDO CANCELADO");
         ApiService.updateMatch(match._id,{rejected:true}).then(
             function (response) {
                 if(response.statusText=="OK"){
@@ -914,7 +866,6 @@ app.controller('PreviousMatchesController', function($scope,$localStorage,ApiSer
     $scope.loadPreviousMatches = function () {
         ApiService.getPreviousMatches(teamId).then(function (response) {
             if(response.statusText=="OK"){
-                console.log(response.data);
                 var previousMatches = response.data.matches;
                 for(var i = 0; i<previousMatches.length;i++){
                     if(previousMatches[i]){
@@ -933,7 +884,6 @@ app.controller('PreviousMatchesController', function($scope,$localStorage,ApiSer
                 }
                 $scope.totalItems = $scope.previousMatches.length;
                 $scope.currentPage = 1;
-                console.log($scope.previousMatches);
             }
         });
     };
@@ -959,7 +909,6 @@ app.controller('PreviousMatchesController', function($scope,$localStorage,ApiSer
         };
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/afterMatchReportModal.html','ModalInstanceAfterMatchReportCtrl','lg',match));
         modalInstance.result.then(function (msg) {
-            console.log(msg);
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
@@ -1080,7 +1029,6 @@ app.controller('EditDataController', function($scope,$localStorage,ApiService,Se
             };
             var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
             modalInstance.result.then(function () {
-                console.log("CONFIRMADO");
                 switch (dataType){
                     case 0:
                         saveUser();
@@ -1103,7 +1051,6 @@ app.controller('EditDataController', function($scope,$localStorage,ApiService,Se
     }
 
     var saveUser = function () {
-        console.log($scope.user);
         $scope.user.dateBorn = $scope.dateBorn;
         ApiService.updateUser(userId,$scope.user);
     };
@@ -1170,7 +1117,6 @@ app.controller('CreateTeamController', function ($scope,$localStorage,ApiService
             };
             var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
             modalInstance.result.then(function () {
-                console.log("CONFIRMADO");
                 createTeam();
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
@@ -1204,7 +1150,6 @@ app.controller('CreateTeamController', function ($scope,$localStorage,ApiService
                                     }
                                     ApiService.addPlayerToTeam(playerTeamData).then(
                                         function (responsePlayerToTeam) {
-                                            console.log(responsePlayerToTeam.data);
                                             $localStorage.currentTeam= {team_id: responsePlayerToTeam.data.idTeam,team_name:$scope.team.name};
                                             $timeout(sendHome,2000);
                                         }
@@ -1235,13 +1180,11 @@ app.controller('MessagesController', function ($scope,$localStorage,ApiService,$
     $scope.loadMessagesSent = function () {
         ApiService.getMessagesSent($localStorage.currentPlayer.player_id).then(
             function (response) {
-                console.log(response.data);
                 $scope.messagesSent = response.data.messages.reverse();
                 $scope.players = response.data.players.reverse();
                 for(var i = 0;i<$scope.messagesSent.length;i++){
                     $scope.messagesSent[i].player = $scope.players[i][0].name;
                 }
-                console.log($scope.messagesSent);
                 setPaginator($scope.messagesSent,1);
             }
         );
@@ -1249,13 +1192,11 @@ app.controller('MessagesController', function ($scope,$localStorage,ApiService,$
     $scope.loadMessagesReceived = function () {
         ApiService.getMessagesReceived($localStorage.currentPlayer.player_id).then(
             function (response) {
-                console.log(response.data);
                 $scope.messagesReceived = response.data.messages.reverse();
                 $scope.players = response.data.players.reverse();
                 for(var i = 0;i<$scope.messagesReceived.length;i++){
                     $scope.messagesReceived[i].player = $scope.players[i][0].name;
                 }
-                console.log($scope.messagesReceived);
                 setPaginator($scope.messagesReceived,1);
 
             }
@@ -1273,7 +1214,6 @@ app.controller('MessagesController', function ($scope,$localStorage,ApiService,$
         };
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
         modalInstance.result.then(function () {
-            console.log("CONFIRMADO");
             switch (typeMessage){
                 case 0: deleteMessageReceived(message);
                         break;
@@ -1359,7 +1299,6 @@ app.controller('SearchMatchController', function ($scope,$localStorage,ApiServic
         if(!invalid){
             $scope.match.dateBegin.setUTCHours(00,00);
             $scope.match.dateEnd.setUTCHours(23,59);
-            console.log($scope.match);
             $scope.matches = [];
             ApiService.findMatches($scope.match).then(
                 function (responseMatches) {
@@ -1399,7 +1338,6 @@ app.controller('SearchMatchController', function ($scope,$localStorage,ApiServic
             };
             var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
             modalInstance.result.then(function () {
-                console.log("CONFIRMADO");
                 accept(match);
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
@@ -1408,7 +1346,6 @@ app.controller('SearchMatchController', function ($scope,$localStorage,ApiServic
 
     }
     var accept = function (match) {
-        console.log("PARTIDO ACEPTADO");
         ApiService.updateMatch(match._id,{idTeamGuest:$localStorage.currentTeam.team_id,confirmed:true});
         var date = $filter('date')(match.dateBegin,'d/M/yy HH:mm');
         AnnouncementService.createAnnouncement("Invitacion aceptada por ",match,match.idTeamHome,$localStorage.currentTeam.team_name,date,$localStorage.currentUser.user_id);

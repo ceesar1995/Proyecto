@@ -115,8 +115,6 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
 
     }
     $scope.registerPlayerAndTeam = function (invalid) {
-        //$http.defaults.headers.common.Authorization =  $localStorage.currentUser.token;
-        //console.log($scope.player.province);
         $scope.submittedTeam = true;
         if(!invalid && RouterService.getSavedData()) {
 
@@ -156,7 +154,6 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
                                 }
                                 ApiService.addPlayerToTeam(playerTeamData).then(
                                     function (responsePlayerToTeam) {
-                                        console.log(responsePlayerToTeam.data);
                                         ApiService.updateUser($localStorage.currentUser.user_id, {idPlayer: responsePlayerToTeam.data.idPlayer}).then(function (responseUser) {
                                             $localStorage.currentTeam = {team_id: responsePlayerToTeam.data.idTeam,team_name: $scope.team.name};
                                             $localStorage.currentPlayer = {
@@ -191,7 +188,6 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
                for(var i = 0;i<$scope.teams.length;i++){
                    $scope.teams[i].provinces = SelectService.getNamesByIds($scope.teams[i].province);
                }
-               console.log($scope.teams);
            }
         });
     }
@@ -205,7 +201,6 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
             };
             modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
             modalInstance.result.then(function () {
-                console.log("CONFIRMADO");
                 joinTeamPublic(team);
 
             }, function () {
@@ -350,7 +345,6 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
                     };
                     ApiService.addPlayerToTeam(playerTeamData).then(
                         function (responsePlayerToTeam) {
-                            console.log(responsePlayerToTeam.data);
                             ApiService.updateUser( $localStorage.currentUser.user_id,{idPlayer:responsePlayerToTeam.data.idPlayer}).then(function (responseUser) {
                                 $localStorage.currentTeam = {team_id: responsePlayerToTeam.data.idTeam,team_name: team.name};
                                 $localStorage.currentPlayer = {
@@ -414,7 +408,6 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
 
 
     $scope.termsConditions = function () {
-        console.log("OK");
         var data = {
             data : function () {
             return 'OK';
@@ -422,7 +415,6 @@ angular.module('RegisterCtrl', ['SelectService','ApiService','RouterService','ng
         };
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/termsConditionsModal.html','ModalInstanceConfirmCtrl','lg',data));
         modalInstance.result.then(function () {
-            console.log("CONFIRMADO");
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });

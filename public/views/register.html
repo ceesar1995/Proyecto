@@ -62,7 +62,7 @@
         <div class="form-group" ng-class="{ 'has-error' : registerForm.formTermsConditions.$invalid && submitted }">
             <!--Terminos y condiciones -->
             <input required type="checkbox" ng-model="termsConditions" id="form-terms-conditions" name="formTermsConditions">
-            <label class="form-check-label" for="form-terms-conditions">He leído y acepto los <a href="#" ng-click="termsConditions()">Términos y condiciones</a></label>
+            <label class="form-check-label" for="form-terms-conditions">He leído y acepto los <a href="#" ng-click="termsConditions()">Términos, condiciones y Política de privacidad</a></label>
             <p ng-show="registerForm.formTermsConditions.$invalid && submitted " class="help-block">Debes leer y confirmar los Términos y condiciones</p>
         </div>
         <button ng-click="registerUser(registerForm.formusername.$invalid || registerForm.formpassword.$invalid || registerForm.formname.$invalid || registerForm.formsurname.$invalid || registerForm.formemail.$invalid || registerForm.formdate.$invalid || registerForm.formTermsConditions.$invalid)"  class="btn" uib-popover="Nombre de usuario ya en uso, cambialo." popover-placement="bottom" popover-trigger="'none'" popover-is-open="popoverOpen">Registrarse</button>

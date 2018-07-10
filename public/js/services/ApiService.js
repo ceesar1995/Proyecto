@@ -58,13 +58,6 @@ angular.module('ApiService', []).factory('ApiService', ['$http','$q', function($
         },
         getPlayerByUserId : function (id) {
             return $http.get('/api/playersByUserId/'+id);
-           /* var defered = $q.defer();
-            var promise = defered.promise;
-            $http.get('/api/playersByUserId/'+id).then(function (data) {
-                defered.resolve(data);
-            });
-            return promise;
-            */
         },
         getTeamsByPlayerId : function (id) {
             return $http.get('/api/teamsByPlayerId/'+id);

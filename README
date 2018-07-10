@@ -1,0 +1,15 @@
+PASOS PARA DESPLEGAR APLICACIÓN
+
+1. Descoprimir ficheros en una carpeta.
+
+2. Instalar npm desde su pagina web. https://www.npmjs.com/package/npm
+
+3. Abir ventana de comandos desde la carpeta donde se ha descomprimido el proyecto.
+
+4. Lanzar comando npm install
+
+5. Lanzar comando node server.js
+
+Con esto ya deberia estar, no haria falta desplegar base de datos ya que utilizamos la que tenemos desplegada en amazon web services.
+
+En caso de que no se pueda desplegar la aplicación se encuentra disponible en http://ec2-35-180-27-147.eu-west-3.compute.amazonaws.com:8080/

@@ -45,10 +45,6 @@ module.exports = {
 
         }).then(function (teams) {
             Teams = teams;
-            //console.log(Matches);
-            //console.log(matchPlayers);
-            //console.log(Users);
-            //console.log(teams);
             var numUser = 0;
             for(var i = 0; i<Matches.length;i++){
                 for(var j=0;j<matchPlayers[i].length;j++){
@@ -65,9 +61,6 @@ module.exports = {
 };
 
 var  sendEmailAnnouncement  =  function (match,user,teams) {
-    //console.log(match);
-    //console.log(user);
-    //console.log(teams);
     var homeTeam = "";
     var guestTeam = "";
     if( teams[0] &&  teams[1]){

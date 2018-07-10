@@ -103,12 +103,6 @@ module.exports = function(app) {
         });
 
 
-        /*
-        transporter.templateSender(
-            new EmailTemplate('../public/views/emailsTemplate/passwordReset.ejs'), {
-                from: '"PachangaNet" <pachangaNetInfo@gmail.com>',
-            });
-            */
     }
     var sendPasswordReset = function (email, username, name, tokenUrl) {
         // transporter.template

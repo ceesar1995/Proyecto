@@ -52,7 +52,6 @@ app.controller('LogInController', function($scope,ApiService,RouterService,$http
                }).catch(function (error) {
                $scope.popoverOpen = true;
                $timeout(turnOffPopover,2000);
-               console.log("OLE");
            });
        }
 
@@ -77,7 +76,6 @@ app.controller('SelectPlayerController',function ($scope,$localStorage,ApiServic
         function (response) {
 
             $scope.players = response.data;
-            console.log($scope.players);
         }
     );
 
@@ -94,7 +92,6 @@ app.controller('SelectTeamController',function ($scope,$localStorage,ApiService,
         function (response) {
             if(response.statusText=="OK"){
                 $scope.teams = response.data;
-                console.log($scope.teams);
                 if($scope.teams.length==0){
                     if($localStorage.currentPlayer.player_coordinator==true) {
                         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/createOrJoinTeam.html','ModalCreateOrJoinTeamCtrl'));
@@ -128,7 +125,6 @@ app.controller('SelectTeamController',function ($scope,$localStorage,ApiService,
         };
         var modalInstance = $uibModal.open(ModalService.createModal(true,'views/modals/confirmModal.html','ModalInstanceConfirmCtrl','sm',data));
         modalInstance.result.then(function () {
-            console.log("CONFIRMADO");
            selectTeam(id,team);
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
@@ -137,7 +133,6 @@ app.controller('SelectTeamController',function ($scope,$localStorage,ApiService,
     var selectTeam = function (id,team) {
         $localStorage.currentTeam = {team_id: id, team_name:team.name};
         $timeout(sendHome,2000);
-        console.log(id);
     }
     function sendHome () {
         window.location.href = "/home"
