@@ -6,9 +6,11 @@ PASOS PARA DESPLEGAR APLICACIÓN
 
 3. Abir ventana de comandos desde la carpeta donde se ha descomprimido el proyecto.
 
-4. Lanzar comando npm install
+4. Crear variable de entorno SECRET_KEY = "LLAVE_SECRETA" para encriptar.
 
-5. Lanzar comando node server.js
+5. Lanzar comando npm install
+
+6. Lanzar comando node server.js
 
 Con esto ya deberia estar, no haria falta desplegar base de datos ya que utilizamos la que tenemos desplegada en amazon web services.
 
